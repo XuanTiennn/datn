@@ -6,7 +6,7 @@ const ProductsController = require("../app/controllers/ProductsController");
 router
   .route("/products")
   .get(ProductsController.getProducts)
-  .post(ProductsController.createProduct);
+  .post(ProductsController.createProduct); 
 
 router
   .route("/products/:id")

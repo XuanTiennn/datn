@@ -44,7 +44,10 @@ const Products = new Schema(
       type: Number,
       default: 0,
     },
-    salePercen: Number,
+    salePercen: {
+      type: Number,
+      default: 0,
+    },
   },
   { timestamps: true }
 );
