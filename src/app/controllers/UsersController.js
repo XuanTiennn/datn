@@ -44,16 +44,16 @@ const UserController = {
       if (!matchPass) return res.status(400).json({ mgs: "Sai mật khẩu." });
 
       //Nếu đăng nhập thành công
-      const accesstoken = createAccessToken({id: user._id})
-      const refreshtoken = createRefreshToken({id: user._id})
+      const accesstoken = createAccessToken({ id: user._id });
+      const refreshtoken = createRefreshToken({ id: user._id });
 
-      res.cookie('refreshtoken', refreshtoken, {
-          httpOnly: true,
-          path: '/user/refresh_token',
-          maxAge: 7*24*60*60*1000 // 7d
-      })
+      res.cookie("refreshtoken", refreshtoken, {
+        httpOnly: true,
+        path: "/user/refresh_token",
+        maxAge: 7 * 24 * 60 * 60 * 1000, // 7d
+      });
 
-      res.json({accesstoken})
+      res.json({ accesstoken });
     } catch (error) {
       return res.status(500).json({ mgs: error.message });
     }
@@ -82,6 +82,16 @@ const UserController = {
       });
     } catch (err) {
       return res.status(500).json({ msg: err.message });
+    }
+  },
+  getUser: async (req, res) => {
+    try {
+      const user = await User.findById(req.user.id).select('-password');
+      if (!user)
+        return res.status(400).json({ mgs: "Tài khoản không tồn tại." });
+      res.json(user);
+    } catch (error) {
+      res.status(500).json({ mgs: error.message });
     }
   },
 };
