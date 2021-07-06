@@ -13,4 +13,8 @@ router.get("/refresh_token", UserController.refreshToken);
 
 router.get("/infor",auth,UserController.getUser);
 
+router.patch("/addcart",auth,UserController.addToCart);
+
+router.get("/history",auth,UserController.history);
+
 module.exports = router;

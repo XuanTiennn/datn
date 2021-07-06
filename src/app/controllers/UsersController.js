@@ -1,4 +1,5 @@
 const User = require("../models/users");
+const Payment = require("../models/payment");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const UserController = {
@@ -86,12 +87,32 @@ const UserController = {
   },
   getUser: async (req, res) => {
     try {
-      const user = await User.findById(req.user.id).select('-password');
+      const user = await User.findById(req.user.id).select("-password");
       if (!user)
         return res.status(400).json({ mgs: "Tài khoản không tồn tại." });
       res.json(user);
     } catch (error) {
       res.status(500).json({ mgs: error.message });
+    }
+  },
+  addToCart: async (req, res) => {
+    try {
+      const user = await User.findById(req.user.id);
+      if (!user)
+        return res.status(400).json({ mgs: "Tài khoản không tồn tại." });
+      await User.findOneAndUpdate({ _id: user._id }, { cart: req.body.cart });
+      return res.json({ mgs: "Đã thêm vào giỏ hàng." });
+    } catch (error) {
+      return res.status(500).json({ mgs: error.message });
+    }
+  },
+  history: async (req, res) => {
+    try {
+      
+      const historyPayment =await Payment.find({ user_id: req.user.id });
+      res.json(historyPayment);
+    } catch (error) {
+      return res.status(500).json({ mgs: error.message });
     }
   },
 };
