@@ -100,7 +100,12 @@ const UserController = {
       const user = await User.findById(req.user.id);
       if (!user)
         return res.status(400).json({ mgs: "Tài khoản không tồn tại." });
-      await User.findOneAndUpdate({ _id: user._id }, { cart: req.body.cart });
+
+      await User.findOneAndUpdate(
+        { _id: req.user.id },
+        { cart: req.body.cart }
+      );
+
       return res.json({ mgs: "Đã thêm vào giỏ hàng." });
     } catch (error) {
       return res.status(500).json({ mgs: error.message });
@@ -108,8 +113,7 @@ const UserController = {
   },
   history: async (req, res) => {
     try {
-      
-      const historyPayment =await Payment.find({ user_id: req.user.id });
+      const historyPayment = await Payment.find({ user_id: req.user.id });
       res.json(historyPayment);
     } catch (error) {
       return res.status(500).json({ mgs: error.message });
