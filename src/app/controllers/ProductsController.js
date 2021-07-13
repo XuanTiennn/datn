@@ -77,6 +77,8 @@ const ProductsController = {
         images,
         category,
         salePercen,
+        color,
+        service
       } = req.body;
       if (!images) return res.status(400).json({ mgs: "Không có ảnh upload" });
 
@@ -91,7 +93,9 @@ const ProductsController = {
         content,
         images,
         category,
+        color,
         salePercen,
+        service
       });
 
       await newProduct.save();
@@ -117,7 +121,9 @@ const ProductsController = {
         content,
         images,
         category,
+        color,
         salePercen,
+        service
       } = req.body;
       if (!images) return res.status(400).json({ mgs: "không ảnh upload" });
       await Products.findOneAndUpdate(
@@ -129,7 +135,9 @@ const ProductsController = {
           content,
           images,
           category,
+          color,
           salePercen,
+          service
         }
       );
       res.json({ mgs: "Đã cập nhật một sản phẩm" });

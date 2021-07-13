@@ -44,6 +44,14 @@ const Products = new Schema(
       type: Number,
       default: 0,
     },
+    color:{
+      type:String,
+      require:true,
+    },
+    service:{
+      type:String,
+      require:true
+    },
     salePercen: {
       type: Number,
       default: 0,
