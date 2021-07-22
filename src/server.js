@@ -13,6 +13,7 @@ const usersRouter = require("./routes/users");
 const categoryRouter = require("./routes/categories");
 const uploadRouter = require("./routes/upload");
 const paymentRouter = require("./routes/payment");
+const sliderRouter = require("./routes/slider");
 
 const app = express();
 const port = process.env.PORT || 5000;
@@ -28,6 +29,7 @@ app.use("/user", usersRouter);
 app.use("/api", categoryRouter);
 app.use("/api", uploadRouter);
 app.use("/api", paymentRouter);
+app.use("/api", sliderRouter);
 
 //db connect
 db.connect();
