@@ -1,5 +1,5 @@
 const User = require("../models/users");
-const Payment = require("../models/payment");
+const paymentsCheckout = require("../models/paymentsCheckout");
 const Products = require("../models/products");
 
 class APIfeatures {
@@ -49,10 +49,10 @@ class APIfeatures {
     return this;
   }
 }
-const PaymentController = {
+const PaymentsCheckOutController = {
   getPayment: async (req, res) => {
     try {
-      const features = new APIfeatures(Payment.find(), req.query)
+      const features = new APIfeatures(paymentsCheckout.find(), req.query)
         .filtering()
         .sorting()
         .paginating();
@@ -73,35 +73,31 @@ const PaymentController = {
       if (!user)
         return res.status(400).json({ mgs: "Tài khoản không tồn tại." });
 
-        const { cart, id, payer, purchase_units } = req.body;
+      const { cart, derivery, address, phone } = req.body;
 
       const { _id, name, email } = user;
 
-      const newPayment = new Payment({
+      const newPayment = new paymentsCheckout({
         user_id: _id,
         name,
         email,
         cart,
-        id,
-        payer,
-        purchase_units,
+        address,
+        derivery,
+        phone,
       });
-
       cart.filter((item) => {
         return sold(item._id, item.quantity, item.sold);
       });
-
       await newPayment.save();
 
-      res.json({ mgs: "Thanh toán thành công." });
+      res.json({ mgs: "Đặt hàng thành công." });
     } catch (error) {
       res.status(500).json({ mgs: error.message });
     }
   },
 };
-
 const sold = async (id, quantity, oldSold) => {
   await Products.findOneAndUpdate({ _id: id }, { sold: quantity + oldSold });
 };
-
-module.exports = PaymentController;
+module.exports = PaymentsCheckOutController;

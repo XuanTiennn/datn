@@ -14,11 +14,11 @@ const payment = new mongoose.Schema(
       type: String,
       require: true,
     },
-    paymentID: {
+    id: {
       type: String,
       require: true,
     },
-    address: {
+    payer: {
       type: Object,
       require: true,
     },
@@ -26,8 +26,12 @@ const payment = new mongoose.Schema(
       type: Array,
       default: [],
     },
+    purchase_units: {
+      type: Array,
+      default: [],
+    },
     status: {
-      type: Boolean,
+      type: String,
       default: false,
     },
   },

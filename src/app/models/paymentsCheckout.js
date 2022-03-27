@@ -1,16 +1,18 @@
 const mongoose = require("mongoose");
 
-const users = new mongoose.Schema(
+const paymentCheckout = new mongoose.Schema(
   {
+    user_id: {
+      type: String,
+      require: true,
+    },
     name: {
       type: String,
       require: true,
-      trim: true,
     },
     email: {
       type: String,
       require: true,
-      unique: true,
     },
     address: {
       type: String,
@@ -20,25 +22,17 @@ const users = new mongoose.Schema(
       type: String,
       require: true,
     },
-    gender: {
+    derivery: {
       type: String,
       require: true,
-    },
-    birthday: {
-      type: String,
-      require: true,
-    },
-    password: {
-      type: String,
-      require: true,
-    },
-    role: {
-      type: Number,
-      default: 0,
     },
     cart: {
       type: Array,
       default: [],
+    },
+    status: {
+      type: Boolean,
+      default: false,
     },
   },
   {
@@ -46,4 +40,4 @@ const users = new mongoose.Schema(
   }
 );
 
-module.exports = mongoose.model("users", users);
+module.exports = mongoose.model("paymentCheckout", paymentCheckout);

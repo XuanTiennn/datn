@@ -1,5 +1,6 @@
 const User = require("../models/users");
 const Payment = require("../models/payment");
+const PaymentsCheckout = require("../models/paymentsCheckout");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const UserController = {
@@ -34,6 +35,30 @@ const UserController = {
       return res.status(500).json({ mgs: error.message });
     }
   },
+  registerWithGG: async (req, res) => {
+    try {
+      const { name, email } = req.body; //from form
+
+      //create a user
+      const newUser = new User({ name, email });
+      await newUser.save();
+
+      //create jsonwebtoken to authentication
+
+      const accesstoken = createAccessToken({ id: newUser._id });
+      const refreshtoken = createRefreshToken({ id: newUser._id });
+
+      res.cookie("refreshtoken", refreshtoken, {
+        httpOnly: true,
+        path: "/user/refresh_token",
+        maxAge: 7 * 24 * 60 * 60 * 1000, // 7d
+      });
+
+      res.json({ accesstoken });
+    } catch (error) {
+      return res.status(500).json({ mgs: error.message });
+    }
+  },
   login: async (req, res) => {
     try {
       const { email, password } = req.body;
@@ -43,6 +68,28 @@ const UserController = {
 
       const matchPass = await bcrypt.compare(password, user.password);
       if (!matchPass) return res.status(400).json({ mgs: "Sai mật khẩu." });
+
+      //Nếu đăng nhập thành công
+      const accesstoken = createAccessToken({ id: user._id });
+      const refreshtoken = createRefreshToken({ id: user._id });
+
+      res.cookie("refreshtoken", refreshtoken, {
+        httpOnly: true,
+        path: "/user/refresh_token",
+        maxAge: 7 * 24 * 60 * 60 * 1000, // 7d
+      });
+
+      res.json({ accesstoken });
+    } catch (error) {
+      return res.status(500).json({ mgs: error.message });
+    }
+  },
+  loginWithGG: async (req, res) => {
+    try {
+      const { email } = req.body;
+      const user = await User.findOne({ email });
+      if (!user)
+        return res.status(400).json({ mgs: "Tài khoản không tồn tại." });
 
       //Nếu đăng nhập thành công
       const accesstoken = createAccessToken({ id: user._id });
@@ -95,6 +142,14 @@ const UserController = {
       res.status(500).json({ mgs: error.message });
     }
   },
+  getAllUser: async (req, res) => {
+    try {
+      const users = await User.find();
+      res.json(users);
+    } catch (error) {
+      res.status(500).json({ mgs: error.message });
+    }
+  },
   addToCart: async (req, res) => {
     try {
       const user = await User.findById(req.user.id);
@@ -117,6 +172,90 @@ const UserController = {
       res.json(historyPayment);
     } catch (error) {
       return res.status(500).json({ mgs: error.message });
+    }
+  },
+  historyCheckout: async (req, res) => {
+    try {
+      const historyPayment = await PaymentsCheckout.find({
+        user_id: req.user.id,
+      });
+      res.json(historyPayment);
+    } catch (error) {
+      return res.status(500).json({ mgs: error.message });
+    }
+  },
+  update: async (req, res) => {
+    try {
+      const { name, phone, gender, birthday, address } = req.body;
+      await User.findOneAndUpdate(
+        { _id: req.params.id },
+        { name, phone, gender, birthday, address }
+      );
+      return res.status(400).json({ msg: "Đã Cập nhật thành công" });
+    } catch (error) {
+      return res.status(500).json({ msg: error.message });
+    }
+  },
+  repassword: async (req, res) => {
+    try {
+      const { email, password, newpassword, comfirmnewpassword } = req.body;
+      const user = await User.findOne({ email: email });
+     
+      const currentPass = await bcrypt.compare(password, user.password);
+      if (!currentPass) return res.status(400).json({ msg: "Sai mật khẩu." });
+
+      if (newpassword.length < 6)
+        return res.status(400).json({ msg: "Mật khẩu phải lớn hơn 6 ký tự." });
+
+      if (newpassword !== comfirmnewpassword)
+        return res
+          .status(400)
+          .json({ msg: "Mật khẩu mới và xác nhận mật khẩu phải giống nhau." });
+      //password encryption
+      const passwordHash = await bcrypt.hash(newpassword, 10);
+
+      await User.findOneAndUpdate(
+        { email: user.email },
+        { password: passwordHash }
+      );
+      return res.status(400).json({ msg: "Đã Cập nhật thành công" });
+    } catch (error) {
+      return res.status(500).json({ msg: error.message });
+    }
+  },
+  setpassword: async (req, res) => {
+    try {
+      const { email,setnewpass, comfirmnewpass } = req.body;
+      const user = await User.findOne({ email });
+     
+
+      if (setnewpass.length < 6)
+        return res.status(400).json({ msg: "Mật khẩu phải lớn hơn 6 ký tự." });
+
+      if (setnewpass !== comfirmnewpass)
+        return res
+          .status(400)
+          .json({ msg: "Mật khẩu mới và xác nhận mật khẩu phải giống nhau." });
+      //password encryption
+      const passwordHash = await bcrypt.hash(setnewpass, 10);
+
+      await User.findOneAndUpdate(
+        { email: user.email },
+        { password: passwordHash }
+      );
+      const accesstoken = createAccessToken({ id: user._id });
+      const refreshtoken = createRefreshToken({ id: user._id });
+
+      res.cookie("refreshtoken", refreshtoken, {
+        httpOnly: true,
+        path: "/user/refresh_token",
+        maxAge: 7 * 24 * 60 * 60 * 1000, // 7d
+      });
+
+      res.json({ accesstoken });
+      return res.status(400).json({ msg: "Đã Cập nhật thành công" });
+    } catch (error) {
+      return res.status(500).json({ msg: error.message });
     }
   },
 };

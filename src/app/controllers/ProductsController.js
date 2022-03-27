@@ -41,7 +41,7 @@ class APIfeatures {
 
   paginating() {
     const page = this.queryString.page * 1 || 1;
-    const limit = this.queryString.limit * 1 || 9;
+    const limit = this.queryString.limit * 1 || 12;
     const skip = (page - 1) * limit;
     this.query = this.query.skip(skip).limit(limit);
     return this;
@@ -78,7 +78,8 @@ const ProductsController = {
         category,
         salePercen,
         color,
-        service
+        service,
+        status,
       } = req.body;
       if (!images) return res.status(400).json({ mgs: "Không có ảnh upload" });
 
@@ -95,7 +96,8 @@ const ProductsController = {
         category,
         color,
         salePercen,
-        service
+        service,
+        status,
       });
 
       await newProduct.save();
@@ -123,7 +125,8 @@ const ProductsController = {
         category,
         color,
         salePercen,
-        service
+        service,
+        status,
       } = req.body;
       if (!images) return res.status(400).json({ mgs: "không ảnh upload" });
       await Products.findOneAndUpdate(
@@ -137,9 +140,18 @@ const ProductsController = {
           category,
           color,
           salePercen,
-          service
+          service,
+          status,
         }
       );
+      res.json({ mgs: "Đã cập nhật một sản phẩm" });
+    } catch (error) {
+      return res.status(500).json({ mgs: error.message });
+    }
+  },
+  editStatus: async (req, res) => {
+    try {
+      await Products.findOneAndUpdate({_id:req.body.id},{status:req.body.status});
       res.json({ mgs: "Đã cập nhật một sản phẩm" });
     } catch (error) {
       return res.status(500).json({ mgs: error.message });
