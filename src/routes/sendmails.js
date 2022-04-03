@@ -47,5 +47,49 @@ router.post("/quenmatkhau", (req, res) => {
     }
   });
 });
+router.post("/notiUser", (req, res) => {
+  const { userInfor, cart } = req.body;
+  const email = userInfor.email;
+  const name = userInfor.name;
+  const user = "xtienclone2@gmail.com";
+  const pass = "tien2000";
+  const subject = "Thông báo đặt hàng thành công!";
+
+  // create transport
+  const transport = nodemailer.createTransport({
+    service: "gmail",
+    auth: { user, pass },
+  });
+
+  // create mail option
+  const mailOptions = {
+    to: email,
+    subject: subject,
+    html: `Xin chào ${name}!
+    <br>  
+    Chúc mừng bạn đã đặt hàng thành công tại XTComputer!
+    <br>
+    Chúng tôi sẽ gửi bạn hàng sớm nhất có thể.
+    <br>
+    Chúc bạn một ngày tốt lành.
+    <br>
+    Trân trọng`,
+  };
+
+  // perform send mail
+  transport.sendMail(mailOptions, function callback(error) {
+    if (error) {
+      console.log(error);
+      res.status(500).send({
+        message: "Có lỗi xảy ra!",
+      });
+    } else {
+      console.log("Send mail successfully!");
+      res.status(200).send({
+        message: "Đặt hàng thành công.",
+      });
+    }
+  });
+});
 
 module.exports = router;

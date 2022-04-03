@@ -59,7 +59,7 @@ const ProductsController = {
       const products = await features.query;
       res.json({
         status: "success",
-        result: products.length,
+        total: products.length,
         products,
       });
     } catch (error) {
