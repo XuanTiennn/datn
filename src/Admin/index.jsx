@@ -1,27 +1,26 @@
 import { Box, Grid } from '@material-ui/core';
 import axios from 'axios';
+import { XLayout, XLayout_Center, XLayout_Left, XLayout_Right } from 'Components/x-layout/XLayout';
 import { default as React, useContext, useEffect, useState } from 'react';
 import { Route, Switch, useRouteMatch } from 'react-router-dom';
 import Products from '../Admin/Components/Products/products';
 import { ContextGlobal } from '../app/ContextGlobal';
 import Category from './Components/Category';
 import DarshBoard from './Components/Darshboard';
-import DetailsOrderd from './Components/DetailsOrderd';
 import DetailsOrderdCheckout from './Components/DetailsOrderd/detailsCheckout';
 import Links from './Components/List-links';
-import Ordered from './Components/Odered';
 import OrderedCheckout from './Components/Odered/orderedCheckout';
 import AddProduct from './Components/Products/addProduct';
 import Slider from './Components/Slider';
 import Users from './Components/Users';
-
+// import '../Components/layout.scss'
 Admin.propTypes = {};
 
 function Admin(props) {
 	const { url } = useRouteMatch();
 	const state = useContext(ContextGlobal);
 	const [PaymentCheckout, setPaymentCheckout] = useState([]);
-	
+
 	const [paymentsCheckouts] = state.paymentCheckOutApi.paymentsCheckouts;
 	const [page, setPage] = useState(1);
 	const [token] = state.token;
@@ -38,40 +37,44 @@ function Admin(props) {
 			console.log(error);
 		}
 	}, [page]);
+	// console.log(url);
+	if (url === '/admin') {
+		import('../Components/layout.scss');
+	}
 
 	return (
-		<Box>
-			<Grid container>
-				<Grid item lg={2} style={{ flexBasis: 0 }}>
-					<Links />
-				</Grid>
-				<Grid item lg={10} style={{ width: 'auto', padding: '2rem' }}>
-					<Switch>
-						<Route path={`${url}/products`} component={Products} />
-						<Route path={`${url}/category`} component={Category} />
-						<Route path={`${url}/addproduct`} component={AddProduct} />
-						<Route path={`${url}/slider`} component={Slider} />
-						<Route path={`${url}/users`} component={Users} />
-						<Route path={`${url}/ordered/:id`} component={DetailsOrderd} />
-						<Route path={`${url}/orderdCheckout/:id`}>
-							<DetailsOrderdCheckout paymentsCheckOut={PaymentCheckout} />
-						</Route>
-						<Route path={`${url}/orderd`} component={Ordered} />
-						<Route path={`${url}/orderdCheckout`}>
-							<OrderedCheckout
-								paymentsCheckout={PaymentCheckout}
-								page={page}
-								handleChangePagination={(value) => setPage(value)}
-							/>
-						</Route>
-						<Route path={`${url}/:id`} component={AddProduct} />
-						<Route path={`${url}`} component={DarshBoard}>
-							<DarshBoard paymentCheckOut={paymentsCheckouts.payments} />
-						</Route>
-					</Switch>
-				</Grid>
-			</Grid>
-		</Box>
+		<XLayout>
+			<XLayout_Left>
+				<Links />
+
+				{/* <MainMenu></MainMenu> */}
+			</XLayout_Left>
+			<XLayout_Center style={{height:'100%'}}>
+				<Switch>
+					<Route path={`${url}/products`} component={Products} />
+					<Route path={`${url}/category`} component={Category} />
+					<Route path={`${url}/addproduct`} component={AddProduct} />
+					<Route path={`${url}/slider`} component={Slider} />
+					<Route path={`${url}/users`} component={Users} />
+					{/* <Route path={`${url}/ordered/:id`} component={DetailsOrderd} /> */}
+					<Route path={`${url}/orderdCheckout/:id`}>
+						<DetailsOrderdCheckout paymentsCheckOut={PaymentCheckout} />
+					</Route>
+					{/* <Route path={`${url}/orderd`} component={Ordered} /> */}
+					<Route path={`${url}/orderdCheckout`}>
+						<OrderedCheckout
+							paymentsCheckout={PaymentCheckout}
+							page={page}
+							handleChangePagination={(value) => setPage(value)}
+						/>
+					</Route>
+					<Route path={`${url}/:id`} component={AddProduct} />
+					<Route path={`${url}`} component={DarshBoard}>
+						<DarshBoard paymentCheckOut={paymentsCheckouts.payments} />
+					</Route>
+				</Switch>
+			</XLayout_Center>
+		</XLayout>
 	);
 }
 

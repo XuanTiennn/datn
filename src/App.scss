@@ -1,0 +1,75 @@
+.layout-main {
+    padding: 50px 0 0 0;
+    flex: 1 1 auto;
+    height: calc(100vh);
+
+    .page-container {
+        padding: 0.5rem 0.75rem;
+        display: flex;
+        flex-direction: column;
+        height: calc(100vh - 50px);
+        overflow: auto;
+
+        .page-content {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+
+            .card {
+                background-color: #fff;
+                background-clip: border-box;
+                border: 0 solid #f6f6f6;
+                border-radius: 0.25rem;
+                box-shadow: 0 0.75rem 1.5rem rgba(18, 38, 63, 0.03);
+                overflow: auto;
+            }
+        }
+    }
+
+    .page-layout {
+        padding: 0.5rem;
+    }
+}
+
+.p-font-smaller {
+    font-size: smaller !important;
+}
+
+.p-font-small {
+    font-size: x-small !important;
+}
+
+.unread-notify {
+    &::before {
+        box-sizing: border-box;
+        font-style: normal;
+        font-size: x-small;
+        font-family: "Font Awesome 5 Pro";
+        content: "\f111";
+        background-color: #2e89ff;
+        color: #2e89ff;
+        border-radius: 10px;
+        //margin: 35px;
+    }
+}
+
+.line-clamp-3 {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;  
+    overflow: hidden;
+}
+
+.line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;  
+    overflow: hidden;
+}
+
+.line-clamp-1 {
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;  
+    overflow: hidden;
+}

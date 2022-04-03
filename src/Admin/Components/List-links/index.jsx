@@ -122,7 +122,9 @@ function Links(props) {
 				}}
 			>
 				<div className={classes.toolbar}>
-					<Typography style={{color:'whitesmoke',marginLeft:'20px'}} variant="h6">Admin</Typography>
+					<Typography style={{ color: 'whitesmoke', marginLeft: '20px' }} variant="h6">
+						Admin
+					</Typography>
 					<IconButton onClick={handleDrawerClose}>
 						{theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
 					</IconButton>
@@ -155,11 +157,11 @@ function Links(props) {
 							value: 'Quản lý người dùng',
 							icons: <PeopleIcon />,
 						},
-						{
-							key: 'orderd',
-							value: 'Quản lý đơn hàng(PayPal)',
-							icons: <ShopIcon />,
-						},
+						// {
+						// 	key: 'orderd',
+						// 	value: 'Quản lý đơn hàng(PayPal)',
+						// 	icons: <ShopIcon />,
+						// },
 						{
 							key: 'orderdCheckout',
 							value: 'Quản lý đơn hàng',

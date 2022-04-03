@@ -111,7 +111,7 @@ function Slider(props) {
 	};
 	return (
 		<>
-			<Container>
+			<Container style={{height:'100%'}}>
 				<Typography variant="h5" component="h2" style={{ padding: '15px 0' }}>
 					Quản lý slide
 				</Typography>

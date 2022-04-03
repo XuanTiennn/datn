@@ -1,8 +1,7 @@
+import { FormControl, FormControlLabel, Paper, Radio, RadioGroup, Typography } from '@material-ui/core';
 import React from 'react';
-import PropTypes from 'prop-types';
-import { Box, FormControl, FormControlLabel, FormLabel, Radio, RadioGroup, Typography, Paper } from '@material-ui/core';
 
-StepOne.propTypes = {};
+
 
 function StepOne({ handleChange }) {
 	return (

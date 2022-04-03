@@ -1,0 +1,12 @@
+/* Typography */
+.card {
+    background-color: #ffffff;
+    padding: 0.75rem;
+    margin-bottom: 16px;
+    border-radius: $borderRadius;
+
+    &.card-w-title {
+        padding-bottom: 1.5rem;
+    }
+}
+

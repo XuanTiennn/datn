@@ -10,9 +10,8 @@ import { defaultasReact, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { ContextGlobal } from './../../../app/ContextGlobal/index';
 
-
 const useStyles = makeStyles((theme) => ({
-	root: {},
+	root: { height: '100%' },
 	table: {
 		minWidth: 650,
 	},
@@ -84,10 +83,10 @@ function OrderedCheckout({ paymentsCheckout = [], handleChangePagination, page }
 	const classes = useStyles();
 	const state = useContext(ContextGlobal);
 	const [paymentsCheckouts] = state.paymentCheckOutApi.paymentsCheckouts;
-	
+
 	return (
 		<div>
-			<Container className={classes.root}>
+			<Container className={classes.root} style={{ height: '100%' }}>
 				<Typography variant="h5" component="h2" style={{ padding: '15px' }}>
 					Quản lý đơn hàng
 				</Typography>
@@ -127,7 +126,7 @@ function OrderedCheckout({ paymentsCheckout = [], handleChangePagination, page }
 				</TableContainer>
 				<Box style={{ display: 'flex', justifyContent: 'flex-end', margin: '15px 15px 0 0' }}>
 					<Pagination
-						count={Math.ceil(paymentsCheckouts.result / 9) }
+						count={Math.ceil(paymentsCheckouts.result / 9)}
 						page={page}
 						onChange={(e, value) => handleChangePagination(value)}
 						variant="outlined"

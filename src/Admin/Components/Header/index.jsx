@@ -87,6 +87,7 @@ function HeaderAdmin({ handleDrawerOpen, handleLogout, open }) {
 				className={clsx(classes.appBar, {
 					[classes.appBarShift]: open,
 				})}
+				style={{ padding: '0' }}
 			>
 				<Toolbar>
 					<IconButton

@@ -9,7 +9,6 @@ import React, { useContext, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { ContextGlobal } from '../../../app/ContextGlobal';
 import formatNumber from '../../../utils/formatNumber';
-import formatUSD from '../../../utils/formatUSD';
 const useStyles = makeStyles((theme) => ({
 	root: {
 		padding: theme.spacing(2, 0),

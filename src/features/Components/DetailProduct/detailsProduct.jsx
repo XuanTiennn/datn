@@ -123,7 +123,7 @@ function DetailsProduct() {
 	const classes = useStyles();
 	let isService = '';
 	const addCart = data.userApi.addToCart;
-
+	console.log(products);
 	useEffect(() => {
 		if (params.id) {
 			try {
@@ -155,11 +155,11 @@ function DetailsProduct() {
 	useEffect(() => {
 		window.scrollTo(0, 0);
 	}, [match.url]);
-	if (product.length === 0) return null;
+	if (product?.length === 0) return null;
 	else
 		return (
 			<Box style={{ backgroundColor: '#F7F8FD' }}>
-				<Container  className={classes.root}>
+				<Container className={classes.root}>
 					<BreadCrumb str={match.url} title={product.title} />
 					<Paper elevation={0} className={classes.box}>
 						<Grid container>

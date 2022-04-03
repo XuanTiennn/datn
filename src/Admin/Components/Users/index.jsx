@@ -1,5 +1,3 @@
-import React, { useContext } from 'react';
-import { ContextGlobal } from './../../../app/ContextGlobal/index';
 import { Button, Container, makeStyles, Paper, Typography } from '@material-ui/core';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -7,12 +5,14 @@ import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
+import React, { useContext } from 'react';
 import { Link, useHistory } from 'react-router-dom';
+import { ContextGlobal } from './../../../app/ContextGlobal/index';
 
 const useStyles = makeStyles((theme) => ({
 	root: {
 		padding: theme.spacing(2, 0),
-		marginTop: '20px',
+		
 	},
 	table: {
 		minWidth: 650,
@@ -87,55 +87,54 @@ function Users(props) {
 	const classes = useStyles();
 	const [users] = state.userApi.allUser;
 
-	
-		return (
-			<Paper>
-				<Container className={classes.root}>
-					<Typography variant="h5" component="h2" style={{ padding: '15px' }}>
-						Quản lý người dùng
-					</Typography>
-					<TableContainer component={Paper}>
-						<Table className={classes.table} aria-label="simple table">
-							<TableHead>
-								<TableRow>
-									<TableCell align="center">User ID</TableCell>
-									<TableCell align="center">User Name</TableCell>
-									<TableCell align="center">Quyền hạn</TableCell>
-									<TableCell align="center">Ngày tạo</TableCell>
-									<TableCell align="center">Xem chi tiết</TableCell>
-								</TableRow>
-							</TableHead>
-							<TableBody>
-								{users?.map((user) => (
-									<TableRow key={user._id}>
-										<TableCell component="th" scope="row" align="center">
-											{user._id}
-										</TableCell>
-										<TableCell component="th" scope="row" align="center">
-											{user.name}
-										</TableCell>
-										<TableCell component="th" scope="row" align="center">
-											{user.role === 1 ? 'Admin' : 'người dùng'}
-										</TableCell>
+	return (
+		<Paper style={{ height: '100%' }}>
+			<Container className={classes.root}>
+				<Typography variant="h5" component="h2" style={{ padding: '15px' }}>
+					Quản lý người dùng
+				</Typography>
+				<TableContainer component={Paper}>
+					<Table className={classes.table} aria-label="simple table">
+						<TableHead>
+							<TableRow>
+								<TableCell align="center">User ID</TableCell>
+								<TableCell align="center">User Name</TableCell>
+								<TableCell align="center">Quyền hạn</TableCell>
+								<TableCell align="center">Ngày tạo</TableCell>
+								<TableCell align="center">Xem chi tiết</TableCell>
+							</TableRow>
+						</TableHead>
+						<TableBody>
+							{users?.map((user) => (
+								<TableRow key={user._id}>
+									<TableCell component="th" scope="row" align="center">
+										{user._id}
+									</TableCell>
+									<TableCell component="th" scope="row" align="center">
+										{user.name}
+									</TableCell>
+									<TableCell component="th" scope="row" align="center">
+										{user.role === 1 ? 'Admin' : 'người dùng'}
+									</TableCell>
 
-										<TableCell align="center">
-											{new Date(user.createdAt).toLocaleDateString()}
-										</TableCell>
-										<TableCell align="center">
-											<Link to={`/history/details/${user._id}`}>
-												<Button color="primary" variant="contained">
-													Xem
-												</Button>
-											</Link>
-										</TableCell>
-									</TableRow>
-								))}
-							</TableBody>
-						</Table>
-					</TableContainer>
-				</Container>
-			</Paper>
-		);
+									<TableCell align="center">
+										{new Date(user.createdAt).toLocaleDateString()}
+									</TableCell>
+									<TableCell align="center">
+										<Link to={`/history/details/${user._id}`}>
+											<Button color="primary" variant="contained">
+												Xem
+											</Button>
+										</Link>
+									</TableCell>
+								</TableRow>
+							))}
+						</TableBody>
+					</Table>
+				</TableContainer>
+			</Container>
+		</Paper>
+	);
 }
 
 export default Users;

@@ -34,7 +34,7 @@ function CheckoutPayment() {
 	const classes = useStyles();
 	const steps = getSteps();
 	const state = useContext(ContextGlobal);
-	const [user] = state.userApi.user;
+	const [userInfor] = state.userApi.user;
 	const [token] = state.token;
 	const [cart, setCart] = state.userApi.cart;
 	const [derivery, setDerivery] = useState('');
@@ -43,15 +43,17 @@ function CheckoutPayment() {
 	const addToCart = async (cart) => {
 		await axios.patch('/user/addcart', { cart }, { headers: { Authorization: token } });
 	};
-
-	console.log(cart, derivery, address, phone);
+	// console.log(cart, derivery, address, phone);
+	console.log(cart);
 	const handleCreatePayment = async () => {
 		const res = await axios.post(
 			'/api/paymentsCheckout',
 			{ cart, derivery, address, phone },
 			{ headers: { Authorization: token } }
 		);
-		console.log(res);
+		// console.log(res);
+		await axios.post('/api/notiUser',{ userInfor ,cart})
+		
 		setCart([]);
 		addToCart([]);
 		alert(res.data.mgs);

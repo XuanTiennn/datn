@@ -5,6 +5,12 @@ import React, { useContext, useEffect, useState } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import { ContextGlobal } from '../../../app/ContextGlobal';
 import Loading from '../../../features/Components/Process';
+import { InputText } from 'primereact/inputtext';
+import { XLayout, XLayout_Box, XLayout_Top } from '../../../Components/x-layout/XLayout';
+import { Dropdown } from 'primereact/dropdown';
+import Enumeration from 'utils/enum';
+import randomId from './../../../utils/randomId';
+import { InputNumber } from 'primereact/inputnumber';
 AddProduct.propTypes = {};
 
 const useStyles = makeStyles((theme) => ({
@@ -30,7 +36,7 @@ const useStyles = makeStyles((theme) => ({
 		position: 'relative',
 	},
 	img: {
-		maxWidth: '400px',
+		maxWidth: '100px',
 	},
 	iconClear: {
 		position: 'absolute',
@@ -44,19 +50,10 @@ const useStyles = makeStyles((theme) => ({
 		margin: theme.spacing(2, 0),
 	},
 }));
-const initState = {
-	product_id: '',
-	title: '',
-	price: 0,
-	description: '',
-	content: '',
-	category: '',
-	color: '',
-	salePercent: 0,
-	status:true,
-};
+
 function AddProduct(props) {
 	const state = useContext(ContextGlobal);
+	const { productId, getPayload } = props;
 	const [category] = state.categoryApi.category;
 	const [isAdmin] = state.userApi.isAdmin;
 	const [callback, setCallBack] = state.productsAPI.callback;
@@ -65,22 +62,29 @@ function AddProduct(props) {
 	const [images, setImages] = useState(false);
 	const [isEdit, setIsEdit] = useState(false);
 	const [loading, setLoading] = useState(false);
-
+	const initState = {
+		product_id: randomId(),
+		title: '',
+		price: '',
+		description: '',
+		content: '',
+		category: '',
+		color: '',
+		salePercent: 0,
+		status: true,
+	};
 	const history = useHistory();
 	const params = useParams();
-
 	//console.log(params);
 	const classes = useStyles();
 	const [product, setProduct] = useState(initState);
-	useEffect(() => {
-		if (params.id) {
+	useEffect(async () => {
+		if (productId) {
 			setIsEdit(true);
-			products.forEach((item) => {
-				if (item._id === params.id) {
-					setProduct(item);
-					setImages(item.images);
-				}
-			});
+			const item = await axios.get(`/api/products/${productId}`);
+
+			setProduct(item.data);
+			setImages(item.data.images);
 		} else {
 			setIsEdit(false);
 			setProduct(initState);
@@ -88,9 +92,11 @@ function AddProduct(props) {
 		}
 	}, [params.id, products]);
 
-	const handleChange = (e) => {
-		const { name, value } = e.target;
-		setProduct({ ...product, [name]: value });
+	const handleChange = (prop, value) => {
+		const _product = { ...product };
+		_product[prop] = value;
+		setProduct(_product);
+		getPayload(_product, images);
 	};
 	const handleSubmit = async (e) => {
 		e.preventDefault();
@@ -118,7 +124,6 @@ function AddProduct(props) {
 	const handleImgChange = async (e) => {
 		e.preventDefault();
 		try {
-			
 			if (!isAdmin) return alert('Bạn không được phép thực hiện thao tác này.');
 			const file = e.target.files[0];
 
@@ -137,6 +142,7 @@ function AddProduct(props) {
 
 			setImages(res.data);
 			setLoading(false);
+			getPayload(product, res.data);
 		} catch (err) {
 			const failr = err.response.data.msg;
 			alert(failr);
@@ -152,10 +158,105 @@ function AddProduct(props) {
 	};
 
 	return (
-		<Paper>
-			<Container>
-				<Grid container spacing={4} className={classes.flex}>
-					<Grid className={classes.wrapfile} item lg={4}>
+		<XLayout_Box className="p-p-2">
+			<XLayout>
+				<XLayout_Top>
+					<div className="p-grid p-formgrid p-fluid">
+						<div className="p-field p-col-4 p-md-3">
+							<span className="p-float-label">
+								<InputText
+									value={product.product_id}
+									onChange={(e) => handleChange('product_id', e.target.value)}
+									disabled
+								/>
+								<label className="require">{'Mã sản phẩm'}</label>
+							</span>
+						</div>
+						<div className="p-field p-col-4 p-md-3">
+							<span className="p-float-label">
+								<InputText
+									value={product.title}
+									onChange={(e) => handleChange('title', e.target.value)}
+								/>
+								<label className="require">{'Tên sản phẩm'}</label>
+							</span>
+						</div>
+						<div className="p-field p-col-4 p-md-3">
+							<span className="p-float-label">
+								<InputNumber
+									// mode="currency"
+									// currency=""
+									suffix="VNĐ"
+									value={product.price}
+									onChange={(e) => handleChange('price', e.value)}
+								/>
+								<label className="require">{'Giá sản phẩm'}</label>
+							</span>
+						</div>
+						<div className="p-field p-col-4 p-md-3">
+							<span className="p-float-label">
+								<InputText
+									value={product.content}
+									onChange={(e) => handleChange('content', e.target.value)}
+								/>
+								<label className="require">{'Thông tin chi tiết'}</label>
+							</span>
+						</div>
+						<div className="p-field p-col-4 p-md-3">
+							<span className="p-float-label">
+								<InputText
+									value={product.description}
+									onChange={(e) => handleChange('description', e.target.value)}
+								/>
+								<label className="require">{'Miêu tả'}</label>
+							</span>
+						</div>
+						<div className="p-field p-col-4 p-md-3">
+							<span className="p-float-label">
+								<InputText
+									value={product.salePercen}
+									onChange={(e) => handleChange('salePercen', e.target.value)}
+								/>
+								<label className="require">{'Phần trăm giảm giá'}</label>
+							</span>
+						</div>
+						<div className="p-field p-col-4 p-md-3">
+							<span className="p-float-label">
+								<Dropdown
+									value={product.category}
+									options={category}
+									optionValue="name"
+									optionLabel="name"
+									onChange={(e) => handleChange('category', e.target.value)}
+								/>
+								<label className="require">{'Loại sản phẩm'}</label>
+							</span>
+						</div>
+						<div className="p-field p-col-4 p-md-3">
+							<span className="p-float-label">
+								<Dropdown
+									value={product.status}
+									options={Enumeration.status_product}
+									optionValue="code"
+									optionLabel="name"
+									onChange={(e) => handleChange('status', e.value)}
+								/>
+								<label className="require">{'Trạng thái'}</label>
+							</span>
+						</div>
+						<div className="p-field p-col-4 p-md-3">
+							<span className="p-float-label">
+								<Dropdown
+									label="Màu sắc"
+									value={product.color}
+									options={Enumeration.color_product}
+									optionLabel="name"
+									optionValue="code"
+									onChange={(e) => handleChange('color', e.value)}
+								/>
+								{/* <label className="require">{'Màu sắc'}</label> */}
+							</span>
+						</div>
 						<TextField
 							type="file"
 							name="file"
@@ -176,123 +277,10 @@ function AddProduct(props) {
 								</>
 							</Box>
 						)}
-					</Grid>
-					<Grid item lg={8} className={classes.flex}>
-						<form className={classes.form} onSubmit={handleSubmit}>
-							<TextField
-								type="text"
-								name="product_id"
-								required="true"
-								label="Mã sản phẩm"
-								onChange={handleChange}
-								disabled={isEdit ? true : false}
-								value={product.product_id}
-								className={classes.input}
-							/>
-							<TextField
-								type="text"
-								name="title"
-								required="true"
-								label="Tên sản phẩm"
-								onChange={handleChange}
-								value={product.title}
-								className={classes.input}
-							/>
-							<TextField
-								type="number"
-								name="price"
-								required="true"
-								label="Giá sản phẩm"
-								onChange={handleChange}
-								value={product.price}
-								className={classes.input}
-							/>
-
-							<TextField
-								type="text"
-								name="content"
-								multiline
-								rows={4}
-								required="true"
-								label="Thông tin chi tiết"
-								onChange={handleChange}
-								value={product.content}
-								className={classes.input}
-							/>
-							<TextField
-								type="text"
-								name="description"
-								required="true"
-								multiline
-								rows={4}
-								label="Miêu tả"
-								onChange={handleChange}
-								value={product.description}
-								className={classes.input}
-							/>
-							<TextField
-								type="number"
-								name="salePercen"
-								required="true"
-								label="Phần trăm giảm giá"
-								onChange={handleChange}
-								value={product.salePercen}
-								className={classes.input}
-							/>
-							<NativeSelect
-								className={classes.select}
-								onChange={handleChange}
-								value={product.category}
-								name="category"
-							>
-								<option value="">Chọn</option>
-								{category.map((item) => (
-									<option value={item.name}>{item.name}</option>
-								))}
-							</NativeSelect>
-							<NativeSelect
-								className={classes.select}
-								onChange={handleChange}
-								value={product.status}
-								name="status"
-							>
-								<option value="">Chọn</option>
-								<option value="true">Còn hàng</option>
-								<option value="false">Hết hàng</option>
-							</NativeSelect>
-							<NativeSelect
-								className={classes.select}
-								onChange={handleChange}
-								value={product.color}
-								name="color"
-							>
-								<option value="">Chọn</option>
-								<option value="do">Đỏ</option>
-								<option value="xanh">Xanh</option>
-								<option value="den">Đen</option>
-								<option value="vang">Vàng</option>
-								<option value="trang">Trắng</option>
-								<option value="tim">Tím</option>
-							</NativeSelect>
-							<NativeSelect
-								className={classes.select}
-								onChange={handleChange}
-								value={product.service}
-								name="service"
-							>
-								<option value="">Chọn</option>
-								<option value="isFreeShip">Miễn phí vận chuyển</option>
-								<option value="flash">Giao hàng trong ngày</option>
-								<option value="refuned">Rẻ hơn hoàn tiền</option>
-							</NativeSelect>
-							<Button type="submit" variant="contained" color="primary" style={{ marginTop: '15px' }}>
-								{isEdit ? 'Cập nhật' : 'Tạo mới'}
-							</Button>
-						</form>
-					</Grid>
-				</Grid>
-			</Container>
-		</Paper>
+					</div>
+				</XLayout_Top>
+			</XLayout>
+		</XLayout_Box>
 	);
 }
 

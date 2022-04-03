@@ -1,0 +1,153 @@
+.bx {
+  &.create {
+    &::after {
+      position: absolute;
+      content: var(--bx-plus-circle);
+      font-size: 14px;
+      color: var(--material-green);
+      bottom: -1px;
+      right: -4px;
+      background-color: #fff;
+      border-radius: 50%;
+    }
+  }
+
+  &.setting {
+    &::after {
+      position: absolute;
+      content: var(--bx-cog);
+      font-size: 14px;
+      color: var(--material-purple);
+      bottom: -1px;
+      right: -4px;
+      background-color: #fff;
+      border-radius: 50%;
+    }
+  }
+
+  &.greater {
+    &::after {
+      position: absolute;
+      content: var(--bx-chevron-right-circle);
+      font-size: 14px;
+      color: var(--material-grey-7);
+      bottom: -1px;
+      right: -4px;
+      background-color: #fff;
+      border-radius: 50%;
+    }
+  }
+
+  &.smaller {
+    &::after {
+      position: absolute;
+      content: var(--bx-chevron-left-circle);
+      font-size: 14px;
+      color: var(--material-grey-7);
+      bottom: -1px;
+      right: -4px;
+      background-color: #fff;
+      border-radius: 50%;
+    }
+  }
+}
+
+.fad {
+  &.fa-copy {
+    --fa-primary-color: var(--material-blue-4);
+    --fa-secondary-color: var(--material-grey);
+  }
+
+  &.fa-save {
+    --fa-primary-color: var(--material-blue-9);
+    --fa-secondary-color: var(--material-grey);
+  }
+
+  &.fa-clipboard-check {
+    --fa-primary-color: var(--material-green);
+    --fa-secondary-color: var(--material-light-blue-3);
+  }
+
+  &.fa-align-left {
+    color: var(--material-purple);
+  }
+
+  &.fa-stopwatch {
+    color: var(--material-orange);
+  }
+
+  &.fa-user-friends {
+    --fa-primary-color: var(--material-blue);
+    --fa-secondary-color: var(--material-green);
+  }
+
+  &.fa-ballot-check {
+    --fa-primary-color: var(--material-green-7);
+    --fa-secondary-color: var(--material-green-4);
+    --fa-secondary-opacity: 1;
+  }
+
+  &.fa-comments {
+    color: var(--material-blue);
+  }
+
+  &.fa-ellipsis-v {
+    --fa-primary-color: var(--material-grey);
+    --fa-secondary-color: var(--material-grey);
+    --fa-secondary-opacity: 1;
+  }
+
+  &.fa-check {
+    --fa-primary-color: var(--material-green);
+    --fa-secondary-color: var(--material-green);
+  }
+
+  &.fa-ban {
+    --fa-primary-color: var(--material-red);
+    --fa-secondary-color: var(--material-red);
+  }
+
+  &.fa-file-word {
+    --fa-primary-color: var(--material-blue-7);
+    --fa-secondary-color: var(--material-blue-3);
+    --fa-secondary-opacity: 1;
+  }
+
+  &.fa-file-excel {
+    --fa-primary-color: var(--material-green-7);
+    --fa-secondary-color: var(--material-green-3);
+    --fa-secondary-opacity: 1;
+  }
+  &.fa-file-pdf,
+  &.fa-file-powerpoint {
+    --fa-primary-color: var(--material-red-7);
+    --fa-secondary-color: var(--material-red-2);
+    --fa-secondary-opacity: 1;
+  }
+
+  &.fa-file-archive {
+    --fa-primary-color: var(--material-orange-7);
+    --fa-secondary-color: var(--material-yellow-7);
+    --fa-secondary-opacity: 1;
+  }
+
+  &.fa-file-image {
+    color: var(--material-green);
+  }
+
+  &.fa-file-video {
+    --fa-primary-color: var(--material-blue-7);
+    --fa-secondary-color: var(--material-blue-2);
+    --fa-secondary-opacity: 1;
+  }
+
+  &.fa-file {
+    color: var(--material-blue);
+  }
+
+  &.fa-plus {
+    --fa-primary-color: var(--material-green);
+    --fa-secondary-color: var(--material-green);
+    --fa-secondary-opacity: 0.7;
+  }
+}

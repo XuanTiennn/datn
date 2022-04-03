@@ -1,10 +1,7 @@
 import { Box, Button, Container, Grid, makeStyles, Paper, Typography } from '@material-ui/core';
-import axios from 'axios';
 import React, { useContext, useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
 import { ContextGlobal } from '../../../../app/ContextGlobal';
 import FormatNumber from './../../../../utils/formatNumber';
-import FormatUSD from './../../../../utils/formatUSD';
 
 const useStyles = makeStyles((theme) => ({
 	root: {
