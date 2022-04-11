@@ -14,8 +14,8 @@ function HomePage(props) {
 		<>
 			<Banner />
 			<Container>
-				<Thumbnails />
-				<ItemCategory />
+				<Thumbnails /> 
+				{/* <ItemCategory /> */}
 				<TopTrending />
 				<SalePrice />
 				<SuggestForYou />

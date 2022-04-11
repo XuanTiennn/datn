@@ -25,9 +25,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 function SuggestForYou(props) {
 	const state = useContext(ContextGlobal);
-	const [products] = state.productsAPI.productsLoadMore;
+	const [products] = state.productsAPI.products;
 	const classes = useStyles();
-
 	return (
 		<Paper elevation={0} style={{ marginTop: '20px' }}>
 			<Grid item style={{ padding: '20px' }}>

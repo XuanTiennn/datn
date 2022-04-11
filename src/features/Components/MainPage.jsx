@@ -2,23 +2,26 @@ import { useContext } from 'react';
 import { Redirect, Route, Switch, useRouteMatch } from 'react-router-dom';
 import Admin from '../../Admin';
 import { ContextGlobal } from '../../app/ContextGlobal/index';
+import NewDetail from './News/newDetail';
 import BackToTop from './BackToTop/index';
 import Cart from './Cart/cart';
 import CheckoutPayment from './Cart/Checkout';
+import ContactUs from './ContactUs/index';
 import DetailOrder from './DetailOrder';
 import OrderCheckoutDetails from './DetailOrder/OrderCheckout';
 import DetailsProduct from './DetailProduct/detailsProduct';
 import Footer from './Footer/footer';
 import Header from './Header/header';
 import HomePage from './Home';
+import Quenmatkhau from './Login/quenmatkhau';
+import SetPassword from './Login/setPassword';
+import News from './News/news';
 import NotFound from './NotFound/notFound';
 import OderHistory from './OderHistory';
 import ListPage from './Products/listPages';
 import RegisterEmail from './RegisterEmail';
+import InforWeb from './Service/infor';
 import User from './UserInfor';
-import ContactUs from './ContactUs/index';
-import Quenmatkhau from './Login/quenmatkhau';
-import SetPassword from './Login/setPassword';
 function MainPage() {
 	const state = useContext(ContextGlobal);
 	const [isAdmin] = state.userApi.isAdmin;
@@ -39,6 +42,8 @@ function MainPage() {
 					<Route path="/products" exact component={ListPage} />
 					<Route path="/products/:id" exact component={DetailsProduct} />
 					<Route path="/cart" exact component={Cart} />
+					<Route path="/news" exact component={News} />
+					<Route path="/news/:id" exact component={NewDetail} />
 
 					{isLogined ? (
 						<>
@@ -60,6 +65,7 @@ function MainPage() {
 			)}
 			{isAdmin ? null : <BackToTop />}
 			{isAdmin ? null : <RegisterEmail />}
+			{isAdmin ? null : <InforWeb />}
 			<Footer />
 		</div>
 	);

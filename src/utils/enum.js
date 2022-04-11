@@ -33,6 +33,46 @@ const Enumeration = {
 		{ code: true, name: 'Còn hàng' },
 		{ code: false, name: 'Hết hàng' },
 	],
+
+	responsive: {
+		desktop: {
+			breakpoint: { max: 3000, min: 1024 },
+			items: 1,
+			slidesToSlide: 1, // optional, default to 1.
+		},
+		tablet: {
+			breakpoint: { max: 1024, min: 464 },
+			items: 1,
+			slidesToSlide: 1, // optional, default to 1.
+		},
+		mobile: {
+			breakpoint: { max: 464, min: 0 },
+			items: 1,
+			slidesToSlide: 1, // optional, default to 1.
+		},
+	},
+	arrInforIcon: [
+		{
+			id: 0,
+			icon: 'https://res.cloudinary.com/dzpks7wzs/image/upload/v1649665432/N16_ecommers/icon-phone-s2_sx4hgl.svg',
+			href:'tel:0123456789'
+		},
+		{
+			id: 1,
+			icon: 'https://res.cloudinary.com/dzpks7wzs/image/upload/v1649666200/N16_ecommers/icon-mail-s2_ogeicy.svg',
+			href:'mailto:xtienclone1@gmail.com'
+		},
+		{
+			id: 2,
+			icon: 'https://res.cloudinary.com/dzpks7wzs/image/upload/v1649666377/N16_ecommers/icon-map-s2_r3tsyg.svg',
+			href:''
+		},
+		{
+			id: 3,
+			icon: 'https://res.cloudinary.com/dzpks7wzs/image/upload/v1649666353/N16_ecommers/icon-fanpage-s2_hqiomw.svg',
+			href:'https://www.facebook.com/XTComputer'
+		},
+	],
 };
 
 export default Enumeration;

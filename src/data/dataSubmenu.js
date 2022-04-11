@@ -160,27 +160,27 @@ export const dataCategory = [
 export const dataCategoryLeft = [
 	{
 		id: 1,
-		title: 'gamming',
+		name: 'Dell',
 	},
 	{
 		id: 2,
-		title: 'văn phòng',
+		name: 'Lelovo',
 	},
 	{
 		id: 3,
-		title: 'macbook',
+		name: 'Asus',
 	},
 	{
 		id: 4,
-		title: 'đồ họa, kỹ thuật',
+		name: 'Macbook',
 	},
 	{
 		id: 5,
-		title: 'mỏng nhẹ',
+		name: 'HP',
 	},
 	{
 		id: 6,
-		title: 'phụ kiện',
+		name: 'Microsoft',
 	},
 	
 ];

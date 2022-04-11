@@ -199,14 +199,16 @@ function Header(props) {
 			>
 				<Link to="/about">Đăng xuất</Link>
 			</MenuItem>
-			<MenuItem
-				onClick={() => {
-					history.push('/user');
-					handleMenuClose();
-				}}
-			>
-				Tài khoản của tôi
-			</MenuItem>
+			{isLogined && (
+				<MenuItem
+					onClick={() => {
+						history.push('/user');
+						handleMenuClose();
+					}}
+				>
+					Tài khoản của tôi
+				</MenuItem>
+			)}
 		</Menu>
 	);
 
@@ -266,17 +268,19 @@ function Header(props) {
 				</IconButton>
 				<p>Giỏ hàng</p>
 			</MenuItem>
-			<MenuItem onClick={handleProfileMenuOpen}>
-				<IconButton
-					aria-label="account of current user"
-					aria-controls="primary-search-account-menu"
-					aria-haspopup="true"
-					color="inherit"
-				>
-					<AccountCircle />
-				</IconButton>
-				<p>Cá nhân</p>
-			</MenuItem>
+			{isLogined && (
+				<MenuItem onClick={handleProfileMenuOpen}>
+					<IconButton
+						aria-label="account of current user"
+						aria-controls="primary-search-account-menu"
+						aria-haspopup="true"
+						color="inherit"
+					>
+						<AccountCircle />
+					</IconButton>
+					<p>Cá nhân</p>
+				</MenuItem>
+			)}
 		</Menu>
 	);
 
@@ -297,10 +301,11 @@ function Header(props) {
 								) : (
 									<Box className={classes.iconheader}>
 										<img
-											src="https://res.cloudinary.com/dzpks7wzs/image/upload/v1629533947/N16_ecommers/cropped-favicon-32x32_yyueop.png"
+											src="https://res.cloudinary.com/dzpks7wzs/image/upload/v1649644415/N16_ecommers/logo_kmgybl.svg"
 											alt="icon"
+											style={{ width: '30px' }}
 										/>
-										<Typography className={classes.title}>DTComputer</Typography>
+										<Typography className={classes.title}>XTComputer</Typography>
 									</Box>
 								)}
 							</Typography>
@@ -376,17 +381,18 @@ function Header(props) {
 										</IconButton>
 									</>
 								)}
-
-								<IconButton
-									edge="end"
-									aria-label="account of current user"
-									aria-controls={menuId}
-									aria-haspopup="true"
-									onClick={handleProfileMenuOpen}
-									color="inherit"
-								>
-									<AccountCircle />
-								</IconButton>
+								{isLogined && (
+									<IconButton
+										edge="end"
+										aria-label="account of current user"
+										aria-controls={menuId}
+										aria-haspopup="true"
+										onClick={handleProfileMenuOpen}
+										color="inherit"
+									>
+										<AccountCircle />
+									</IconButton>
+								)}
 							</div>
 
 							<div className={classes.sectionMobile}>

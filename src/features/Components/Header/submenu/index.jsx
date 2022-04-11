@@ -32,7 +32,7 @@ function Submenu(props) {
 	return (
 		<Container className={classes.root}>
 			<Grid container style={{justifyContent:'space-between',alignItems:'center'}}>
-				<Grid item className={classes.category}>
+				{/* <Grid item className={classes.category}>
 					<Button
 						className={clsx(classes.button, 'font-dosis')}
 						variant="contained"
@@ -43,7 +43,7 @@ function Submenu(props) {
 						Danh mục
 					</Button>
 					<Category value={toggle} />
-				</Grid>
+				</Grid> */}
 				<Grid item>
 					<CategoryMain />
 				</Grid>

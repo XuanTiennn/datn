@@ -167,6 +167,11 @@ function Links(props) {
 							value: 'Quản lý đơn hàng',
 							icons: <ShopIcon />,
 						},
+						{
+							key: 'news',
+							value: 'Quản lý bài viết',
+							icons: <ShopIcon />,
+						},
 					].map((item, index) => (
 						<Link to={`/admin/${item.key}`}>
 							<ListItem className={classes.links} button key={index}>
@@ -177,16 +182,7 @@ function Links(props) {
 					))}
 				</List>
 				<Divider />
-				<List>
-					{['All mail', 'Trash', 'Spam'].map((text, index) => (
-						<ListItem className={classes.links} button key={text}>
-							<ListItemIcon className={classes.icons}>
-								{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-							</ListItemIcon>
-							<ListItemText primary={text} />
-						</ListItem>
-					))}
-				</List>
+				
 			</Drawer>
 		</div>
 	);

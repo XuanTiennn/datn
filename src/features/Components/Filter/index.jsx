@@ -8,7 +8,7 @@ function Filter(props) {
 	return (
 		<Box>
 			<FilterByCategory />
-			<FilterByService />
+			{/* <FilterByService /> */}
 			<FilterByColor />
 		</Box>
 	);

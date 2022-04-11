@@ -14,6 +14,7 @@ import AddProduct from './Components/Products/addProduct';
 import Slider from './Components/Slider';
 import Users from './Components/Users';
 // import '../Components/layout.scss'
+import News from './Components/News/news';
 Admin.propTypes = {};
 
 function Admin(props) {
@@ -49,13 +50,14 @@ function Admin(props) {
 
 				{/* <MainMenu></MainMenu> */}
 			</XLayout_Left>
-			<XLayout_Center style={{height:'100%'}}>
+			<XLayout_Center style={{ height: '100%' }}>
 				<Switch>
 					<Route path={`${url}/products`} component={Products} />
 					<Route path={`${url}/category`} component={Category} />
 					<Route path={`${url}/addproduct`} component={AddProduct} />
 					<Route path={`${url}/slider`} component={Slider} />
 					<Route path={`${url}/users`} component={Users} />
+					<Route path={`${url}/news`} component={News} />
 					{/* <Route path={`${url}/ordered/:id`} component={DetailsOrderd} /> */}
 					<Route path={`${url}/orderdCheckout/:id`}>
 						<DetailsOrderdCheckout paymentsCheckOut={PaymentCheckout} />

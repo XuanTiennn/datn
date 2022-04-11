@@ -1,0 +1,15 @@
+.infor-web {
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    bottom: 50px;
+    left: 40px;
+    z-index: 99999;
+    .infor-item {
+        margin: 5px 0;
+        .item-img {
+            width: 30px;
+            height: 30px;
+        }
+    }
+}
