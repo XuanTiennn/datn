@@ -9,6 +9,11 @@ const news = new mongoose.Schema(
     },
     content: String,
     status: Boolean,
+    images: {
+      type: Object,
+      require: true,
+    },
+    views:Number
   },
   {
     timestamps: true,

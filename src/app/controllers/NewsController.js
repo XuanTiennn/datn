@@ -18,8 +18,8 @@ const news = {
   createNew: async (req, res) => {
     try {
       //chỉ admin mới có thể thêm ,sửa ,xóa category
-      const { title, content, status } = req.body;
-      const newNew = new News({ title, content, status });
+      const { title, content, status,images,views=0 } = req.body;
+      const newNew = new News({ title, content, status,images,views });
       await newNew.save();
 
       res.json({ mgs: "Thêm bài viết thành công." });
@@ -37,10 +37,10 @@ const news = {
   },
   editNew: async (req, res) => {
     try {
-      const { title, content, status } = req.body;
+      const { title, content, status,images,views } = req.body;
       await News.findOneAndUpdate(
         { _id: req.params.id },
-        { title, content, status }
+        { title, content, status,images,views }
       );
       res.json({ mgs: "Đã cập nhật một bài viết." });
     } catch (error) {
