@@ -97,30 +97,54 @@ function AddNew(props) {
 			alert(failr);
 		}
 	};
-	
+	const handleImgChange = async (e) => {
+		e.preventDefault();
+		try {
+			if (!isAdmin) return alert('Bạn không được phép thực hiện thao tác này.');
+			const file = e.target.files[0];
 
+			if (!file) return alert('File không tồn tại.');
+
+			if (file.size > 1024 * 1024) return alert('Dung lượng ảnh vượt mức cho phép.');
+
+			if (file.type !== 'image/jpeg' && file.type !== 'image/png') return alert('Ảnh sai định dạng.');
+
+			let formData = new FormData();
+			formData.append('file', file);
+			setLoading(true);
+			const res = await axios.post('/api/upload', formData, {
+				headers: { 'content-type': 'multipart/form-data', Authorization: token },
+			});
+
+			setImages(res.data);
+			setLoading(false);
+			getPayload(product, res.data);
+		} catch (err) {
+			const failr = err.response.data.msg;
+			alert(failr);
+		}
+	};
+	const handleRemoveImage = async (public_id) => {
+		try {
+			await axios.post('/api/destroy', { public_id }, { headers: { Authorization: token } });
+			setImages(false);
+		} catch (error) {
+			console.log(error);
+		}
+	};
 	return (
 		<XLayout_Box className="p-p-2">
 			<XLayout>
 				<XLayout_Top>
 					<div className="p-grid p-formgrid p-fluid">
-						<div className="p-field p-col-4 p-md-3">
-							<span className="p-float-label">
-								<InputText
-									value={product.product_id}
-									onChange={(e) => handleChange('product_id', e.target.value)}
-									disabled
-								/>
-								<label className="require">{'Mã sản phẩm'}</label>
-							</span>
-						</div>
+						
 						<div className="p-field p-col-4 p-md-6">
 							<span className="p-float-label">
 								<InputText
 									value={product.title}
 									onChange={(e) => handleChange('title', e.target.value)}
 								/>
-								<label className="require">{'Tên sản phẩm'}</label>
+								<label className="require">{'Tên bài viết'}</label>
 							</span>
 						</div>
 
@@ -136,6 +160,26 @@ function AddNew(props) {
 								{/* <label className="require">{'Màu sắc'}</label> */}
 							</span>
 						</div>
+						<TextField
+							type="file"
+							name="file"
+							required="true"
+							className={classes.fileinput}
+							onChange={handleImgChange}
+						/>
+						{loading ? (
+							<Loading />
+						) : (
+							<Box className={classes.images}>
+								<>
+									<img className={classes.img} src={images ? images.url : ''} alt="img" />{' '}
+									<ClearIcon
+										className={classes.iconClear}
+										onClick={() => handleRemoveImage(images.public_id)}
+									/>
+								</>
+							</Box>
+						)}
 					</div>
 				</XLayout_Top>
 			</XLayout>

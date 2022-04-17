@@ -36,12 +36,12 @@ function NewDetail(prop, ref) {
 		const _product = { ...payload };
 		switch (refMode.current) {
 			case Enumeration.crud.create:
-				res = await axios.post('/api/news', { ..._product }, { headers: { Authorization: token } });
+				res = await axios.post('/api/news', { ..._product, images }, { headers: { Authorization: token } });
 				break;
 			case Enumeration.crud.update:
 				res = await axios.put(
 					`/api/news/${_product._id}`,
-					{ ..._product },
+					{ ..._product, images },
 					{ headers: { Authorization: token } }
 				);
 				break;
@@ -54,8 +54,10 @@ function NewDetail(prop, ref) {
 			setCallBack(!callback);
 		}
 	};
-	const getPayload = (payload) => {
+	const getPayload = (payload, image) => {
 		setPayload(payload);
+
+		setImages(image);
 	};
 	const onHide = () => {
 		setOpen(false);

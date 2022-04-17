@@ -1,4 +1,4 @@
-import { Switch } from '@material-ui/core';
+import { Switch, Box } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import axios from 'axios';
 import { Button } from 'primereact/button';
@@ -13,6 +13,7 @@ import Loading from '../../../features/Components/Process';
 import XToolbar from './../../../Components/x-toolbar/XToolbar';
 import Enumeration from './../../../utils/enum';
 import NewDetail from './newDetail';
+import  Pagination  from '@material-ui/lab/Pagination';
 News.propTypes = {};
 const useStyles = makeStyles({
 	table: {
@@ -69,7 +70,7 @@ function News(props) {
 	useEffect(async () => {
 		const res = await axios.get('/api/news');
 		setNews(res.data);
-	}, []);
+	}, [callback]);
 	const actionPopUp = async (id, public_id, multiple) => {
 		if (multiple) {
 			refConfirm.current.multiple(id, public_id);
@@ -117,7 +118,7 @@ function News(props) {
 		setPage(event.page);
 	};
 
-	console.log(news);
+	
 	if (loading) return <Loading />;
 	try {
 		return (
@@ -221,16 +222,16 @@ function News(props) {
 				</XLayout_Center>
 				<ShowConfirmFunction title="Bạn có chắc chắn muốn xóa bản ghi này ?" ref={refConfirm} />
 				<NewDetail ref={ref} />
+				<Box style={{ marginTop: '40px', display: 'flex', justifyContent: 'flex-end' }}>
+					{/* <Pagination
+						count={Math.ceil(news.length / 9)}
+						color="primary"
+						page={page}
+						onChange={(e, value) => setPage(value)}
+					/> */}
+				</Box>
 			</XLayout>
 
-			// 	<Box style={{ marginTop: '40px', display: 'flex', justifyContent: 'flex-end' }}>
-			// 		<Pagination
-			// 			count={Math.ceil(allProduct.count / 9)}
-			// 			color="primary"
-			// 			page={page}
-			// 			onChange={(e, value) => setPage(value)}
-			// 		/>
-			// 	</Box>
 			// 	{/* <ConfirmDelete ref={ref} /> */}
 			// </Paper>
 		);

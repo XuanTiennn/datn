@@ -1,31 +1,37 @@
-import React, { useEffect, useState } from 'react';
-import PropTypes from 'prop-types';
-import { XLayout, XLayout_Center, XLayout_Title, XLayout_Top } from 'Components/x-layout/XLayout';
 import axios from 'axios';
+import { XLayout, XLayout_Center, XLayout_Top } from 'Components/x-layout/XLayout';
+import React, { useContext, useEffect, useState } from 'react';
 import { useRouteMatch } from 'react-router-dom';
-NewDetail.propTypes = {};
+import { ContextGlobal } from './../../../app/ContextGlobal/index';
 
 function NewDetail(props) {
-	const  {params}  = useRouteMatch();
-    const [newItem,setNewItem]=useState();
+	const { params } = useRouteMatch();
+	const [newItem, setNewItem] = useState();
+	const state = useContext(ContextGlobal);
+	const [token] = state.token;
 	useEffect(async () => {
 		const res = await axios.get(`/api/news/${params.id}`);
 		setNewItem(res.data);
+		if (res.data.views) {
+			res.data.views += 1;
+		} else {
+			res.data.views = 1;
+		}
+		await axios.put(`/api/news/${params.id}`, {
+			...res.data,
+		});
 	}, []);
-    function forhtmlContent() {
+	function forhtmlContent() {
 		return { __html: newItem?.content };
 	}
 	return (
-		<XLayout>
+		<XLayout className="p-p-4">
 			<XLayout_Top>
-				<XLayout_Title>{newItem?.title}</XLayout_Title>
-			</XLayout_Top> 
-            <XLayout_Center> 
-                
-               <div dangerouslySetInnerHTML={forhtmlContent()}>
-
-               </div>
-            </XLayout_Center>
+				<h1>{newItem?.title}</h1>
+			</XLayout_Top>
+			<XLayout_Center className="p-col-9">
+				<div dangerouslySetInnerHTML={forhtmlContent()}></div>
+			</XLayout_Center>
 		</XLayout>
 	);
 }

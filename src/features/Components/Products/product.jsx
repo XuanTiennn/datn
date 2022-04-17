@@ -21,19 +21,17 @@ const useStyles = makeStyles((theme) => ({
 		},
 		borderRadius: '0',
 		border: '1px solid #edeef5',
-
-		'&:hover': {
-			border: '1px solid #c2c2d3',
-			borderRadius: '5px',
-			boxShadow:
-				'0px 2px 1px -1px rgb(0 0 0 / 20%), 0px 1px 1px 0px rgb(0 0 0 / 14%), 0px 1px 3px 0px rgb(0 0 0 / 12%)',
-		},
 	},
 	img: {
 		maxWidth: '180px',
 		maxHeight: '200px',
 		margin: '0 auto',
 		padding: '15px',
+		transition: '.5s',
+		'&:hover': {
+			transform: 'scale(1.3)',
+			transition: '.5s',
+		},
 	},
 	title: {
 		fontSize: '14px',
@@ -59,13 +57,13 @@ const useStyles = makeStyles((theme) => ({
 	},
 	salePercen: {
 		marginLeft: theme.spacing(1),
-		color: '#c2c2d3',
+		color: 'rgb(20, 53, 195)',
 		fontWeight: '600',
 	},
 	price: {
 		fontSize: theme.spacing(2) + 2,
 		fontWeight: '600',
-		color: '#d51243',
+		color: 'rgb(20, 53, 195)',
 	},
 }));
 function ProductItem({ product = {} }) {
@@ -74,15 +72,36 @@ function ProductItem({ product = {} }) {
 	return (
 		<Card elevation={0} className={classes.root}>
 			<CardActionArea>
-				<Link to={`/products/${product._id}`}>
-					<CardMedia
-						component="img"
-						alt="Contemplative Reptile"
-						image={product.images.url}
-						title="Xem ngay"
-						className={classes.img}
-					/>
-				</Link>
+				<div style={{ position: 'relative' }}>
+					<Link to={`/products/${product._id}`}>
+						<CardMedia
+							component="img"
+							alt="Contemplative Reptile"
+							image={product.images.url}
+							title="Xem ngay"
+							className={classes.img}
+						/>
+					</Link>
+					{product.salePercen > 0 && (
+						<div
+							className="p-p-2"
+							style={{
+								position: 'absolute',
+								bottom: 0,
+								borderRadius: '5px',
+								left: 0,
+								background:
+									'url(https://res.cloudinary.com/dzpks7wzs/image/upload/v1650207563/N16_ecommers/download_nfsewk.svg) no-repeat',
+							}}
+						>
+							<h4 style={{ color: 'rgb(255, 213, 145)' }}>Tiết kiệm: </h4>
+							<h5 style={{ color: 'white' }}>
+								{FormatNumber((product.price * product.salePercen) / 100)}
+							</h5>
+						</div>
+					)}
+				</div>
+
 				<CardContent>
 					<Link to={`/products/${product._id}`}>
 						<Typography
@@ -94,22 +113,7 @@ function ProductItem({ product = {} }) {
 							{product.title}
 						</Typography>
 					</Link>
-					{[1, 2, 3, 4, 5].map((i) => (
-						<svg
-							stroke="currentColor"
-							fill="currentColor"
-							stroke-width="0"
-							viewBox="0 0 24 24"
-							size="14"
-							color="#fdd836"
-							height="14"
-							width="14"
-							xmlns="http://www.w3.org/2000/svg"
-							style={{ color: 'rgb(253, 216, 54)' }}
-						>
-							<path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"></path>
-						</svg>
-					))}
+
 					<Typography className={clsx(classes.sold, 'font-dosis')} component="p" variant="body1">
 						{product.sold > 0 ? `Đã bán ${product.sold} ` : <br></br>}
 					</Typography>
@@ -120,7 +124,7 @@ function ProductItem({ product = {} }) {
 							component="p"
 							className={clsx(classes.price, 'font-dosis')}
 						>
-							{FormatNumber(product.price)}
+							{FormatNumber(product.price - (product.price * product.salePercen) / 100)}
 						</Typography>
 
 						<Typography
@@ -132,6 +136,11 @@ function ProductItem({ product = {} }) {
 							{product.salePercen > 0 ? `-${product.salePercen}%` : ''}
 						</Typography>
 					</Box>
+					{product.salePercen > 0 && (
+						<Typography style={{ textDecoration: 'line-through',color:'rgb(130, 134, 158)' }}>
+							{FormatNumber(product.price)}
+						</Typography>
+					)}
 				</CardContent>
 			</CardActionArea>
 		</Card>

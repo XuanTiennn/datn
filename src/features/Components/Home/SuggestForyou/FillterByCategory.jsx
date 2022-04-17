@@ -41,8 +41,8 @@ export default function FilterByCategory() {
 				<Tabs
 					className={classes.tab}
 					value={sort}
-					indicatorColor="primary"
-					textColor="primary"
+					indicatorColor="secondary"
+					textColor="secondary"
 					onChange={(e, value) => setSort(value)}
 					overflow="auto"
 				>
