@@ -44,22 +44,23 @@ const Products = new Schema(
       type: Number,
       default: 0,
     },
-    color:{
-      type:String,
-      require:true,
+    color: {
+      type: String,
+      require: true,
     },
-    service:{
-      type:String,
-      require:true
+    service: {
+      type: String,
+      require: true,
     },
     salePercen: {
       type: Number,
       default: 0,
     },
-    status:{
-      type:Boolean,
-      default:true
-    }
+    status: {
+      type: Boolean,
+      default: true,
+    },
+    views: Number,
   },
   { timestamps: true }
 );
