@@ -22,6 +22,7 @@ const useStyles = makeStyles((theme) => ({
 		display: 'flex',
 		alignItems: 'center',
 		justifyContent: 'center',
+		border:'none'
 	},
 	paper: {
 		display: 'flex',
@@ -93,9 +94,9 @@ function Register({ open, handleClose }) {
 			<Fade in={open}>
 				<Paper className={classes.paper}>
 					<form className={classes.form} onSubmit={handleSubmit}>
-						<Typography variant="h3" component="h2">
+						{/* <Typography variant="h3" component="h2">
 							Đăng ký
-						</Typography>
+						</Typography> */}
 						<Input
 							className={classes.name}
 							name="name"
@@ -138,14 +139,14 @@ function Register({ open, handleClose }) {
 						<Button
 							type="submit"
 							variant="contained"
-							color="secondary"
+							style={{backgroundColor:'#48c4a1'}}
 						>
 							Đăng ký
 						</Button>
 					</form>
 					<img
 						className={classes.img}
-						src="https://salt.tikicdn.com/ts/upload/eb/f3/a3/25b2ccba8f33a5157f161b6a50f64a60.png"
+						src="https://res.cloudinary.com/dzpks7wzs/image/upload/v1650377530/N16_ecommers/1_rpbiwh.jpg"
 						alt="img"
 					/>
 					<CancelOutlined onClick={handleClose} />

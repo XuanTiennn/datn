@@ -12,7 +12,7 @@ import MoreIcon from '@material-ui/icons/MoreVert';
 import SearchIcon from '@material-ui/icons/Search';
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 import axios from 'axios';
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useRef } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { ContextGlobal } from '../../../app/ContextGlobal';
 import Login from '../Login/login';
@@ -179,7 +179,7 @@ function Header(props) {
 
 	//react-router/dom
 	const history = useHistory();
-
+	const refLogin = useRef();
 	const menuId = 'primary-search-account-menu';
 	const renderMenu = (
 		<Menu
@@ -241,18 +241,20 @@ function Header(props) {
 						className={classes.link}
 						component="a"
 						color="inherit"
-						onClick={handleOpenLogin}
+						onClick={() => refLogin.current.login()}
+						
 					>
 						Đăng nhập
 					</Typography>
-					<Login open={openLogin} handleClose={handleCloseLogin} onClickQ={handleCloseLogin} />
+					{/* <Login ref={refLogin} open={openLogin} handleClose={handleCloseLogin} onClickQ={handleCloseLogin} /> */}
 
 					<Typography
 						style={{ padding: '5px', float: 'right' }}
 						className={classes.link}
 						component="a"
 						color="inherit"
-						onClick={handleOpenRegister}
+						onClick={() => refLogin.current.register()}
+						
 					>
 						Đăng ký
 					</Typography>
@@ -348,17 +350,19 @@ function Header(props) {
 											className={classes.link}
 											component="a"
 											color="inherit"
-											onClick={handleOpenLogin}
+											onClick={() => refLogin.current.login()}
+											
 										>
 											Đăng nhập
 										</Typography>
-										<Login open={openLogin} handleClose={handleCloseLogin} />
+										<Login ref={refLogin} open={openLogin} handleClose={handleCloseLogin} />
 
 										<Typography
+											
 											className={classes.link}
 											component="a"
 											color="inherit"
-											onClick={handleOpenRegister}
+											onClick={() => refLogin.current.register()}
 										>
 											Đăng ký
 										</Typography>

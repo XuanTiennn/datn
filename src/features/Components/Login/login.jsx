@@ -6,16 +6,23 @@ import CancelOutlinedIcon from '@material-ui/icons/CancelOutlined';
 import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
 import axios from 'axios';
-import React, { useState } from 'react';
+import React, { useState, useRef, useImperativeHandle, forwardRef } from 'react';
 import LoginWFB from './loginWFB';
 import LoginWGG from './loginWGG';
 import { Link } from 'react-router-dom';
+import { InputText } from 'primereact/inputtext';
+import { Password } from 'primereact/password';
+import { Divider } from 'primereact/divider';
+import { Dialog } from 'primereact/dialog';
+import Enumeration from 'utils/enum';
+
 Login.propTypes = {};
 const useStyles = makeStyles((theme) => ({
 	modal: {
 		display: 'flex',
 		alignItems: 'center',
 		justifyContent: 'center',
+		border: 'none',
 	},
 	paper: {
 		display: 'flex',
@@ -37,102 +44,126 @@ const useStyles = makeStyles((theme) => ({
 		},
 	},
 }));
-function Login({ open, handleClose,onClickQ }) {
+function Login(props, ref) {
 	const classes = useStyles();
 	// const state = useContext(ContextGlobal);
-
 	//console.log(isAdmin);
+	const [show, setShow] = useState(false);
+	const refMode = useRef();
 	const [form, setForm] = useState({
 		email: '',
 		password: '',
-		show: false,
+		name: '',
 	});
-	const handleChange = (e) => {
-		const { name, value } = e.target;
-		setForm({
-			...form,
-			[name]: value,
-		});
+	const handleChange = (prop, value) => {
+		const _form = { ...form };
+		_form[prop] = value;
+		setForm(_form);
 	};
+	useImperativeHandle(ref, () => ({
+		login: () => {
+			setShow(true);
+			refMode.current = 'login';
+		},
+		register: () => {
+			setShow(true);
+			refMode.current = 'register';
+		},
+	}));
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 		try {
-			await axios.post('/user/login', { ...form });
-			localStorage.setItem('firstlogin', true);
-			window.location.href = '/';
+			switch (refMode.current) {
+				case 'login':
+					await axios.post('/user/login', { ...form });
+					localStorage.setItem('firstlogin', true);
+					window.location.href = '/';
+					break;
+				case 'register':
+					await axios.post('/user/register', { ...form });
+					localStorage.setItem('firstlogin', true);
+					window.location.href = '/';
+					break;
+			}
 		} catch (err) {
 			const failr = err.response.data.mgs;
 			alert(failr);
 		}
 	};
-	const toggleIcon = (e) => {
-		setForm({
-			...form,
-			show: !form.show,
-		});
+	const showMessage = (title) => {
+		return <Dialog></Dialog>;
 	};
 
 	return (
-		<Modal
-			aria-labelledby="transition-modal-title"
-			aria-describedby="transition-modal-description"
-			className={classes.modal}
-			open={open}
-			onClose={handleClose}
-			closeAfterTransition
-			BackdropComponent={Backdrop}
-			BackdropProps={{
-				timeout: 500,
-			}}
-		>
-			<Fade in={open}>
-				<Paper className={classes.paper}>
-					<form className={classes.form} onSubmit={handleSubmit}>
-						<Typography variant="h3" component="h2">
+		<Dialog visible={show} onHide={() => setShow(false)}>
+			{/* <Fade in={open}> */}
+			<Paper className={classes.paper}>
+				<form className={classes.form} onSubmit={handleSubmit}>
+					{/* <Typography variant="h3" component="h2">
 							Đăng nhập
-						</Typography>
-						<Input
-							className={classes.email}
-							name="email"
-							value={form.email}
-							placeholder="Email"
-							onChange={handleChange}
+						</Typography> */}
+					{refMode.current === 'register' && (
+						<InputText
+							className={form.name?.length == 0 && 'p-invalid'}
+							name="name"
+							value={form.name}
+							autoComplete={false}
+							onChange={(e) => handleChange('name', e.target.value)}
 							required
-							type="email"
+							type="name"
+							placeholder="Tên"
 						/>
-						<Input
-							className={classes.password}
-							name="password"
-							value={form.password}
-							placeholder="Password"
-							type={form.show ? 'text' : 'password'}
-							onChange={handleChange}
-							required="true"
-							endAdornment={
-								<InputAdornment position="end">
-									<IconButton aria-label="toggle password visibility" onClick={toggleIcon}>
-										{form.show ? <Visibility /> : <VisibilityOff />}
-									</IconButton>
-								</InputAdornment>
-							}
-						/>
-						<Button type="submit" variant="contained" color="secondary">
-							Đăng nhập
-						</Button>
-						<LoginWGG />
-						{/* <LoginWFB /> */}
-						<Link to="/quenmatkhau" style={{color:'blue',margin:'10px 0',textAlign:'right'}} onClick={onClickQ}>Quên mật khẩu</Link>
-					</form>
-					<img
-						className={classes.img}
-						src="https://salt.tikicdn.com/ts/upload/eb/f3/a3/25b2ccba8f33a5157f161b6a50f64a60.png"
-						alt="img"
+					)}
+
+					<InputText
+						className={form.email.length == 0 && 'p-invalid'}
+						name="email"
+						value={form.email}
+						placeholder="Email"
+						onChange={(e) => handleChange('email', e.target.value)}
+						required
+						type="email"
+						autoComplete={false}
 					/>
-					<CancelOutlinedIcon onClick={handleClose} />
-				</Paper>
-			</Fade>
-		</Modal>
+
+					<Password
+						autoComplete={false}
+						value={form.password}
+						onChange={(e) => handleChange('password', e.target.value)}
+						toggleMask
+					/>
+
+					<div className="p-mt-3" style={{ maxWidth: '210px', overflow: 'hidden' }}>
+						<Button
+							type="submit"
+							variant="contained"
+							style={{ backgroundColor: '#48c4a1', color: 'white', width: '100%' }}
+						>
+							{refMode.current === 'login' ? 'Đăng nhập' : 'Đăng ký'}
+						</Button>
+						{refMode.current === 'login' && <LoginWGG />}
+						{/* <LoginWFB /> */}
+					</div>
+					{refMode.current === 'login' && (
+						<Link
+							to="/quenmatkhau"
+							style={{ color: 'blue', margin: '10px 0', textAlign: 'right' }}
+							// onClick={onClickQ}
+						>
+							Quên mật khẩu
+						</Link>
+					)}
+				</form>
+				<img
+					className={classes.img}
+					src="https://res.cloudinary.com/dzpks7wzs/image/upload/v1650377530/N16_ecommers/1_rpbiwh.jpg"
+					alt="img"
+				/>
+				{/* <CancelOutlinedIcon onClick={handleClose} /> */}
+			</Paper>
+			{/* </Fade> */}
+		</Dialog>
 	);
 }
-
+Login = forwardRef(Login);
 export default Login;

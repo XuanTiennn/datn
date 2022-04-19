@@ -128,8 +128,10 @@ function DetailsProduct() {
 		if (params.id) {
 			try {
 				const getItem = async () => {
-					const res = await axios.get(`/api/products/${params.id}`);
+					let res = await axios.get(`/api/products/${params.id}`);
 					setProduct(res.data);
+					res.data.views = res.data.views ? res.data.views + 1 : 1;
+					await axios.put(`/api/products/${res.data._id}`, { ...res.data });
 				};
 				getItem();
 			} catch (error) {
