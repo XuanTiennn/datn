@@ -3,13 +3,18 @@ import ListAltIcon from '@material-ui/icons/ListAlt';
 import MonetizationOnIcon from '@material-ui/icons/MonetizationOn';
 import PeopleIcon from '@material-ui/icons/People';
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
-import React, { useContext } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { ContextGlobal } from '../../../app/ContextGlobal';
 import FormatNumber from './../../../utils/formatNumber';
 import CardCount from './Card/index';
 import DoughnutChart from './Chart/DoughnutChart';
 import LineChart from './Chart/LineChart';
 import GroupData from './../../../utils/groupData';
+import { Chart } from 'primereact/chart';
+import { XLayout, XLayout_Center, XLayout_Top } from 'Components/x-layout/XLayout';
+import XToolbar from 'Components/x-toolbar/XToolbar';
+import { Button } from 'primereact/button';
+import { exportTimeSheet } from './exportExcel';
 
 DarshBoard.propTypes = {};
 
@@ -28,6 +33,7 @@ function DarshBoard({ paymentCheckOut = [] }) {
 		array.push(cart);
 		totalItem.push(item);
 	});
+	console.log(payments);
 	paymentCheckOut.map((item) => {
 		const { cart } = item;
 		array.push(cart);
@@ -44,13 +50,7 @@ function DarshBoard({ paymentCheckOut = [] }) {
 	const dataNumbers = Object.values(arrayGroupByDate).map((item) => item.reduce((total, i) => (total += i), 0));
 
 	const data = [
-		{
-			backgroundcolor: 'linear-gradient(to right,#fe9365,#feb798)',
-			id: 1,
-			icon: <PeopleIcon />,
-			title: 'Số người dùng',
-			number: countUser?.length,
-		},
+	
 		{
 			backgroundcolor: 'linear-gradient(to right,#0ac282,#0df3a3)',
 			id: 2,
@@ -73,10 +73,44 @@ function DarshBoard({ paymentCheckOut = [] }) {
 			number: allProduct?.count,
 		},
 	];
+	const [data1, setData1] = useState([]);
+	useEffect(() => {
+		// handleData();
+	}, []);
+	const handleData = (type) => {
+		const arr = [];
+		allProduct?.products?.map((item) => {
+			arr.push(item[type]);
+		});
+		console.log(arr);
+		return arr;
+	};
+	console.log(data1);
+	const [chartData] = useState({
+		labels: handleData('title'),
+		datasets: [
+			{
+				data: handleData('views'),
+				backgroundColor: ['#42A5F5', '#66BB6A', '#FFA726'],
+				hoverBackgroundColor: ['#64B5F6', '#81C784', '#FFB74D'],
+			},
+		],
+	});
+	console.log(allProduct);
+	const [lightOptions] = useState({
+		plugins: {
+			legend: {
+				labels: {
+					color: '#495057',
+				},
+			},
+		},
+	});
 	return (
-		<Box>
-			<Box style={{ display: 'flex' }}>
-				<Grid container spacing={4}>
+		<XLayout>
+			<XLayout_Top>
+				<XToolbar right={() => <Button icon="pi pi-file-excel" label="Tải thống kê báo cáo" onClick={()=>exportTimeSheet(allProduct.products)}></Button>}></XToolbar>
+				<Box style={{ display: 'flex' }}>
 					{data.map((item) => (
 						<Grid item xs={12} sm={6} md={4} lg={3}>
 							<CardCount
@@ -87,18 +121,23 @@ function DarshBoard({ paymentCheckOut = [] }) {
 							/>
 						</Grid>
 					))}
-				</Grid>
-			</Box>
-			<Grid container spacing={3} style={{ marginTop: '30px' }}>
-				<Grid item lg={8}>
-					{/* <LineChart payments={paymentCheckOut} countpaypal={payments} /> */}
-					<LineChart payments={totalItem} countpaypal={payments} />
-				</Grid>
-				<Grid item lg={4}>
-					<DoughnutChart list={dataNumbers} labels={categories} />
-				</Grid>
-			</Grid>
-		</Box>
+				</Box>
+			</XLayout_Top>
+			<XLayout_Center>
+				<div className="p-col-12" style={{ display: 'flex' }}>
+					<div className="p-col-6">
+						<LineChart payments={totalItem} countpaypal={payments} />
+					</div>
+					<div className="p-col-6">
+						<DoughnutChart list={dataNumbers} labels={categories} />
+					</div>
+				</div>
+
+				<div className="p-col-12 card flex justify-content-center">
+					<Chart type="pie" data={chartData} options={lightOptions} style={{ position: 'relative' }} />
+				</div>
+			</XLayout_Center>
+		</XLayout>
 	);
 }
 

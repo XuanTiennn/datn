@@ -1,4 +1,4 @@
-import { Box, Button, Container, Grid, makeStyles, Paper, Typography } from '@material-ui/core';
+import { Box, Container, Grid, makeStyles, Paper, Typography } from '@material-ui/core';
 import axios from 'axios';
 import React, { useContext, useEffect, useState } from 'react';
 import { Link, useRouteMatch } from 'react-router-dom';
@@ -8,6 +8,9 @@ import FormatUSD from '../../../utils/formatUSD';
 import FormatUSDT from '../../../utils/formatUSDT';
 import BreadCrumb from '../BreadCrumb';
 import Paypal from './Checkout/paypalBtn';
+import { Button } from 'primereact/button';
+import { useRef } from 'react';
+import CheckoutPayment from './Checkout/index';
 Cart.propTypes = {};
 
 const useStyles = makeStyles((theme) => ({
@@ -85,7 +88,7 @@ function Cart(props) {
 	const [totalPrice, setTotalPrice] = useState(0);
 	const match = useRouteMatch();
 	const [checkout, setCheckOut] = useState(false);
-
+	const refOder = useRef();
 	const classes = useStyles();
 
 	useEffect(() => {
@@ -243,7 +246,8 @@ function Cart(props) {
 							<Box></Box>
 						</Paper>
 						<Button style={{ marginTop: '10px' }} variant="contained" color="secondary">
-							<Link to="checkout/payment">Tiến hành đặt hàng</Link>
+							{/* <Link to="checkout/payment">Tiến hành đặt hàng</Link> */}
+							<Button onClick={() => refOder.current.show()}>Tiến hành đặt hàng</Button>
 						</Button>
 						<Box
 							style={{
@@ -251,23 +255,10 @@ function Cart(props) {
 								alignItems: 'center',
 								marginTop: '10px',
 							}}
-						>
-							{checkout ? (
-								<Paypal value={totalPrice} cart={cart} />
-							) : (
-								<Button
-									style={{ marginLeft: '15px' }}
-									variant="outlined"
-									onClick={() => {
-										setCheckOut(true);
-									}}
-								>
-									Paypal
-								</Button>
-							)}
-						</Box>
+						></Box>
 					</Grid>
 				</Grid>
+				<CheckoutPayment ref={refOder} />
 			</Container>
 		</Box>
 	);

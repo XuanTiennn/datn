@@ -124,6 +124,7 @@ function Login(props, ref) {
 						required
 						type="email"
 						autoComplete={false}
+						style={{marginTop:'10px'}}
 					/>
 
 					<Password
@@ -131,6 +132,7 @@ function Login(props, ref) {
 						value={form.password}
 						onChange={(e) => handleChange('password', e.target.value)}
 						toggleMask
+						className='p-mt-2 p-mb-2'
 					/>
 
 					<div className="p-mt-3" style={{ maxWidth: '210px', overflow: 'hidden' }}>

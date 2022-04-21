@@ -35,7 +35,7 @@ const useStyles = makeStyles((theme) => ({
 		whiteSpace: 'nowrap',
 	},
 	drawerOpen: {
-		backgroundColor: '#0e0c28',
+		backgroundColor: 'ghostwhite',
 		width: drawerWidth,
 		transition: theme.transitions.create('width', {
 			easing: theme.transitions.easing.sharp,
@@ -43,7 +43,7 @@ const useStyles = makeStyles((theme) => ({
 		}),
 	},
 	drawerClose: {
-		backgroundColor: '#0e0c28',
+		backgroundColor: 'ghostwhite',
 		transition: theme.transitions.create('width', {
 			easing: theme.transitions.easing.sharp,
 			duration: theme.transitions.duration.leavingScreen,
@@ -68,7 +68,7 @@ const useStyles = makeStyles((theme) => ({
 	list: {
 		display: 'flex',
 		flexDirection: 'column',
-		backgroundColor: '#0e0c28',
+		backgroundColor: 'ghostwhite',
 	},
 	links: {
 		padding: '15px 0',
@@ -135,54 +135,48 @@ function Links(props) {
 						{
 							key: '',
 							value: 'Darshboard',
-							icons: <DashboardIcon />,
+							icons: 'pi pi-prime',
 						},
 						{
 							key: 'products',
 							value: 'Quản lý sản phẩm',
-							icons: <ListIcon />,
+							icons: 'pi pi-shopping-bag							',
 						},
 						{
 							key: 'category',
 							value: 'Quản lý loại sản phẩm',
-							icons: <CategoryIcon />,
+							icons: 'pi pi-align-justify							',
 						},
 						{
 							key: 'slider',
 							value: 'Quản lý slide',
-							icons: <ViewCarouselIcon />,
+							icons: 'pi pi-sliders-v							',
 						},
 						{
 							key: 'users',
 							value: 'Quản lý người dùng',
-							icons: <PeopleIcon />,
+							icons:'pi pi-users							',
 						},
-						// {
-						// 	key: 'orderd',
-						// 	value: 'Quản lý đơn hàng(PayPal)',
-						// 	icons: <ShopIcon />,
-						// },
 						{
 							key: 'orderdCheckout',
 							value: 'Quản lý đơn hàng',
-							icons: <ShopIcon />,
+							icons: 'pi pi-credit-card							',
 						},
 						{
 							key: 'news',
 							value: 'Quản lý bài viết',
-							icons: <ShopIcon />,
+							icons: 'pi pi-book							',
 						},
 					].map((item, index) => (
 						<Link to={`/admin/${item.key}`}>
 							<ListItem className={classes.links} button key={index}>
-								<ListItemIcon className={classes.icons}>{item.icons}</ListItemIcon>
-								<ListItemText primary={item.value} />
+								<i style={{color:'#6366F1'}} className={item.icons}></i>
+								<ListItemText style={{color:'#6366F1'}} className='p-ml-2' primary={item.value} />
 							</ListItem>
 						</Link>
 					))}
 				</List>
 				<Divider />
-				
 			</Drawer>
 		</div>
 	);

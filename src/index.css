@@ -25,3 +25,6 @@ a{
 .font-dosis{
   font-family: 'Dossis' !important;
 }
+#root{
+  overflow: auto !important;
+}
