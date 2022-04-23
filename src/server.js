@@ -17,6 +17,7 @@ const paymentsCheckoutRouter = require("./routes/paymentsCheckout");
 const sliderRouter = require("./routes/slider");
 const sendmailerRouter = require("./routes/sendmails");
 const newsRouter = require("./routes/news");
+const commentRouter = require("./routes/comment");
 
 const app = express();
 const port = process.env.PORT || 5000;
@@ -36,6 +37,7 @@ app.use("/api", paymentsCheckoutRouter);
 app.use("/api", sliderRouter);
 app.use("/api", sendmailerRouter);
 app.use("/api", newsRouter);
+app.use("/api", commentRouter);
 
 //db connect
 db.connect();
