@@ -1,16 +1,15 @@
 import { Box, Container, Grid, makeStyles, Paper, Typography } from '@material-ui/core';
 import axios from 'axios';
-import React, { useContext, useEffect, useState } from 'react';
-import { Link, useRouteMatch } from 'react-router-dom';
+import { Button } from 'primereact/button';
+import React, { useContext, useEffect, useRef, useState } from 'react';
+import { useRouteMatch, Link } from 'react-router-dom';
 import { ContextGlobal } from '../../../app/ContextGlobal';
 import FormatNumber from '../../../utils/formatNumber';
-import FormatUSD from '../../../utils/formatUSD';
-import FormatUSDT from '../../../utils/formatUSDT';
 import BreadCrumb from '../BreadCrumb';
-import Paypal from './Checkout/paypalBtn';
-import { Button } from 'primereact/button';
-import { useRef } from 'react';
 import CheckoutPayment from './Checkout/index';
+import { Toast } from 'primereact/toast';
+import { Dialog } from 'primereact/dialog';
+import { useHistory } from 'react-router-dom';
 Cart.propTypes = {};
 
 const useStyles = makeStyles((theme) => ({
@@ -52,7 +51,9 @@ const useStyles = makeStyles((theme) => ({
 		padding: ' 6px 12px',
 	},
 	img: {
-		maxWidth: '130px',
+		maxWidth: '80px',
+		maxHeight: '80px',
+		border: '1px solid #eee',
 	},
 	spanbutton: {
 		border: '1px solid rgb(200, 200, 200)',
@@ -87,11 +88,11 @@ function Cart(props) {
 	const [token] = state.token;
 	const [totalPrice, setTotalPrice] = useState(0);
 	const match = useRouteMatch();
-	const [checkout, setCheckOut] = useState(false);
-	const refOder = useRef();
 	const classes = useStyles();
-
+	const [show, setShow] = useState(false);
+	const [product, setproduct] = useState();
 	useEffect(() => {
+		window.scrollTo(0, 0);
 		const getTotal = () => {
 			const total = cart.reduce((total, item) => {
 				return (total += item.quantity * item.price);
@@ -124,26 +125,44 @@ function Cart(props) {
 		setCart([...cart]);
 		addToCart(cart);
 	};
-	const handleRemoveItem = (product) => {
-		if (window.confirm('Bạn có muốn xóa sản phẩm này khỏi giỏ hàng ?')) {
-			let idex;
-			cart.map((item, index) => {
-				if (item._id === product._id) {
-					idex = index;
-					cart.splice(idex, 1);
-				}
-			});
-			setCart([...cart]);
-			addToCart(cart);
-		}
+	const onHide = () => {
+		setShow(false);
 	};
-
+	const handleRemoveItem = (product) => {
+		let idex;
+		cart.map((item, index) => {
+			if (item._id === product._id) {
+				idex = index;
+				cart.splice(idex, 1);
+			}
+		});
+		setCart([...cart]);
+		addToCart(cart);
+		onHide();
+	};
+	const handleRemove = (product) => {
+		setShow(true);
+		setproduct(product);
+	};
+	const history = useHistory();
+	const footer = () => {
+		return (
+			<>
+				<Button className="p-button-sm" label="Hủy bỏ" onClick={onHide}></Button>
+				<Button className="p-button-sm" label="Đồng ý" onClick={() => handleRemoveItem(product)}></Button>
+			</>
+		);
+	};
 	return (
 		<Box className={classes.root}>
+			<Dialog visible={show} onHide={onHide} header="Chú ý" footer={footer}>
+				<p>Bạn muốn xoá sản phẩm này ra khỏi giỏ hàng?</p>
+			</Dialog>
 			<Container>
 				<BreadCrumb str={match.url} />
 				<Grid container spacing={2}>
 					<Grid item xs={12} lg={8} className={classes.leftcol}>
+						<h2>Giỏ hàng</h2>
 						<Paper className={classes.padding}>
 							<Box>
 								{cart.length > 0 ? (
@@ -158,22 +177,16 @@ function Cart(props) {
 												borderBottom: '1px solid #eee',
 											}}
 										>
-											<img className={classes.img} src={product.images.url} alt="anh product" />
+											<img className={classes.img} src={product.images.url} alt="image product" />
 											<Box>
-												<Typography variant="body2">{product.title}</Typography>
-												<Button
-													style={{
-														fontSize: '14px',
-														marginLeft: '-15px',
-													}}
-													onClick={() => handleRemoveItem(product)}
-													size="small"
+												<Typography
+													onClick={() => history.push(`/products/${product._id}`)}
+													variant="body2"
+													className="p-ml-2"
+													style={{ cursor: 'pointer' }}
 												>
-													Xóa
-												</Button>
-												<Button style={{ fontSize: '14px' }} size="small">
-													Để dành mua sau
-												</Button>
+													{product.title}
+												</Typography>
 											</Box>
 											<Box>
 												<Box>
@@ -181,14 +194,6 @@ function Cart(props) {
 														<Typography variant="caption" className={classes.originalPric}>
 															{FormatNumber(product.price * product.quantity)}
 														</Typography>
-														{product.salePercen > 0 ? (
-															<Typography
-																className={classes.promotion}
-																variant="body2"
-															>{`| -${product.salePercen}%`}</Typography>
-														) : (
-															''
-														)}
 													</Box>
 												</Box>
 												<Box>
@@ -214,6 +219,12 @@ function Cart(props) {
 															</Typography>
 														</Box>
 													</form>
+													<Button
+														className="p-button-outlined p-button-danger p-button-sm p-mt-2"
+														onClick={() => handleRemove(product)}
+														style={{ height: '20px' }}
+														label="Xóa"
+													></Button>
 												</Box>
 											</Box>
 										</Box>
@@ -245,9 +256,10 @@ function Cart(props) {
 							</Box>
 							<Box></Box>
 						</Paper>
-						<Button style={{ marginTop: '10px' }} variant="contained" color="secondary">
-							{/* <Link to="checkout/payment">Tiến hành đặt hàng</Link> */}
-							<Button onClick={() => refOder.current.show()}>Tiến hành đặt hàng</Button>
+						<Button style={{ marginTop: '10px', color: 'blueviolet', color: 'white' }} variant="contained">
+							<Link style={{ color: 'white' }} to="checkout/payment">
+								Tiến hành đặt hàng
+							</Link>
 						</Button>
 						<Box
 							style={{
@@ -258,7 +270,6 @@ function Cart(props) {
 						></Box>
 					</Grid>
 				</Grid>
-				<CheckoutPayment ref={refOder} />
 			</Container>
 		</Box>
 	);

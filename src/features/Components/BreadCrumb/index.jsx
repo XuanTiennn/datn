@@ -4,6 +4,7 @@ import Typography from '@material-ui/core/Typography';
 import React, { useEffect, useState } from 'react';
 import { useRouteMatch, Link } from 'react-router-dom';
 import clsx from 'clsx';
+import { Button } from 'primereact/button';
 BreadCrumb.propTypes = {};
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -11,16 +12,19 @@ const useStyles = makeStyles((theme) => ({
 			marginTop: theme.spacing(2),
 		},
 		margin: '30px 0',
+		display: 'flex',
 	},
 	breadcrumbs: {
 		marginTop: '20px',
+		backgroundColor: 'white',
+		borderRadius: '10px',
 	},
 	linkItem: {
 		'&:hover': {
 			textDecoration: 'underline',
 		},
 		textTransform: 'uppercase',
-		fontSize: '13px',
+		fontSize: '12px',
 	},
 }));
 
@@ -37,7 +41,7 @@ function BreadCrumb({ str = '', title = '', category = '' }) {
 			<div className={classes.root}>
 				<Breadcrumbs className={classes.breadcrumbs} separator="›" aria-label="breadcrumb">
 					<Link className={clsx(classes.linkItem, 'font-dosis')} color="inherit" to="/">
-						Trang chủ
+						<Button icon="pi pi-home"></Button>
 					</Link>
 					{arr.map((item) => (
 						<Link className={clsx(classes.linkItem, 'font-dosis')} color="inherit" to={`/${item}`}>

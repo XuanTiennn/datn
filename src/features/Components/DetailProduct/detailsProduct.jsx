@@ -1,13 +1,17 @@
-import { Box, Button, Container, Grid, makeStyles, Paper, Typography } from '@material-ui/core';
+import { Box, Container, Grid, makeStyles, Paper, Typography } from '@material-ui/core';
 import axios from 'axios';
 import clsx from 'clsx';
-import React, { useContext, useEffect, useState } from 'react';
-import { Link, useParams, useRouteMatch } from 'react-router-dom';
+import { Toast } from 'primereact/toast';
+import React, { useContext, useEffect, useState, useRef } from 'react';
+import { Link, useParams, useRouteMatch, useHistory } from 'react-router-dom';
 import { ContextGlobal } from '../../../app/ContextGlobal';
 import FormatNumber from '../../../utils/formatNumber';
 import BreadCrumb from '../BreadCrumb';
 import Services from '../Service';
 import RecentProducts from './recentProducts';
+import { Button } from 'primereact/button';
+import Comment from './../Comment/comment';
+import ListComment from './../Comment/listcomment';
 const useStyles = makeStyles((theme) => ({
 	root: {
 		marginTop: '50px',
@@ -34,12 +38,12 @@ const useStyles = makeStyles((theme) => ({
 		textTransform: 'capitalize',
 		fontWeight: '600',
 		[theme.breakpoints.down('xs')]: {
-			fontSize: '24px',
+			fontSize: '20px',
 		},
 	},
 	price: {
 		fontWeight: '600',
-		fontSize: theme.spacing(4),
+		fontSize: theme.spacing(3),
 		margin: theme.spacing(2, 0),
 		color: '#2a2a86',
 	},
@@ -83,11 +87,6 @@ const useStyles = makeStyles((theme) => ({
 		marginTop: '50px',
 		padding: '20px',
 	},
-	wrap_price: {
-		backgroundColor: '#fafafa',
-		borderRadius: '5px',
-		margin: '10px 0',
-	},
 	status: {
 		width: '50px',
 		height: '50px',
@@ -95,13 +94,6 @@ const useStyles = makeStyles((theme) => ({
 		borderRadius: '5px',
 		padding: '5px',
 		backgroundColor: '#e5f8ed',
-	},
-	button: {
-		[theme.breakpoints.up('sm')]: {
-			maxWidth: '200px',
-		},
-		padding: '10px',
-		borderRadius: '15px',
 	},
 	category: {
 		'&:hover': {
@@ -116,19 +108,20 @@ function DetailsProduct() {
 	const [isLogined] = data.userApi.isLogined;
 	const state = useContext(ContextGlobal);
 	const [category, setCategory] = state.productsAPI.category;
-
+	const toast = useRef(null);
 	const params = useParams();
 	const [product, setProduct] = useState([]);
-	const [color, setColor] = useState('');
+	const [comments, setcomments] = useState([]);
 	const classes = useStyles();
 	let isService = '';
 	const addCart = data.userApi.addToCart;
-	console.log(products);
 	useEffect(() => {
 		if (params.id) {
 			try {
 				const getItem = async () => {
 					let res = await axios.get(`/api/products/${params.id}`);
+					let comments = await axios.get(`/api/comment/${params.id}`);
+					setcomments(comments.data);
 					setProduct(res.data);
 					res.data.views = res.data.views ? res.data.views + 1 : 1;
 					await axios.put(`/api/products/${res.data._id}`, { ...res.data });
@@ -139,6 +132,9 @@ function DetailsProduct() {
 			}
 		}
 	}, [params.id, products]);
+	const afterSubmit = (data) => {
+		setcomments([data, ...comments]);
+	};
 	function forhtmlContent() {
 		return { __html: product.content };
 	}
@@ -151,9 +147,19 @@ function DetailsProduct() {
 			alert('Vui lòng đăng nhập để thực hiện thao tác này.');
 		} else {
 			addCart(product);
+			showSuccess();
 		}
 	};
+	const showSuccess = () => {
+		toast.current.show({
+			severity: 'success',
+			summary: 'Thao tác thành công',
+			detail: 'Thêm vào giỏ hàng thành công !',
+			life: 3000,
+		});
+	};
 	const match = useRouteMatch();
+	const history = useHistory();
 	useEffect(() => {
 		window.scrollTo(0, 0);
 	}, [match.url]);
@@ -173,9 +179,18 @@ function DetailsProduct() {
 									<Typography
 										className={clsx(classes.title, 'font-inter')}
 										component="h2"
-										variant="h4"
+										variant="h6"
 									>
 										{product.title}
+									</Typography>
+									<Typography className={classes.category} component="p" variant="body1">
+										<Link
+											to="/products"
+											onClick={() => setCategory('category=' + product.category)}
+										>
+											<span style={{ color: 'rgb(130, 134, 158)' }}>Thương hiệu:</span>
+											<span style={{ color: 'rgb(20, 53, 195)' }}>{product.category}</span>
+										</Link>
 									</Typography>
 									<Typography className={classes.sold} component="p" variant="body1">
 										{product.sold > 0 ? `Đã bán ${product.sold} ` : ''}
@@ -187,16 +202,8 @@ function DetailsProduct() {
 											{product.status ? 'Còn hàng' : 'Hết hàng'}
 										</Typography>
 									</Typography>
-									<Typography
-										className={clsx(classes.flex, classes.wrap_price)}
-										component="p"
-										variant="body1"
-									>
-										<Typography
-											component="span"
-											variant="body2"
-											className={clsx(classes.price, 'font-dosis')}
-										>
+									<Typography className={clsx(classes.flex)} component="p" variant="body2">
+										<Typography component="span" className={clsx(classes.price, 'font-dosis')}>
 											{FormatNumber(product.price)}
 										</Typography>
 										<Typography
@@ -216,23 +223,31 @@ function DetailsProduct() {
 										</Typography>
 									</Typography>
 									<Typography>{isService}</Typography>
-									<Button
-										className={classes.button}
-										variant="contained"
-										color="secondary"
-										onClick={addToCart}
-									>
-										Chọn mua
-									</Button>
-									<Typography className={classes.category} component="p" variant="body1">
-										<Link
-											to="/products"
-											onClick={() => setCategory('category=' + product.category)}
-										>
-											{' '}
-											Loại:{product.category}
-										</Link>
-									</Typography>
+									<div style={{ display: 'flex' }}>
+										<Button
+											style={{
+												width: '200px',
+												backgroundColor: 'white',
+												color: 'blueviolet',
+											}}
+											label="Mua ngay"
+											onClick={() => {
+												history.push('/cart');
+												addToCart();
+											}}
+											className="p-button"
+										></Button>
+
+										<Button
+											style={{ width: '200px' }}
+											variant="contained"
+											label="Thêm vào giỏ hàng"
+											onClick={addToCart}
+											className="p-button-infor p-ml-2"
+										></Button>
+									</div>
+
+									<Toast ref={toast} />
 								</Box>
 							</Grid>
 						</Grid>
@@ -264,6 +279,8 @@ function DetailsProduct() {
 							</Paper>
 						</Box>
 					</Grid>
+					<ListComment comments={comments} />
+					<Comment product={product} state={state} afterSubmit={afterSubmit} />
 					<Box>
 						<Services />
 					</Box>

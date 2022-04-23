@@ -1,15 +1,12 @@
-import { Container, Grid } from '@material-ui/core';
-import Step from '@material-ui/core/Step';
-import StepLabel from '@material-ui/core/StepLabel';
-import Stepper from '@material-ui/core/Stepper';
+import { Container, Grid, RadioGroup, FormControl, Radio, FormControlLabel } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import axios from 'axios';
-import { Dialog } from 'primereact/dialog';
-import React, { forwardRef, useContext, useState,useImperativeHandle } from 'react';
+import { XLayout, XLayout_Center } from 'Components/x-layout/XLayout';
+import React, { forwardRef, useContext, useImperativeHandle, useState } from 'react';
 import { ContextGlobal } from '../../../../app/ContextGlobal';
-import StepOne from './stepOne';
 import StepThree from './stepThree';
-import StepTwo from './stepTwo';
+import { InputText } from 'primereact/inputtext';
+import { InputTextarea } from 'primereact/inputtextarea';
 CheckoutPayment.propTypes = {};
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -35,9 +32,7 @@ function CheckoutPayment(props, ref) {
 	const [userInfor] = state.userApi.user;
 	const [token] = state.token;
 	const [cart, setCart] = state.userApi.cart;
-	const [derivery, setDerivery] = useState('');
-	const [address, setAddress] = useState('');
-	const [phone, setPhone] = useState('');
+	const [payload, setPayload] = useState({ phone: '', address: '', derivery: 'tietkiem' });
 	const [show, setshow] = useState(false);
 	const addToCart = async (cart) => {
 		await axios.patch('/user/addcart', { cart }, { headers: { Authorization: token } });
@@ -52,7 +47,7 @@ function CheckoutPayment(props, ref) {
 	const handleCreatePayment = async () => {
 		const res = await axios.post(
 			'/api/paymentsCheckout',
-			{ cart, derivery, address, phone },
+			{ cart, ...payload },
 			{ headers: { Authorization: token } }
 		);
 		// console.log(res);
@@ -63,35 +58,55 @@ function CheckoutPayment(props, ref) {
 		alert(res.data.mgs);
 		window.location.href = '/';
 	};
-	const onHide = () => {
-		setshow(false);
+	const applyChange = (prop, value) => {
+		const _payload = { ...payload };
+		_payload[prop] = value;
+		setPayload(_payload);
 	};
 	return (
-		<Dialog visible={show} onHide={onHide} style={{width:'60vw'}}>
-			<Container className={classes.root}>
-				
-				<Grid container style={{ marginTop: '20px' }}>
-					<Grid item lg={12}>
-						<Grid container style={{ justifyContent: 'space-between', alignItems: 'stretch' }}>
-							<Grid item lg={4}>
-								<StepOne handleChange={(derivery) => setDerivery(derivery)} />
-							</Grid>
-							<Grid item lg={4}>
-								<StepTwo
-									address={address}
-									phone={phone}
-									handleChangeAddress={(address) => setAddress(address)}
-									handleChangePhone={(phone) => setPhone(phone)}
+		<XLayout className="p-p-2" style={{ backgroundColor: '#ececec' }}>
+			<XLayout_Center style={{ backgroundColor: 'white' }}>
+				<div className="p-col-12" style={{ display: 'flex' }}>
+					<div className="p-col-5">
+						<div>
+							<p style={{ fontSize: '18px' }}>Hình thức giao hàng</p>
+							<FormControl component="fieldset">
+								<RadioGroup name="giaohang" onChange={(e) => applyChange('derivery', e.target.value)}>
+									<FormControlLabel
+										value="tietkiem"
+										control={<Radio checked />}
+										label="Giao hàng tiêu chuẩn"
+									/>
+								</RadioGroup>
+							</FormControl>
+						</div>
+						<div>
+							<p style={{ fontSize: '18px' }}>Địa chỉ giao hàng</p>
+							<div>
+								<InputText
+									value={payload.address}
+									onChange={(e) => applyChange('address', e.target.value)}
+									placeholder="Địa chỉ nhận hàng"
 								/>
-							</Grid>
+								<InputText
+									value={payload.phone}
+									onChange={(e) => applyChange('phone', e.target.value)}
+									placeholder="Số điện thoại"
+								/>
+							</div>
+							<p>Ghi chú cho đơn hàng</p>
+							<InputTextarea rows={2} />
+						</div>
+					</div>
+					<div className="p-col-7">
+						<p>Thông tin đơn hàng</p>
+						<Grid item lg={12}>
+							<StepThree cart={cart} handleChange={handleCreatePayment} />
 						</Grid>
-					</Grid>
-					<Grid item lg={12}>
-						<StepThree cart={cart} handleChange={handleCreatePayment} />
-					</Grid>
-				</Grid>
-			</Container>
-		</Dialog>
+					</div>
+				</div>
+			</XLayout_Center>
+		</XLayout>
 	);
 }
 
