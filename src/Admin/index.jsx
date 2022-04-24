@@ -15,6 +15,7 @@ import Slider from './Components/Slider';
 import Users from './Components/Users';
 // import '../Components/layout.scss'
 import News from './Components/News/news';
+import UserInfor from './Components/Users/userInfor';
 Admin.propTypes = {};
 
 function Admin(props) {
@@ -42,7 +43,7 @@ function Admin(props) {
 	if (url === '/admin') {
 		import('../Components/layout.scss');
 	}
-
+	console.log(url);
 	return (
 		<XLayout>
 			<XLayout_Left>
@@ -69,6 +70,9 @@ function Admin(props) {
 							page={page}
 							handleChangePagination={(value) => setPage(value)}
 						/>
+					</Route>
+					<Route path={`${url}/user/details/:id`}>
+						<UserInfor token={token} />
 					</Route>
 					<Route path={`${url}/:id`} component={AddProduct} />
 					<Route path={`${url}`} component={DarshBoard}>

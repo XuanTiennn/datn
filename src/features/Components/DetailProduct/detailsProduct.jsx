@@ -120,7 +120,8 @@ function DetailsProduct() {
 			try {
 				const getItem = async () => {
 					let res = await axios.get(`/api/products/${params.id}`);
-					let comments = await axios.get(`/api/comment/${params.id}`);
+					let comments = await axios.get(`/api/comment/${params.id}?page=1&`);
+					console.log(comments);
 					setcomments(comments.data);
 					setProduct(res.data);
 					res.data.views = res.data.views ? res.data.views + 1 : 1;
@@ -133,7 +134,9 @@ function DetailsProduct() {
 		}
 	}, [params.id, products]);
 	const afterSubmit = (data) => {
-		setcomments([data, ...comments]);
+		const _data = { ...comments };
+		_data.comments = [data, ...comments.comments];
+		setcomments(_data);
 	};
 	function forhtmlContent() {
 		return { __html: product.content };
@@ -163,6 +166,7 @@ function DetailsProduct() {
 	useEffect(() => {
 		window.scrollTo(0, 0);
 	}, [match.url]);
+	console.log(comments);
 	if (product?.length === 0) return null;
 	else
 		return (
@@ -279,9 +283,10 @@ function DetailsProduct() {
 							</Paper>
 						</Box>
 					</Grid>
-					<ListComment comments={comments} />
-					<Comment product={product} state={state} afterSubmit={afterSubmit} />
 					<Box>
+						<ListComment comments={comments} />
+						<Comment product={product} state={state} afterSubmit={afterSubmit} />
+
 						<Services />
 					</Box>
 					<Box>

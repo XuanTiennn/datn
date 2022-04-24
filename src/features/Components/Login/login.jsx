@@ -86,6 +86,7 @@ function Login(props, ref) {
 					break;
 			}
 		} catch (err) {
+			console.log(err);
 			const failr = err.response.data.mgs;
 			alert(failr);
 		}

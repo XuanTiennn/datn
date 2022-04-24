@@ -13,9 +13,10 @@ const Comment = (props) => {
 			await axios.post('/api/comment', {
 				...payload,
 				productId: product._id,
-				userId: state.userApi.user[0]._id,
+				userId: state.userApi.user[0],
+				views:0
 			});
-			afterSubmit(payload);
+			afterSubmit({ ...payload, productId: product._id, userId: state.userApi.user[0] });
 			setPayload({ content: '' });
 		} catch (error) {
 			console.log(error);

@@ -121,7 +121,7 @@ function Users(props) {
 										{new Date(user.createdAt).toLocaleDateString()}
 									</TableCell>
 									<TableCell align="center">
-										<Link to={`/history/details/${user._id}`}>
+										<Link to={`user/details/${user._id}`}>
 											<Button color="primary" variant="contained">
 												Xem
 											</Button>

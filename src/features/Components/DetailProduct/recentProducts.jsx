@@ -27,7 +27,7 @@ export default function RecentProducts({ products = [], product }) {
 			<Grid container spacing={2} style={{ display: 'felx', flexWrap: 'nowrap', overflow: 'auto' }}>
 				{products.map((products) =>
 					products.category === product.category ? (
-						<Grid item>
+						<Grid item key={products._id}>
 							<ProductItem key={products._id} product={products} />
 						</Grid>
 					) : null
