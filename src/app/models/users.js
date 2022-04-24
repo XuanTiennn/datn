@@ -40,6 +40,7 @@ const users = new mongoose.Schema(
       type: Array,
       default: [],
     },
+    state: Boolean,
   },
   {
     timestamps: true,

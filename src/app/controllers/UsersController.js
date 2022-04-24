@@ -16,7 +16,12 @@ const UserController = {
       //password encryption
       const passwordHash = await bcrypt.hash(password, 10);
       //create a user
-      const newUser = new User({ name, email, password: passwordHash });
+      const newUser = new User({
+        name,
+        email,
+        password: passwordHash,
+        state: true,
+      });
       await newUser.save();
 
       //create jsonwebtoken to authentication
@@ -65,7 +70,11 @@ const UserController = {
       const user = await User.findOne({ email });
       if (!user)
         return res.status(400).json({ mgs: "Tài khoản không tồn tại." });
-
+      if (!user.state) {
+        return res.status(400).json({
+          mgs: "Tài khoản đã bị khóa!Vui lòng liên hệ admin để biết thêm chi tiết.",
+        });
+      }
       const matchPass = await bcrypt.compare(password, user.password);
       if (!matchPass) return res.status(400).json({ mgs: "Sai mật khẩu." });
 
@@ -90,7 +99,11 @@ const UserController = {
       const user = await User.findOne({ email });
       if (!user)
         return res.status(400).json({ mgs: "Tài khoản không tồn tại." });
-
+      if (!user.state) {
+        return res.status(400).json({
+          mgs: "Tài khoản đã bị khóa!Vui lòng liên hệ admin để biết thêm chi tiết.",
+        });
+      }
       //Nếu đăng nhập thành công
       const accesstoken = createAccessToken({ id: user._id });
       const refreshtoken = createRefreshToken({ id: user._id });
@@ -142,6 +155,18 @@ const UserController = {
       res.status(500).json({ mgs: error.message });
     }
   },
+  getItem: async (req, res) => {
+    try {
+      const user = await User.findById({ _id: req.params.id }).select(
+        "-password"
+      );
+      if (!user)
+        return res.status(400).json({ mgs: "Tài khoản không tồn tại." });
+      res.json(user);
+    } catch (error) {
+      res.status(500).json({ mgs: error.message });
+    }
+  },
   getAllUser: async (req, res) => {
     try {
       const users = await User.find();
@@ -186,10 +211,10 @@ const UserController = {
   },
   update: async (req, res) => {
     try {
-      const { name, phone, gender, birthday, address } = req.body;
+      const { name, phone, gender, birthday, address, state } = req.body;
       await User.findOneAndUpdate(
         { _id: req.params.id },
-        { name, phone, gender, birthday, address }
+        { name, phone, gender, birthday, address, state }
       );
       return res.status(400).json({ msg: "Đã Cập nhật thành công" });
     } catch (error) {
@@ -200,7 +225,7 @@ const UserController = {
     try {
       const { email, password, newpassword, comfirmnewpassword } = req.body;
       const user = await User.findOne({ email: email });
-     
+
       const currentPass = await bcrypt.compare(password, user.password);
       if (!currentPass) return res.status(400).json({ msg: "Sai mật khẩu." });
 
@@ -225,9 +250,8 @@ const UserController = {
   },
   setpassword: async (req, res) => {
     try {
-      const { email,setnewpass, comfirmnewpass } = req.body;
+      const { email, setnewpass, comfirmnewpass } = req.body;
       const user = await User.findOne({ email });
-     
 
       if (setnewpass.length < 6)
         return res.status(400).json({ msg: "Mật khẩu phải lớn hơn 6 ký tự." });
