@@ -1,5 +1,4 @@
 const User = require("../models/users");
-const Payment = require("../models/payment");
 const PaymentsCheckout = require("../models/paymentsCheckout");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
@@ -45,7 +44,7 @@ const UserController = {
       const { name, email } = req.body; //from form
 
       //create a user
-      const newUser = new User({ name, email });
+      const newUser = new User({ name, email,state: true, });
       await newUser.save();
 
       //create jsonwebtoken to authentication
@@ -191,14 +190,7 @@ const UserController = {
       return res.status(500).json({ mgs: error.message });
     }
   },
-  history: async (req, res) => {
-    try {
-      const historyPayment = await Payment.find({ user_id: req.user.id });
-      res.json(historyPayment);
-    } catch (error) {
-      return res.status(500).json({ mgs: error.message });
-    }
-  },
+ 
   historyCheckout: async (req, res) => {
     try {
       const historyPayment = await PaymentsCheckout.find({

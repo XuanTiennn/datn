@@ -34,6 +34,9 @@ const paymentCheckout = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    userId: Object,
+    state: String,
+    reason: String,
   },
   {
     timestamps: true,

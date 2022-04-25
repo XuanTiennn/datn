@@ -73,7 +73,7 @@ const PaymentsCheckOutController = {
       if (!user)
         return res.status(400).json({ mgs: "Tài khoản không tồn tại." });
 
-      const { cart, derivery, address, phone } = req.body;
+      const { cart, derivery, address, phone, state } = req.body;
 
       const { _id, name, email } = user;
 
@@ -85,6 +85,8 @@ const PaymentsCheckOutController = {
         address,
         derivery,
         phone,
+        state,
+        userId: user,
       });
       cart.filter((item) => {
         return sold(item._id, item.quantity, item.sold);
@@ -94,6 +96,14 @@ const PaymentsCheckOutController = {
       res.json({ mgs: "Đặt hàng thành công." });
     } catch (error) {
       res.status(500).json({ mgs: error.message });
+    }
+  },
+  editState: async (req, res) => {
+    try {
+      await paymentsCheckout.findOneAndUpdate({ _id: req.body._id }, { ...req.body });
+      res.json({ ...req.body });
+    } catch (error) {
+      return res.status(500).json({ mgs: error.message });
     }
   },
 };

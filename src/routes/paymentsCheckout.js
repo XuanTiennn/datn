@@ -10,4 +10,8 @@ router
   .get(auth, authAdmin, PaymentsCheckoutController.getPayment)
   .post(auth, PaymentsCheckoutController.createPayment);
 
+router
+  .route("/paymentsCheckout/:id")
+  .put(auth, PaymentsCheckoutController.editState);
+
 module.exports = router;

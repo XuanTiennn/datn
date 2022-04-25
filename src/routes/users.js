@@ -22,8 +22,6 @@ router.get("/infor", auth, UserController.getUser);
 
 router.patch("/addcart", auth, UserController.addToCart);
 
-router.get("/history", auth, UserController.history);
-
 router.get("/historyCheckout", auth, UserController.historyCheckout);
 
 router.patch("/update/:id", auth, UserController.update);
