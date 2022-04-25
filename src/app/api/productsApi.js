@@ -60,7 +60,7 @@ function ProductsApi() {
 			const res = await axios.get(
 				`/api/products?page=${page}&${sort}&${category}&title[regex]=${search}&${color}&${service}`
 			);
-			res.data.products.forEach((item) => {
+			res.data.products?.forEach((item) => {
 				tg.push(item);
 			});
 

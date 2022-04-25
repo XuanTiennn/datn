@@ -75,7 +75,7 @@ function Banner() {
 					autoPlay={true}
 					autoPlaySpeed={3000}
 				>
-					{slider.map((item) => (
+					{slider?.map((item) => (
 						<Grid className={classes.box} container key={item._id}>
 							<Hidden only={['xs', 'md', 'sm']}>
 								<Grid className={classes.column} item lg={6}>
