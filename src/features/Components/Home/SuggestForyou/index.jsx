@@ -18,7 +18,7 @@ function SuggestForYou(props) {
 				<Box>
 					<FilterByCategory />
 					<Grid className="p-grid p-formgrid p-fluid">
-						{products.map((product) => (
+						{products?.map((product) => (
 							<ProductItem className="p-col-3" key={product._id} product={product} />
 						))}
 					</Grid>
