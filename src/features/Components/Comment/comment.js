@@ -14,7 +14,7 @@ const Comment = (props) => {
 				...payload,
 				productId: product._id,
 				userId: state.userApi.user[0],
-				views:0
+				likes: 0,
 			});
 			afterSubmit({ ...payload, productId: product._id, userId: state.userApi.user[0] });
 			setPayload({ content: '' });

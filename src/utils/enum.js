@@ -55,24 +55,35 @@ const Enumeration = {
 		{
 			id: 0,
 			icon: 'https://res.cloudinary.com/dzpks7wzs/image/upload/v1649665432/N16_ecommers/icon-phone-s2_sx4hgl.svg',
-			href:'tel:0123456789'
+			href: 'tel:0123456789',
 		},
 		{
 			id: 1,
 			icon: 'https://res.cloudinary.com/dzpks7wzs/image/upload/v1649666200/N16_ecommers/icon-mail-s2_ogeicy.svg',
-			href:'mailto:xtienclone1@gmail.com'
+			href: 'mailto:xtienclone1@gmail.com',
 		},
 		{
 			id: 2,
 			icon: 'https://res.cloudinary.com/dzpks7wzs/image/upload/v1649666377/N16_ecommers/icon-map-s2_r3tsyg.svg',
-			href:''
+			href: '',
 		},
 		{
 			id: 3,
 			icon: 'https://res.cloudinary.com/dzpks7wzs/image/upload/v1649666353/N16_ecommers/icon-fanpage-s2_hqiomw.svg',
-			href:'https://www.facebook.com/XTComputer'
+			href: 'https://www.facebook.com/XTComputer',
 		},
 	],
+	states: [
+		{ code: 'INIT', name: 'Mới' },
+		{ code: 'APPROVE', name: 'Đã duyệt' },
+		{ code: 'TRANSPORTING', name: 'Đang giao hàng' },
+		{ code: 'SUCCESS', name: 'Giao hàng thành công' },
+	],
+	INIT: 'INIT',
+	APPROVE: 'APPROVE',
+	TRANSPORTING: 'TRANSPORTING',
+	SUCCESS: 'SUCCESS',
+	CANCEL: 'CANCEL',
 };
 
 export default Enumeration;

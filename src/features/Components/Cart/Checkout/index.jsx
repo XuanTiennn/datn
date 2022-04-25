@@ -7,6 +7,7 @@ import { ContextGlobal } from '../../../../app/ContextGlobal';
 import StepThree from './stepThree';
 import { InputText } from 'primereact/inputtext';
 import { InputTextarea } from 'primereact/inputtextarea';
+import Enumeration from './../../../../utils/enum';
 CheckoutPayment.propTypes = {};
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -47,7 +48,7 @@ function CheckoutPayment(props, ref) {
 	const handleCreatePayment = async () => {
 		const res = await axios.post(
 			'/api/paymentsCheckout',
-			{ cart, ...payload },
+			{ cart, ...payload, state: Enumeration.INIT },
 			{ headers: { Authorization: token } }
 		);
 		// console.log(res);

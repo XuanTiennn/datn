@@ -22,18 +22,11 @@ function DarshBoard({ paymentCheckOut = [] }) {
 	const state = useContext(ContextGlobal);
 	const [allProductSold] = state.productsAPI.allProductSold;
 	const [allProduct] = state.productsAPI.allProduct;
-	const [payments] = state.paymentApi.payments;
 	const [allUser] = state.userApi.allUser;
 	const [categories] = state.categoryApi.category;
 
 	const array = [];
 	const totalItem = [];
-	payments.map((item) => {
-		const { cart } = item;
-		array.push(cart);
-		totalItem.push(item);
-	});
-	console.log(payments);
 	paymentCheckOut.map((item) => {
 		const { cart } = item;
 		array.push(cart);
@@ -126,7 +119,7 @@ function DarshBoard({ paymentCheckOut = [] }) {
 			<XLayout_Center>
 				<div className="p-col-12" style={{ display: 'flex' }}>
 					<div className="p-col-6">
-						<LineChart payments={totalItem} countpaypal={payments} />
+						<LineChart payments={totalItem} />
 					</div>
 					<div className="p-col-6">
 						<DoughnutChart list={dataNumbers} labels={categories} />

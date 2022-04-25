@@ -105,6 +105,7 @@ function OrderedCheckout(props) {
 								<TableCell align="center">Payment ID</TableCell>
 								<TableCell align="center">Ngày đặt hàng</TableCell>
 								<TableCell align="center">Xem chi tiết</TableCell>
+								
 							</TableRow>
 						</TableHead>
 						<TableBody>

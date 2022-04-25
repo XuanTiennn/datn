@@ -61,12 +61,13 @@ function Admin(props) {
 					<Route path={`${url}/news`} component={News} />
 					{/* <Route path={`${url}/ordered/:id`} component={DetailsOrderd} /> */}
 					<Route path={`${url}/orderdCheckout/:id`}>
-						<DetailsOrderdCheckout paymentsCheckOut={PaymentCheckout} />
+						<DetailsOrderdCheckout token={token} paymentsCheckOut={PaymentCheckout} />
 					</Route>
 					{/* <Route path={`${url}/orderd`} component={Ordered} /> */}
 					<Route path={`${url}/orderdCheckout`}>
 						<OrderedCheckout
 							paymentsCheckout={PaymentCheckout}
+							
 							page={page}
 							handleChangePagination={(value) => setPage(value)}
 						/>

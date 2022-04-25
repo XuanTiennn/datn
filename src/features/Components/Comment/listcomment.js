@@ -1,12 +1,15 @@
 import { Pagination } from '@material-ui/lab';
 import axios from 'axios';
-import React, { useState } from 'react';
+import { Toast } from 'primereact/toast';
+import React, { useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
 const ListComment = (props) => {
-	const { comments } = props;
-	console.log(comments);
+	const { comments, isLogined } = props;
+
 	const [payload, setPayload] = useState({});
 	const [page, setPage] = useState(1);
+	const toast = useRef(null);
+
 	const [listComment, setlistComment] = useState(comments);
 	const applyChange = (prop, value) => {
 		const _p = { ...payload };
@@ -19,15 +22,27 @@ const ListComment = (props) => {
 		setlistComment(res.data);
 	};
 	const update = async (item) => {
-		item.likes = item.likes + 1;
-		await axios.put(`/api/comment/${item._id}`, { ...item });
-		const _p = [...listComment];
-		for (let i = 0; i < _p.comments.length; i++) {
-			if (_p[i]._id === item._id) {
-				_p[i] = item;
+		if (!isLogined) {
+			showWarning();
+		} else {
+			item.likes = item.likes + 1;
+			await axios.put(`/api/comment/${item._id}`, { ...item });
+			const _p = { ...listComment };
+			for (let i = 0; i < _p.comments.length; i++) {
+				if (_p.comments[i]._id === item._id) {
+					_p.comments[i] = item;
+				}
 			}
+			setlistComment(_p);
 		}
-		setlistComment(_p);
+	};
+	const showWarning = () => {
+		toast.current.show({
+			severity: 'warn',
+			summary: 'Thao tác thất bại',
+			detail: 'Vui lòng đăng nhập để thực hiện hành động này !',
+			life: 3000,
+		});
 	};
 	const sort = () => {
 		const _p = { ...listComment };
@@ -37,6 +52,7 @@ const ListComment = (props) => {
 	return (
 		<div style={{ border: '1px solid #eee', backgroundColor: 'white', padding: '5px', borderRadius: '5px' }}>
 			<h5 style={{ fontSize: '26px' }}>Đánh giá nhận xét từ khách hàng</h5>
+			<Toast ref={toast} />
 			<div style={{ display: 'flex', justifyContent: 'flex-end' }}>
 				<button
 					onClick={() => sort()}
@@ -72,7 +88,7 @@ const ListComment = (props) => {
 					<div className="p-ml-3">
 						<p>Người đánh giá : {item.userId?.name}</p>
 						<span>{item.content}</span>
-						<div style={{ display: 'flex',marginTop:'10px' }}>
+						<div style={{ display: 'flex', marginTop: '10px' }}>
 							<button
 								onClick={() => update(item)}
 								style={{
@@ -83,11 +99,12 @@ const ListComment = (props) => {
 									borderRadius: '5px',
 									marginLeft: '10px',
 									display: 'block',
+									cursor: 'pointer',
 								}}
 							>
 								Thích :
 							</button>
-							<span style={{ color: 'black',marginLeft:'10px' }}>{item.likes}</span>
+							<span style={{ color: 'black', marginLeft: '10px' }}>{item.likes}</span>
 						</div>{' '}
 					</div>
 				))}

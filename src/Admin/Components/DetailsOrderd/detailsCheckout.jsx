@@ -5,9 +5,12 @@ import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import formatNumber from '../../../utils/formatNumber';
+import Enumeration from './../../../utils/enum';
+import axios from 'axios';
+import { Toast } from 'primereact/toast';
 const useStyles = makeStyles((theme) => ({
 	root: {
 		padding: theme.spacing(2, 0),
@@ -18,11 +21,13 @@ const useStyles = makeStyles((theme) => ({
 		maxWidth: '100px',
 	},
 }));
-function DetailsOrderdCheckout({ paymentsCheckOut = [] }) {
+function DetailsOrderdCheckout({ paymentsCheckOut = [], token }) {
 	const classes = useStyles();
 	const params = useParams();
+	const toast = useRef(null);
 
 	const [orderDetails, setOrderDetails] = useState([]);
+	const [reason, setReason] = useState([]);
 
 	useEffect(() => {
 		if (params.id) {
@@ -33,11 +38,27 @@ function DetailsOrderdCheckout({ paymentsCheckOut = [] }) {
 			});
 		}
 	}, [params.id]);
+	const changeState = async (state) => {
+		try {
+			await axios.put(`/api/paymentsCheckout/${orderDetails._id}`, { ...orderDetails, state }, { headers: { Authorization: token } });
+			showWarning();
+		} catch (error) {
+			console.log(error);
+		}
+	};
+	const showWarning = () => {
+		toast.current.show({
+			severity: 'success',
+			summary: 'Thao tác thành công',
 
+			life: 3000,
+		});
+	};
 	if (orderDetails.length === 0) return null;
 	return (
 		<Container className={classes.root}>
 			<TableContainer component={Paper}>
+				<Toast ref={toast} />
 				<Typography style={{ margin: '10px' }} component="h2" variant="h5">
 					Thông tin khách hàng
 				</Typography>
@@ -89,6 +110,31 @@ function DetailsOrderdCheckout({ paymentsCheckOut = [] }) {
 						))}
 					</TableBody>
 				</Table>
+				<button
+					onClick={() => changeState(Enumeration.APPROVE)}
+					style={{
+						padding: '5px',
+						backgroundColor: 'white',
+						color: 'blue',
+						border: '1px solid blue',
+						borderRadius: '5px',
+					}}
+				>
+					Xác nhận đơn hàng
+				</button>
+				<button
+					onClick={() => changeState(Enumeration.CANCEL)}
+					style={{
+						padding: '5px',
+						backgroundColor: 'white',
+						color: 'red',
+						border: '1px solid red',
+						borderRadius: '5px',
+					}}
+				>
+					Hủy đơn hàng
+				</button>
+				<textarea placeholder="Lý do" onChange={(e) => setReason(e.target.value)}></textarea>
 			</TableContainer>
 		</Container>
 	);

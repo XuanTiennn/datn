@@ -1,10 +1,4 @@
-import {
-	Button,
-	Container,
-	makeStyles,
-	Paper,
-	Typography
-} from '@material-ui/core';
+import { Button, Container, makeStyles, Paper, Typography } from '@material-ui/core';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -15,8 +9,8 @@ import axios from 'axios';
 import { default as React, useContext, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { ContextGlobal } from '../../../app/ContextGlobal';
+import  Enumeration  from 'utils/enum';
 OderHistory.propTypes = {};
-
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -106,7 +100,6 @@ function OderHistory(props) {
 		}
 	}, [token, setHistory]);
 
-
 	if (history.length === 0) {
 		return (
 			<Typography component="h3" variant="h3">
@@ -123,6 +116,7 @@ function OderHistory(props) {
 							<TableCell align="center">Payment ID</TableCell>
 							<TableCell align="center">Ngày đặt hàng</TableCell>
 							<TableCell align="center">Xem chi tiết</TableCell>
+							<TableCell align="center">Trạng thái</TableCell>
 						</TableRow>
 					</TableHead>
 					<TableBody>
@@ -131,21 +125,19 @@ function OderHistory(props) {
 								<TableCell component="th" scope="row" align="center">
 									{item.paymentID}
 								</TableCell>
-								
-								<TableCell align="center">
-									{new Date(
-										item.createdAt
-									).toLocaleDateString()}
-								</TableCell>
+
+								<TableCell align="center">{new Date(item.createdAt).toLocaleDateString()}</TableCell>
 								<TableCell align="center">
 									<Link to={`/history/details/${item._id}`}>
-										<Button
-											color="primary"
-											variant="contained"
-										>
+										<Button color="primary" variant="contained">
 											Xem
 										</Button>
 									</Link>
+								</TableCell>
+								<TableCell align="center">
+									<Button color="primary" variant="contained">
+										{Enumeration.states.find((item) => item.code === item.state)?.name}
+									</Button>
 								</TableCell>
 							</TableRow>
 						))}

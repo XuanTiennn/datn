@@ -15,14 +15,21 @@ function UserInfor({ token }) {
 		setUser(res.data);
 	}, []);
 	const changeStateAccount = async () => {
-		if (window.confirm('Bạn có chắc chắn muốn vô hiệu hóa tài khoản này không ?')) {
+		if (
+			window.confirm(
+				user.state
+					? 'Bạn có chắc chắn muốn vô hiệu hóa tài khoản này không ?'
+					: 'Bạn có chắc chắn muốn mở khóa tài khoản này không'
+			)
+		) {
 			await axios.patch(
 				`/user/update/${params.id}`,
-				{ state: false },
+				{ state: !user.state },
 				{
 					headers: { Authorization: token },
 				}
 			);
+			setUser({ ...user, state: !user.state });
 		} else {
 			console.log(2);
 		}
@@ -38,13 +45,14 @@ function UserInfor({ token }) {
 				onClick={changeStateAccount}
 				style={{
 					backgroundColor: 'white',
-					color: 'red',
+					color: user.state ? 'red' : 'blue',
 					padding: '5px',
 					borderRadius: '5px',
-					border: '1px solid red',
+					border: user.state ? '1px solid red' : '1px solid blue',
+					cursor: 'pointer',
 				}}
 			>
-				Khóa tài khoản
+				{user.state ? 'Khóa tài khoản' : 'Mở khóa tài khoản'}
 			</button>
 		</div>
 	);

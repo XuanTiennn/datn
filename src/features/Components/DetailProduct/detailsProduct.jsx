@@ -284,9 +284,8 @@ function DetailsProduct() {
 						</Box>
 					</Grid>
 					<Box>
-						<ListComment comments={comments} />
-						<Comment product={product} state={state} afterSubmit={afterSubmit} />
-
+						<ListComment isLogined={isLogined} comments={comments} />
+						{isLogined && <Comment product={product} state={state} afterSubmit={afterSubmit} />}
 						<Services />
 					</Box>
 					<Box>

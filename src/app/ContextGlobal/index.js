@@ -1,7 +1,6 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import CategoryApi from '../api/categoryApi';
-import PaymentApi from '../api/paymentApi';
 import PaymentCheckoutApi from '../api/paymentsCheckoutApi';
 import ProductsApi from '../api/productsApi';
 import UserApi from '../api/userApi';
@@ -34,7 +33,6 @@ const ProviderContext = ({ children }) => {
 		productsAPI: ProductsApi(),
 		userApi: UserApi(token),
 		categoryApi: CategoryApi(),
-		paymentApi: PaymentApi(token),
 		paymentCheckOutApi: PaymentCheckoutApi(token),
 	};
 

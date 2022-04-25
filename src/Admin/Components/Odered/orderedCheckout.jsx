@@ -9,6 +9,7 @@ import Pagination from '@material-ui/lab/Pagination';
 import { defaultasReact, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { ContextGlobal } from './../../../app/ContextGlobal/index';
+import Enumeration from './../../../utils/enum';
 
 const useStyles = makeStyles((theme) => ({
 	root: { height: '100%' },
@@ -100,6 +101,7 @@ function OrderedCheckout({ paymentsCheckout = [], handleChangePagination, page }
 								<TableCell align="center">Payment ID</TableCell>
 								<TableCell align="center">Ngày đặt hàng</TableCell>
 								<TableCell align="center">Xem chi tiết</TableCell>
+								<TableCell align="center">Trạng thái</TableCell>
 							</TableRow>
 						</TableHead>
 						<TableBody>
@@ -118,6 +120,11 @@ function OrderedCheckout({ paymentsCheckout = [], handleChangePagination, page }
 												Xem
 											</Button>
 										</Link>
+									</TableCell>
+									<TableCell align="center">
+										<Button color="" variant="outlined">
+											{Enumeration.states.find((i) => i.code === item.state)?.name}
+										</Button>
 									</TableCell>
 								</TableRow>
 							))}
