@@ -15,6 +15,7 @@ const comment = new mongoose.Schema(
       require: true,
     },
     likes: Number,
+    rating: Number,
   },
   {
     timestamps: true,

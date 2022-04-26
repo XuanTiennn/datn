@@ -56,7 +56,14 @@ const comment = {
   getComments: async (req, res) => {
     try {
       // const comment = await Comment.find({ productId: req.params.id });
-      const allComment =await Comment.find({ productId: req.params.id });
+      let param = {};
+      if (req.params.rating) {
+        param.productId = req.params.id;
+        param.rating = req.params.rating;
+      } else {
+        param.productId = req.params.id;
+      }
+      const allComment = await Comment.find({ productId : req.params.id });
       const features = new APIfeatures(
         Comment.find({ productId: req.params.id }),
         req.query
@@ -77,8 +84,14 @@ const comment = {
   createComment: async (req, res) => {
     try {
       //chỉ admin mới có thể thêm ,sửa ,xóa category
-      const { content, userId, productId, likes } = req.body;
-      const newComment = new Comment({ content, userId, productId, likes });
+      const { content, userId, productId, likes, rating } = req.body;
+      const newComment = new Comment({
+        content,
+        userId,
+        productId,
+        likes,
+        rating,
+      });
       await newComment.save();
 
       res.json({ mgs: "Thêm bình luận thành công." });
@@ -96,10 +109,10 @@ const comment = {
   },
   editComment: async (req, res) => {
     try {
-      const { content, productId, userId, likes } = req.body;
+      const { content, productId, userId, likes, rating } = req.body;
       await Comment.findOneAndUpdate(
         { _id: req.params.id },
-        { content, productId, userId, likes }
+        { content, productId, userId, likes, rating }
       );
       res.json({ mgs: "succes" });
     } catch (error) {
