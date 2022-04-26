@@ -23,7 +23,7 @@ function Admin(props) {
 	const state = useContext(ContextGlobal);
 	const [PaymentCheckout, setPaymentCheckout] = useState([]);
 
-	const [paymentsCheckouts] = state.paymentCheckOutApi.paymentsCheckouts;
+	const [paymentsCheckouts,setPaymentsCheckouts] = state.paymentCheckOutApi.paymentsCheckouts;
 	const [page, setPage] = useState(1);
 	const [token] = state.token;
 	useEffect(() => {
@@ -40,6 +40,9 @@ function Admin(props) {
 		}
 	}, [page]);
 	// console.log(url);
+	const aftersubmit = (arr) => {
+		setPaymentsCheckouts(arr);
+	};
 	if (url === '/admin') {
 		import('../Components/layout.scss');
 	}
@@ -67,7 +70,7 @@ function Admin(props) {
 					<Route path={`${url}/orderdCheckout`}>
 						<OrderedCheckout
 							paymentsCheckout={PaymentCheckout}
-							
+							aftersubmit={aftersubmit}
 							page={page}
 							handleChangePagination={(value) => setPage(value)}
 						/>

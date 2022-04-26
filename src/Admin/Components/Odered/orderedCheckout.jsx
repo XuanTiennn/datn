@@ -83,8 +83,9 @@ const useStyles = makeStyles((theme) => ({
 function OrderedCheckout({ paymentsCheckout = [], handleChangePagination, page }) {
 	const classes = useStyles();
 	const state = useContext(ContextGlobal);
-	const [paymentsCheckouts] = state.paymentCheckOutApi.paymentsCheckouts;
+	const [paymentsCheckouts,setPaymentsCheckouts] = state.paymentCheckOutApi.paymentsCheckouts;
 
+	
 	return (
 		<div>
 			<Container className={classes.root} style={{ height: '100%' }}>
@@ -122,9 +123,9 @@ function OrderedCheckout({ paymentsCheckout = [], handleChangePagination, page }
 										</Link>
 									</TableCell>
 									<TableCell align="center">
-										<Button color="" variant="outlined">
+										<span color="" variant="outlined">
 											{Enumeration.states.find((i) => i.code === item.state)?.name}
-										</Button>
+										</span>
 									</TableCell>
 								</TableRow>
 							))}

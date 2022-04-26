@@ -8,7 +8,7 @@ import TableRow from '@material-ui/core/TableRow';
 import { default as React, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { ContextGlobal } from '../../../app/ContextGlobal';
-
+import Enumeration from './../../../utils/enum';
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -86,7 +86,6 @@ function OrderedCheckout(props) {
 	const [paymentsCheckout] = state.paymentCheckOutApi.paymentsCheckout;
 
 	const classes = useStyles();
-	
 
 	if (paymentsCheckout.length === 0) {
 		return (
@@ -95,6 +94,7 @@ function OrderedCheckout(props) {
 			</Typography>
 		);
 	}
+	console.log(paymentsCheckout);
 	return (
 		<div>
 			<Container className={classes.root}>
@@ -105,7 +105,8 @@ function OrderedCheckout(props) {
 								<TableCell align="center">Payment ID</TableCell>
 								<TableCell align="center">Ngày đặt hàng</TableCell>
 								<TableCell align="center">Xem chi tiết</TableCell>
-								
+								<TableCell align="center">Trạng thái</TableCell>
+								<TableCell align="center">Lý do</TableCell>
 							</TableRow>
 						</TableHead>
 						<TableBody>
@@ -125,6 +126,10 @@ function OrderedCheckout(props) {
 											</Button>
 										</Link>
 									</TableCell>
+									<TableCell align="center">
+										{Enumeration.states.find((i) => i.code === item.state)?.name}
+									</TableCell>
+									<TableCell align="center">{item.reason}</TableCell>
 								</TableRow>
 							))}
 						</TableBody>

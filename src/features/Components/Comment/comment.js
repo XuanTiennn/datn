@@ -1,5 +1,8 @@
 import axios from 'axios';
 import React, { useState } from 'react';
+import { Rating } from 'primereact/rating';
+import { Button } from 'primereact/button';
+import { InputTextarea } from 'primereact/inputtextarea';
 const Comment = (props) => {
 	const { product, state, afterSubmit } = props;
 	const [payload, setPayload] = useState({});
@@ -24,20 +27,28 @@ const Comment = (props) => {
 	};
 	return (
 		<div>
-			<div className="p-col-10 p-py-0 p-px-1 p-mt-2">
+			<div
+				className="p-col-10 p-py-0 p-px-1 p-mt-2 p-p-2"
+				style={{ border: '1px solid brown', borderRadius: '5px', width: '100%', textAlign: 'right' }}
+			>
 				<span className="p-float-label">
-					<textarea
+					<Rating
+						style={{ textAlign: 'left' }}
+						value={payload?.rating}
+						cancel={false}
+						onChange={(e) => applyChange('rating', e.value)}
+					/>
+
+					<InputTextarea
 						value={payload?.content}
 						onChange={(e) => applyChange('content', e.target.value)}
 						rows={3}
 						cols={5}
 						autoResize
-						style={{ width: '80%' }}
+						style={{ width: '100%' }}
 					/>
 				</span>
-				<button label="Gửi" onClick={createComment}>
-					Gửi
-				</button>
+				<Button className="p-button-outlined p-button-infor" label="Gửi" onClick={createComment}></Button>
 			</div>
 		</div>
 	);

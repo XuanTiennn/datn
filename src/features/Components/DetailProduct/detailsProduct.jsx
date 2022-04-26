@@ -134,10 +134,13 @@ function DetailsProduct() {
 		}
 	}, [params.id, products]);
 	const afterSubmit = (data) => {
-		const _data = { ...comments };
-		_data.comments = [data, ...comments.comments];
+		let _data = {...comments};
+		_data.comments.push(data);
 		setcomments(_data);
 	};
+	const onPage=(data)=>{
+		setcomments(data)
+	}
 	function forhtmlContent() {
 		return { __html: product.content };
 	}
@@ -284,7 +287,7 @@ function DetailsProduct() {
 						</Box>
 					</Grid>
 					<Box>
-						<ListComment isLogined={isLogined} comments={comments} />
+						<ListComment isLogined={isLogined} comments={comments} onPage={onPage} />
 						{isLogined && <Comment product={product} state={state} afterSubmit={afterSubmit} />}
 						<Services />
 					</Box>

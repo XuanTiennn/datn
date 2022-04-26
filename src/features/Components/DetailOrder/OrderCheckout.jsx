@@ -5,10 +5,13 @@ import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import { ContextGlobal } from '../../../app/ContextGlobal';
 import formatNumber from '../../../utils/formatNumber';
+import Enumeration from './../../../utils/enum';
+import axios from 'axios';
+import { Toast } from 'primereact/toast';
 const useStyles = makeStyles((theme) => ({
 	root: {
 		padding: theme.spacing(2, 0),
@@ -23,9 +26,12 @@ function OrderCheckoutDetails({ payments = [] }) {
 	const classes = useStyles();
 	const params = useParams();
 	const state = useContext(ContextGlobal);
-	const [paymentsCheckout] = state.paymentCheckOutApi.paymentsCheckout;
-	const [orderDetails, setOrderDetails] = useState([]);
+	const [paymentsCheckout, setPaymentsCheckout] = state.paymentCheckOutApi.paymentsCheckout;
 
+	const [orderDetails, setOrderDetails] = useState([]);
+	const [reason, setReason] = useState();
+	const [token] = state.token;
+	const toast = useRef();
 	useEffect(() => {
 		if (params.id) {
 			paymentsCheckout.forEach((item) => {
@@ -35,7 +41,36 @@ function OrderCheckoutDetails({ payments = [] }) {
 			});
 		}
 	}, [params.id]);
+	const changeState = async (state) => {
+		let res;
+		try {
+			res = await axios.put(
+				`/api/paymentsCheckout/${orderDetails._id}`,
+				{ ...orderDetails, state, reason },
+				{ headers: { Authorization: token } }
+			);
 
+			const _arr = [...paymentsCheckout];
+			for (let i = 0; i < _arr.length; i++) {
+				if (_arr[i]._id === orderDetails._id) {
+					_arr[i] = res.data;
+				}
+			}
+			setOrderDetails(res.data)
+			setPaymentsCheckout(_arr);
+			showWarning();
+		} catch (error) {
+			console.log(error);
+		}
+	};
+	const showWarning = () => {
+		toast.current.show({
+			severity: 'success',
+			summary: 'Thao tác thành công',
+
+			life: 3000,
+		});
+	};
 	if (orderDetails.length === 0) return null;
 	return (
 		<Container className={classes.root}>
@@ -43,6 +78,7 @@ function OrderCheckoutDetails({ payments = [] }) {
 				<Typography style={{ margin: '10px' }} component="h2" variant="h5">
 					Thông tin khách hàng
 				</Typography>
+				<Toast ref={toast} />
 				<Table className={classes.table} aria-label="simple table">
 					<TableHead>
 						<TableRow>
@@ -58,7 +94,9 @@ function OrderCheckoutDetails({ payments = [] }) {
 								{orderDetails.name}
 							</TableCell>
 							<TableCell align="center">{orderDetails.address}</TableCell>
-							<TableCell align="center">{orderDetails.derivery === "tietkiem" ? "Tiết kiệm" : "Siêu tốc"}</TableCell>
+							<TableCell align="center">
+								{orderDetails.derivery === 'tietkiem' ? 'Tiết kiệm' : 'Siêu tốc'}
+							</TableCell>
 							<TableCell align="center">{orderDetails.phone}</TableCell>
 						</TableRow>
 					</TableBody>
@@ -89,6 +127,23 @@ function OrderCheckoutDetails({ payments = [] }) {
 						))}
 					</TableBody>
 				</Table>
+				{orderDetails.state === Enumeration.INIT && (
+					<>
+						<button
+							onClick={() => changeState(Enumeration.CANCEL)}
+							style={{
+								padding: '5px',
+								backgroundColor: 'white',
+								color: 'red',
+								border: '1px solid red',
+								borderRadius: '5px',
+							}}
+						>
+							Hủy đơn hàng
+						</button>
+						<textarea placeholder="Lý do" onChange={(e) => setReason(e.target.value)}></textarea>
+					</>
+				)}
 			</TableContainer>
 		</Container>
 	);

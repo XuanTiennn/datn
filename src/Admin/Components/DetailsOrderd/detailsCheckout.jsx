@@ -21,13 +21,13 @@ const useStyles = makeStyles((theme) => ({
 		maxWidth: '100px',
 	},
 }));
-function DetailsOrderdCheckout({ paymentsCheckOut = [], token }) {
+function DetailsOrderdCheckout({ paymentsCheckOut = [], token, aftersubmit }) {
 	const classes = useStyles();
 	const params = useParams();
 	const toast = useRef(null);
 
 	const [orderDetails, setOrderDetails] = useState([]);
-	const [reason, setReason] = useState([]);
+	const [reason, setReason] = useState();
 
 	useEffect(() => {
 		if (params.id) {
@@ -40,7 +40,19 @@ function DetailsOrderdCheckout({ paymentsCheckOut = [], token }) {
 	}, [params.id]);
 	const changeState = async (state) => {
 		try {
-			await axios.put(`/api/paymentsCheckout/${orderDetails._id}`, { ...orderDetails, state }, { headers: { Authorization: token } });
+			const res = await axios.put(
+				`/api/paymentsCheckout/${orderDetails._id}`,
+				{ ...orderDetails, state, reason },
+				{ headers: { Authorization: token } }
+			);
+			const _arr = [...paymentsCheckOut];
+			for (let i = 0; i < _arr.length; i++) {
+				if (_arr[i]._id === orderDetails._id) {
+					_arr[i] = res.data;
+				}
+			}
+			setOrderDetails(res.data);
+			aftersubmit(_arr);
 			showWarning();
 		} catch (error) {
 			console.log(error);
@@ -110,31 +122,49 @@ function DetailsOrderdCheckout({ paymentsCheckOut = [], token }) {
 						))}
 					</TableBody>
 				</Table>
-				<button
-					onClick={() => changeState(Enumeration.APPROVE)}
-					style={{
-						padding: '5px',
-						backgroundColor: 'white',
-						color: 'blue',
-						border: '1px solid blue',
-						borderRadius: '5px',
-					}}
-				>
-					Xác nhận đơn hàng
-				</button>
-				<button
-					onClick={() => changeState(Enumeration.CANCEL)}
-					style={{
-						padding: '5px',
-						backgroundColor: 'white',
-						color: 'red',
-						border: '1px solid red',
-						borderRadius: '5px',
-					}}
-				>
-					Hủy đơn hàng
-				</button>
-				<textarea placeholder="Lý do" onChange={(e) => setReason(e.target.value)}></textarea>
+				{orderDetails.state === Enumeration.INIT && (
+					<>
+						<button
+							onClick={() => changeState(Enumeration.APPROVE)}
+							style={{
+								padding: '5px',
+								backgroundColor: 'white',
+								color: 'blue',
+								border: '1px solid blue',
+								borderRadius: '5px',
+							}}
+						>
+							Xác nhận đơn hàng
+						</button>
+						<button
+							onClick={() => changeState(Enumeration.CANCEL)}
+							style={{
+								padding: '5px',
+								backgroundColor: 'white',
+								color: 'red',
+								border: '1px solid red',
+								borderRadius: '5px',
+							}}
+						>
+							Hủy đơn hàng
+						</button>
+						<textarea placeholder="Lý do" onChange={(e) => setReason(e.target.value)}></textarea>
+					</>
+				)}
+				{orderDetails.state === Enumeration.APPROVE && (
+					<button
+						onClick={() => changeState(Enumeration.SUCCESS)}
+						style={{
+							padding: '5px',
+							backgroundColor: 'white',
+							color: 'green',
+							border: '1px solid green',
+							borderRadius: '5px',
+						}}
+					>
+						Giao hàng thành công
+					</button>
+				)}
 			</TableContainer>
 		</Container>
 	);

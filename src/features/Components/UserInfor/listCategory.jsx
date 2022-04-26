@@ -13,12 +13,6 @@ const data = [
 		path: '',
 	},
 	{
-		id: 2,
-		icon: <MenuBookIcon />,
-		title: 'Quản lý đơn hàng(paypal)',
-		path: '/orderd',
-	},
-	{
 		id: 3,
 		icon: <MenuBookIcon />,
 		title: 'Quản lý đơn hàng',

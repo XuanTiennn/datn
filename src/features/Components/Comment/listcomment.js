@@ -1,25 +1,45 @@
 import { Pagination } from '@material-ui/lab';
 import axios from 'axios';
+import { Rating } from 'primereact/rating';
 import { Toast } from 'primereact/toast';
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
+import './comment.scss';
+import { Button } from 'primereact/button';
+import Count from './count';
 const ListComment = (props) => {
-	const { comments, isLogined } = props;
+	const { comments, isLogined, onPage } = props;
 
 	const [payload, setPayload] = useState({});
 	const [page, setPage] = useState(1);
+	const [search, setsearch] = useState();
+	const [star, setstar] = useState();
 	const toast = useRef(null);
 
 	const [listComment, setlistComment] = useState(comments);
+	useEffect(() => {
+		setlistComment(comments);
+	}, [comments]);
 	const applyChange = (prop, value) => {
 		const _p = { ...payload };
 		_p[prop] = value;
 		setPayload(_p);
 	};
+	console.log(listComment);
 	const params = useParams();
-	const getData = async (page, sort) => {
-		let res = await axios.get(`/api/comment/${params.id}?page=${page}&sort=${sort}`);
+	const getData = async (page, sort, rating) => {
+		let res;
+		setsearch(sort);
+		setstar(rating);
+		if (rating === 'all') {
+			res = await axios.get(`/api/comment/${params.id}?page=1`);
+		} else if (rating === 'pagi') {
+			res = await axios.get(`/api/comment/${params.id}?page=${page}&sort=${search || ''}`);
+		} else {
+			res = await axios.get(`/api/comment/${params.id}?page=${page}&sort=${search || ''}&rating=${rating}`);
+		}
 		setlistComment(res.data);
+		onPage(res.data);
 	};
 	const update = async (item) => {
 		if (!isLogined) {
@@ -44,17 +64,17 @@ const ListComment = (props) => {
 			life: 3000,
 		});
 	};
-	const sort = () => {
-		const _p = { ...listComment };
-		_p.comments.sort((a, b) => b.likes - a.likes);
-		setlistComment(_p);
+	const onChange = (search) => {
+		console.log(search);
+		getData(page, '', search);
 	};
 	return (
 		<div style={{ border: '1px solid #eee', backgroundColor: 'white', padding: '5px', borderRadius: '5px' }}>
-			<h5 style={{ fontSize: '26px' }}>Đánh giá nhận xét từ khách hàng</h5>
+			<h5 style={{ fontSize: '26px' }}>ĐÁNH GIÁ SẢN PHẨM</h5>
+			<Count change={onChange} />
 			<Toast ref={toast} />
 			<div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-				<button
+				{/* <button
 					onClick={() => sort()}
 					style={{
 						backgroundColor: 'white',
@@ -67,9 +87,9 @@ const ListComment = (props) => {
 					}}
 				>
 					Tương tác nhiều nhất
-				</button>
+				</button> */}
 				<button
-					onClick={() => getData(page, '-createdAt')}
+					onClick={() => getData(page, '-createdAt','pagi')}
 					style={{
 						backgroundColor: 'white',
 						color: 'black',
@@ -85,26 +105,27 @@ const ListComment = (props) => {
 			</div>
 			{Array.isArray(listComment.comments) &&
 				listComment.comments.map((item) => (
-					<div className="p-ml-3">
+					<div className="p-ml-3 comment">
 						<p>Người đánh giá : {item.userId?.name}</p>
+						<Rating readOnly value={item?.rating} cancel={false} />
+						<p>{new Date(item.createdAt).toLocaleString()}</p>
 						<span>{item.content}</span>
 						<div style={{ display: 'flex', marginTop: '10px' }}>
-							<button
+							<Button
 								onClick={() => update(item)}
+								className="p-button-outlined"
 								style={{
-									backgroundColor: 'blueviolet',
-									color: 'white',
-									border: 'none',
+									fontSize: '12px',
 									padding: '3px',
 									borderRadius: '5px',
 									marginLeft: '10px',
 									display: 'block',
 									cursor: 'pointer',
 								}}
+								label="	Hữu ích"
 							>
-								Thích :
-							</button>
-							<span style={{ color: 'black', marginLeft: '10px' }}>{item.likes}</span>
+								<span style={{ fontWeight: '500', marginLeft: '10px' }}>{item.likes}</span>
+							</Button>
 						</div>{' '}
 					</div>
 				))}
@@ -115,7 +136,7 @@ const ListComment = (props) => {
 				className="p-mt-2"
 				onChange={(e, value) => {
 					setPage(value);
-					getData(value);
+					getData(value, '', 'pagi');
 				}}
 			/>
 		</div>

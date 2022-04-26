@@ -18,7 +18,7 @@ function Products(props) {
 
 	const match = useRouteMatch();
 	useEffect(() => {
-		window.scrollTo(0, 0);
+		// window.scrollTo(0, 0);
 		if (match.url === '/products') {
 			setPage(1);
 			setColor('');
