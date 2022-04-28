@@ -63,7 +63,7 @@ function LineChart({ payments = [], countpaypal = [] }) {
 	return (
 		<Paper style={{ padding: '2rem' }}>
 			<div className="header">
-				<h1 className="title">Phân tích bán hàng</h1>
+				<h4 className="title">Số liệu bán hàng</h4>
 			</div>
 			<Line data={data} options={options} labels={options.labels1} />
 		</Paper>

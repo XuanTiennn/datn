@@ -15,7 +15,7 @@ function User(props) {
 	const [user] = state.userApi.user;
 	const { url } = useRouteMatch();
 	return (
-		<Container style={{ marginTop: '50px', marginBottom: '50px' }}>
+		<Container style={{ marginTop: '150px', marginBottom: '50px' }}>
 			<Grid container>
 				<Grid item lg={3}>
 					<ListCategory />

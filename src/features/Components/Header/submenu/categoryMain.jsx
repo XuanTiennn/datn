@@ -61,8 +61,8 @@ function CategoryMain(props) {
 					</li>
 				))}
 				<li className={classes.items}>
-					<Link className={classes.item} to="/contact-us">
-						Liên hệ
+					<Link className={classes.item} to="/news">
+					 	Tin tức
 					</Link>
 				</li>
 			</ul>

@@ -23,8 +23,9 @@ import ProductItem from '../Products/product';
 // };
 export default function RecentProducts({ products = [], product }) {
 	return (
-		<Paper style={{ height: '370px', padding: '15px' }}>
-			<Grid container spacing={2} style={{ display: 'felx', flexWrap: 'nowrap', overflow: 'auto' }}>
+		<Paper style={{ padding: '15px',position:'sticky',top:'0',right:'0',marginLeft:'10px' }}>
+			<h3>Sản phẩm tương tự</h3>
+			<Grid container spacing={2} style={{ display: 'felx',flexDirection:'column', flexWrap: 'nowrap', overflow: 'auto' }}>
 				{products.map((products) =>
 					products.category === product.category ? (
 						<Grid item key={products._id}>

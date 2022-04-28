@@ -33,13 +33,17 @@ function CheckoutPayment(props, ref) {
 	const [userInfor] = state.userApi.user;
 	const [token] = state.token;
 	const [cart, setCart] = state.userApi.cart;
-	const [payload, setPayload] = useState({ phone: '', address: '', derivery: 'tietkiem' });
+	const [payload, setPayload] = useState({
+		name: userInfor?.name,
+		phone: userInfor?.phone,
+		address: userInfor?.address,
+		derivery: 'tietkiem',
+	});
 	const [show, setshow] = useState(false);
 	const addToCart = async (cart) => {
 		await axios.patch('/user/addcart', { cart }, { headers: { Authorization: token } });
 	};
-	// console.log(cart, derivery, address, phone);
-	console.log(cart);
+	console.log(userInfor);
 	useImperativeHandle(ref, () => ({
 		show: () => {
 			setshow(true);
@@ -65,7 +69,7 @@ function CheckoutPayment(props, ref) {
 		setPayload(_payload);
 	};
 	return (
-		<XLayout className="p-p-2" style={{ backgroundColor: '#ececec' }}>
+		<XLayout className="p-p-2" style={{ backgroundColor: '#ececec', marginTop: '150px' }}>
 			<XLayout_Center style={{ backgroundColor: 'white' }}>
 				<div className="p-col-12" style={{ display: 'flex' }}>
 					<div className="p-col-5">
@@ -88,6 +92,11 @@ function CheckoutPayment(props, ref) {
 									value={payload.address}
 									onChange={(e) => applyChange('address', e.target.value)}
 									placeholder="Địa chỉ nhận hàng"
+								/>
+								<InputText
+									value={payload.name}
+									onChange={(e) => applyChange('name', e.target.value)}
+									placeholder="Tên người nhận hàng"
 								/>
 								<InputText
 									value={payload.phone}

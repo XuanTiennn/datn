@@ -54,23 +54,35 @@ const Enumeration = {
 	arrInforIcon: [
 		{
 			id: 0,
-			icon: 'https://res.cloudinary.com/dzpks7wzs/image/upload/v1649665432/N16_ecommers/icon-phone-s2_sx4hgl.svg',
+			icon: 'pi pi-phone',
 			href: 'tel:0123456789',
+			command: () => {
+				window.location.href = 'tel:0123456789';
+			},
 		},
 		{
 			id: 1,
-			icon: 'https://res.cloudinary.com/dzpks7wzs/image/upload/v1649666200/N16_ecommers/icon-mail-s2_ogeicy.svg',
+			icon: 'pi pi-envelope',
 			href: 'mailto:xtienclone1@gmail.com',
+			command: () => {
+				window.location.href = 'mailto:xtienclone1@gmail.com';
+			},
 		},
 		{
 			id: 2,
-			icon: 'https://res.cloudinary.com/dzpks7wzs/image/upload/v1649666377/N16_ecommers/icon-map-s2_r3tsyg.svg',
+			icon: 'pi pi-map-marker',
 			href: '',
+			command: () => {
+				window.location.href = 'https://www.facebook.com';
+			},
 		},
 		{
 			id: 3,
-			icon: 'https://res.cloudinary.com/dzpks7wzs/image/upload/v1649666353/N16_ecommers/icon-fanpage-s2_hqiomw.svg',
-			href: 'https://www.facebook.com/XTComputer',
+			icon: 'pi pi-facebook',
+			href: 'https://www.facebook.com/',
+			command: () => {
+				window.location.href = 'https://www.facebook.com/';
+			},
 		},
 	],
 	states: [

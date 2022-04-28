@@ -134,13 +134,13 @@ function DetailsProduct() {
 		}
 	}, [params.id, products]);
 	const afterSubmit = (data) => {
-		let _data = {...comments};
+		let _data = { ...comments };
 		_data.comments.push(data);
 		setcomments(_data);
 	};
-	const onPage=(data)=>{
-		setcomments(data)
-	}
+	const onPage = (data) => {
+		setcomments(data);
+	};
 	function forhtmlContent() {
 		return { __html: product.content };
 	}
@@ -148,11 +148,16 @@ function DetailsProduct() {
 		return { __html: product.description };
 	}
 
-	const addToCart = () => {
-		if (!isLogined) {
+	const addToCart = (to) => {
+		if (!product.status) {
+			alert('Sản phẩm này hiện đã hết vui lòng quay lại sau !');
+		} else if (!isLogined) {
 			alert('Vui lòng đăng nhập để thực hiện thao tác này.');
 		} else {
 			addCart(product);
+			if (to) {
+				history.push('/cart');
+			}
 			showSuccess();
 		}
 	};
@@ -176,125 +181,143 @@ function DetailsProduct() {
 			<Box style={{ backgroundColor: '#F7F8FD' }}>
 				<Container className={classes.root}>
 					<BreadCrumb str={match.url} title={product.title} />
-					<Paper elevation={0} className={classes.box}>
-						<Grid container>
-							<Grid className={classes.wrap_img} item xs={12} sm={12} md={6} lg={6}>
-								<img className={classes.img} src={product.images.url} alt="" />
-							</Grid>
-							<Grid item xs={12} sm={12} md={6} lg={6}>
-								<Box className={classes.infor}>
-									<Typography
-										className={clsx(classes.title, 'font-inter')}
-										component="h2"
-										variant="h6"
-									>
-										{product.title}
-									</Typography>
-									<Typography className={classes.category} component="p" variant="body1">
-										<Link
-											to="/products"
-											onClick={() => setCategory('category=' + product.category)}
-										>
-											<span style={{ color: 'rgb(130, 134, 158)' }}>Thương hiệu:</span>
-											<span style={{ color: 'rgb(20, 53, 195)' }}>{product.category}</span>
-										</Link>
-									</Typography>
-									<Typography className={classes.sold} component="p" variant="body1">
-										{product.sold > 0 ? `Đã bán ${product.sold} ` : ''}
-									</Typography>
+					<div style={{ display: 'flex', position: 'relative' }}>
+						<div>
+							<Paper elevation={0} className={classes.box}>
+								<Grid container>
+									<Grid className={classes.wrap_img} item xs={12} sm={12} md={6} lg={6}>
+										<img className={classes.img} src={product.images.url} alt="" />
+									</Grid>
+									<Grid item xs={12} sm={12} md={6} lg={6}>
+										<Box className={classes.infor}>
+											<Typography
+												className={clsx(classes.title, 'font-inter')}
+												component="h2"
+												variant="h6"
+											>
+												{product.title}
+											</Typography>
+											<Typography className={classes.category} component="p" variant="body1">
+												<Link
+													to="/products"
+													onClick={() => setCategory('category=' + product.category)}
+												>
+													<span style={{ color: 'rgb(130, 134, 158)' }}>Thương hiệu:</span>
+													<span style={{ color: 'rgb(20, 53, 195)' }}>
+														{product.category}
+													</span>
+												</Link>
+											</Typography>
+											<Typography className={classes.sold} component="p" variant="body1">
+												{product.sold > 0 ? `Đã bán ${product.sold} ` : ''}
+											</Typography>
 
-									<Typography className={classes.sold} component="p" variant="body1">
-										Tình trạng:
-										<Typography className={classes.status} component="span" variant="body1">
-											{product.status ? 'Còn hàng' : 'Hết hàng'}
-										</Typography>
-									</Typography>
-									<Typography className={clsx(classes.flex)} component="p" variant="body2">
-										<Typography component="span" className={clsx(classes.price, 'font-dosis')}>
-											{FormatNumber(product.price)}
-										</Typography>
-										<Typography
-											variant="body2"
-											color="textSecondary"
-											component="p"
-											className={classes.originPrice}
-										>
-											{product.salePercen > 0
-												? FormatNumber(
-														product.price * (product.salePercen / 100) + product.price
-												  )
-												: ''}
-										</Typography>
-										<Typography component="span" variant="body2" className={classes.pricepercen}>
-											{product.salePercen > 0 ? `-${product.salePercen}%` : ''}
-										</Typography>
-									</Typography>
-									<Typography>{isService}</Typography>
-									<div style={{ display: 'flex' }}>
-										<Button
-											style={{
-												width: '200px',
-												backgroundColor: 'white',
-												color: 'blueviolet',
-											}}
-											label="Mua ngay"
-											onClick={() => {
-												history.push('/cart');
-												addToCart();
-											}}
-											className="p-button"
-										></Button>
+											<Typography className={classes.sold} component="p" variant="body1">
+												Tình trạng:
+												<Typography
+													style={{ color: product.status ? '' : 'red' }}
+													className={classes.status}
+													component="span"
+													variant="body1"
+												>
+													{product.status ? 'Còn hàng' : 'Hết hàng'}
+												</Typography>
+											</Typography>
+											<Typography className={clsx(classes.flex)} component="p" variant="body2">
+												<Typography
+													component="span"
+													className={clsx(classes.price, 'font-dosis')}
+												>
+													{FormatNumber(product.price)}
+												</Typography>
+												<Typography
+													variant="body2"
+													color="textSecondary"
+													component="p"
+													className={classes.originPrice}
+												>
+													{product.salePercen > 0
+														? FormatNumber(
+																product.price * (product.salePercen / 100) +
+																	product.price
+														  )
+														: ''}
+												</Typography>
+												<Typography
+													component="span"
+													variant="body2"
+													className={classes.pricepercen}
+												>
+													{product.salePercen > 0 ? `-${product.salePercen}%` : ''}
+												</Typography>
+											</Typography>
+											<Typography>{isService}</Typography>
+											<div style={{ display: 'flex' }}>
+												<Button
+													style={{
+														width: '200px',
+														backgroundColor: 'white',
+														color: 'blueviolet',
+													}}
+													label="Mua ngay"
+													onClick={() => addToCart(true)}
+													className="p-button"
+												></Button>
 
-										<Button
-											style={{ width: '200px' }}
-											variant="contained"
-											label="Thêm vào giỏ hàng"
-											onClick={addToCart}
-											className="p-button-infor p-ml-2"
-										></Button>
-									</div>
+												<Button
+													style={{ width: '200px' }}
+													variant="contained"
+													label="Thêm vào giỏ hàng"
+													onClick={addToCart}
+													className="p-button-infor p-ml-2"
+												></Button>
+											</div>
 
-									<Toast ref={toast} />
+											<Toast ref={toast} />
+										</Box>
+									</Grid>
+								</Grid>
+							</Paper>
+
+							<Grid lg={10}>
+								<Box className={classes.content}>
+									<h2>THÔNG TIN CHI TIẾT</h2>
+									<Paper>
+										<Grid container>
+											<div
+												className={classes.description}
+												dangerouslySetInnerHTML={forhtmlContent()}
+											/>
+										</Grid>
+									</Paper>
 								</Box>
 							</Grid>
-						</Grid>
-					</Paper>
 
-					<Grid lg={10}>
-						<Box className={classes.content}>
-							<h2>THÔNG TIN CHI TIẾT</h2>
-							<Paper>
-								<Grid container>
-									<div className={classes.description} dangerouslySetInnerHTML={forhtmlContent()} />
-								</Grid>
-							</Paper>
-						</Box>
-					</Grid>
-
-					<Grid lg={10}>
-						<Box className={classes.content}>
-							<h2>MÔ TẢ SẢN PHẨM</h2>
-							<Paper>
-								<Grid container>
-									<Typography className={classes.description} component="p" variant="body1">
-										<div
-											className={clsx('font-inter', classes.isdescription)}
-											dangerouslySetInnerHTML={forhtmlDescription()}
-										/>
-									</Typography>
-								</Grid>
-							</Paper>
-						</Box>
-					</Grid>
-					<Box>
-						<ListComment isLogined={isLogined} comments={comments} onPage={onPage} />
-						{isLogined && <Comment product={product} state={state} afterSubmit={afterSubmit} />}
+							<Grid lg={10}>
+								<Box className={classes.content}>
+									<h2>MÔ TẢ SẢN PHẨM</h2>
+									<Paper>
+										<Grid container>
+											<Typography className={classes.description} component="p" variant="body1">
+												<div
+													className={clsx('font-inter', classes.isdescription)}
+													dangerouslySetInnerHTML={forhtmlDescription()}
+												/>
+											</Typography>
+										</Grid>
+									</Paper>
+								</Box>
+								<ListComment isLogined={isLogined} comments={comments} onPage={onPage} />
+								{isLogined && <Comment product={product} state={state} afterSubmit={afterSubmit} />}
+							</Grid>
+						</div>
+						{/* <Box>
 						<Services />
-					</Box>
-					<Box>
-						<h2 className={classes.wap}>Sản phẩm tương tự</h2>
-						<RecentProducts products={allProduct.products} product={product} />
-					</Box>
+					</Box> */}
+						<div>
+							<RecentProducts products={allProduct.products} product={product} />
+						</div>{' '}
+					</div>
 				</Container>
 			</Box>
 		);

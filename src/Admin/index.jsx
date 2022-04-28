@@ -46,13 +46,10 @@ function Admin(props) {
 	if (url === '/admin') {
 		import('../Components/layout.scss');
 	}
-	console.log(url);
 	return (
-		<XLayout>
+		<XLayout style={{marginTop:'100px'}}>
 			<XLayout_Left>
 				<Links />
-
-				{/* <MainMenu></MainMenu> */}
 			</XLayout_Left>
 			<XLayout_Center style={{ height: '100%' }}>
 				<Switch>

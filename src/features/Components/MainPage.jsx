@@ -1,3 +1,4 @@
+import { Button } from 'primereact/button';
 import { useContext } from 'react';
 import { Redirect, Route, Switch, useRouteMatch } from 'react-router-dom';
 import Admin from '../../Admin';
@@ -28,7 +29,7 @@ function MainPage() {
 	const match = useRouteMatch();
 
 	return (
-		<div>
+		<div style={{ backgroundColor: '#F5F5F5' }}>
 			<Header />
 			{isAdmin ? (
 				<Route>
@@ -62,7 +63,13 @@ function MainPage() {
 					<Route path="*" component={NotFound} />
 				</Switch>
 			)}
-			{isAdmin ? null : <BackToTop />}
+			{isAdmin ? null : (
+				<Button
+					icon="pi pi-arrow-circle-up"
+					style={{ position: 'fixed', bottom: '30px', right: '10px' }}
+					onClick={() => window.scrollTo({ top: '0', behavior: 'smooth' })}
+				/>
+			)}
 			{isAdmin ? null : <RegisterEmail />}
 			{isAdmin ? null : <InforWeb />}
 			<Footer />

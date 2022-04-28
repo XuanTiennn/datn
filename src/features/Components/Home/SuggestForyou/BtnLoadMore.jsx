@@ -4,12 +4,11 @@ import { ContextGlobal } from '../../../../app/ContextGlobal';
 
 BtnLoadMore.propTypes = {};
 
-function BtnLoadMore(props) {
-	const state = useContext(ContextGlobal);
-	const [page, setPage] = state.productsAPI.page;
+function BtnLoadMore({change}) {
+
 	return (
 		<div style={{display:'flex',justifyContent:'center',marginTop:'30px'}}>
-			<Button variant="outlined" color="primary" onClick={(e) => setPage(page + 1)}>
+			<Button variant="outlined" color="primary" onClick={(e) => change()}>
 				Xem thêm
 			</Button>
 		</div>

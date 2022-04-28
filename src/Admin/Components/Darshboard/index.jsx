@@ -43,7 +43,6 @@ function DarshBoard({ paymentCheckOut = [] }) {
 	const dataNumbers = Object.values(arrayGroupByDate).map((item) => item.reduce((total, i) => (total += i), 0));
 
 	const data = [
-	
 		{
 			backgroundcolor: 'linear-gradient(to right,#0ac282,#0df3a3)',
 			id: 2,
@@ -57,13 +56,6 @@ function DarshBoard({ paymentCheckOut = [] }) {
 			icon: <ShoppingCartIcon />,
 			title: 'Số đơn hàng',
 			number: flatarray.length,
-		},
-		{
-			backgroundcolor: 'linear-gradient(to right,#fe5d70,#fe909d)',
-			id: 4,
-			icon: <ListAltIcon />,
-			title: 'Số sản phẩm',
-			number: allProduct?.count,
 		},
 	];
 	const [data1, setData1] = useState([]);
@@ -102,11 +94,20 @@ function DarshBoard({ paymentCheckOut = [] }) {
 	return (
 		<XLayout>
 			<XLayout_Top>
-				<XToolbar right={() => <Button icon="pi pi-file-excel" label="Tải thống kê báo cáo" onClick={()=>exportTimeSheet(allProduct.products)}></Button>}></XToolbar>
+				<XToolbar
+					right={() => (
+						<Button
+							icon="pi pi-file-excel"
+							label="Tải thống kê báo cáo"
+							onClick={() => exportTimeSheet(allProduct.products)}
+						></Button>
+					)}
+				></XToolbar>
 				<Box style={{ display: 'flex' }}>
 					{data.map((item) => (
-						<Grid item xs={12} sm={6} md={4} lg={3}>
+						<Grid item xs={12} sm={6} md={4} lg={4}>
 							<CardCount
+								
 								backgroundcolor={item.backgroundcolor}
 								icon={item.icon}
 								title={item.title}

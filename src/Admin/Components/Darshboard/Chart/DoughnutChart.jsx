@@ -35,9 +35,9 @@ function DoughnutChart({ list = [], labels = [] }) {
 	return (
 		<Paper style={{ padding: '3rem' }}>
 			<div className="header">
-				<h1 className="title">Xu hướng</h1>
+				<h4 className="title">Xu hướng</h4>
 			</div>
-			<Doughnut data={data} />
+			<Doughnut  data={data} />
 		</Paper>
 	);
 }

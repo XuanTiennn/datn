@@ -29,6 +29,7 @@ import Login from './../../../features/Components/Login/login';
 import Enumeration from './../../../utils/enum';
 import XToolbar from './../../../Components/x-toolbar/XToolbar';
 import ShowConfirmFunction from 'utils/commonFunction';
+import FormatNumber from './../../../utils/formatNumber';
 Products.propTypes = {};
 const useStyles = makeStyles({
 	table: {
@@ -81,7 +82,7 @@ function Products(props) {
 	const ref = useRef(null);
 	const refConfirm = useRef(null);
 	const [open, setOpen] = useState(false);
-
+	console.log(state);
 	const actionPopUp = async (id, public_id, multiple) => {
 		if (multiple) {
 			refConfirm.current.multiple(id, public_id);
@@ -128,7 +129,7 @@ function Products(props) {
 	const onPage = (event) => {
 		setPage(event.page);
 	};
-
+	console.log(products);
 	if (loading) return <Loading />;
 	try {
 		return (
@@ -270,16 +271,31 @@ function Products(props) {
 							</Button>
 						)}
 						right={() => (
-							<Button
-								variant="contained"
-								// className={classes.buttonRemove}
-								color="secondary"
-								onClick={() => actionPopUp("","",true)}
-								icon="pi pi-trash"
-								disabled={selectedServices?.length > 0}
-							>
-								Xóa
-							</Button>
+							<>
+								{' '}
+								{/* <Button
+									variant="contained"
+									// className={classes.buttonRemove}
+									color="secondary"
+									onClick={() => actionPopUp('', '', true)}
+									icon="pi pi-trash"
+									disabled={selectedServices?.length > 0}
+								>
+									Xóa
+								</Button> */}
+								<NativeSelect
+									onChange={handleChange}
+									value={category}
+									name="category"
+									onChange={(e) => setCategory(e.target.value)}
+								>
+									{' '}
+									<option value="">Tất cả</option>
+									{state.categoryApi.category[0].map((item) => (
+										<option value={`category=${item.name}`}>{item.name}</option>
+									))}
+								</NativeSelect>
+							</>
 						)}
 					></XToolbar>
 				</XLayout_Top>
@@ -297,27 +313,23 @@ function Products(props) {
 						selectionMode="checkbox"
 						dataKey="_id"
 						lazy
-						paginator
 						// first={data.first}
 						rows={10}
-						totalRecords={products.length}
-						rowsPerPageOptions={[10, 20, 50, 100]}
-						onPage={onPage}
 						selection={selectedServices}
 						onSelectionChange={(e) => setSelectedServices(e.value)}
 						paginatorTemplate="RowsPerPageDropdown CurrentPageReport FirstPageLink PrevPageLink NextPageLink LastPageLink"
 						currentPageReportTemplate="{first} - {last} / {totalRecords}"
 					>
-						<Column
-							style={{ flex: '0 0 50px' }}
-							selectionMode="multiple"
-							// headerStyle={{ width: '50px' }}
-						></Column>
+						<Column style={{ flex: '0 0 40px' }} selectionMode="multiple"></Column>
 						<Column
 							field="img"
 							header={<label className="require">{'Ảnh'}</label>}
-							style={{ flex: '1 0 50px' }}
-							body={(row) => <img className={classes.img} src={row.images.url} alt="" />}
+							style={{ flex: '1 0 50px', textAlign: 'center' }}
+							body={(row) => (
+								<div style={{ width: '100%' }}>
+									<img className={classes.img} src={row.images.url} alt="" />
+								</div>
+							)}
 						></Column>
 						<Column
 							field="title"
@@ -327,7 +339,8 @@ function Products(props) {
 						<Column
 							field="price"
 							header={<label className="require">{'Giá'}</label>}
-							style={{ flex: '1 0 100px' }}
+							style={{ flex: '1 0 100px', textAlign: 'center' }}
+							body={(d) => <span style={{ width: '100%' }}>{FormatNumber(d.price)}</span>}
 						></Column>
 						<Column
 							field="status"
@@ -345,12 +358,14 @@ function Products(props) {
 						<Column
 							field="salePercen"
 							header={<label className="require">{'Giảm giá'}</label>}
-							style={{ flex: '1 0 40px' }}
+							style={{ flex: '1 0 40px', textAlign: 'center' }}
+							body={(d) => <span style={{ width: '100%' }}>{d.salePercen}</span>}
 						></Column>
 						<Column
 							field="sold"
 							header={<label className="require">{'Đã bán'}</label>}
-							style={{ flex: '1 0 50px' }}
+							style={{ flex: '1 0 50px', textAlign: 'center' }}
+							body={(d) => <span style={{ width: '100%' }}>{d.sold}</span>}
 						></Column>
 						<Column
 							frozen
@@ -382,19 +397,19 @@ function Products(props) {
 							style={{ flex: '0 0 50px' }}
 						></Column>
 					</DataTable>
+					<Box style={{ marginTop: '40px', display: 'flex', justifyContent: 'flex-end' }}>
+						<Pagination
+							count={Math.ceil(allProduct.total / 9)}
+							color="primary"
+							page={page}
+							onChange={(e, value) => setPage(value)}
+						/>
+					</Box>
 				</XLayout_Center>
 				<ShowConfirmFunction title="Bạn có chắc chắn muốn xóa bản ghi này ?" ref={refConfirm} />
 				<ProductDetail ref={ref} />
 			</XLayout>
 
-			// 	<Box style={{ marginTop: '40px', display: 'flex', justifyContent: 'flex-end' }}>
-			// 		<Pagination
-			// 			count={Math.ceil(allProduct.count / 9)}
-			// 			color="primary"
-			// 			page={page}
-			// 			onChange={(e, value) => setPage(value)}
-			// 		/>
-			// 	</Box>
 			// 	{/* <ConfirmDelete ref={ref} /> */}
 			// </Paper>
 		);

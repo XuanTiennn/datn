@@ -25,7 +25,7 @@ function Products(props) {
 			setService('');
 		}
 	}, [match.url, category]);
-
+console.log(products);
 	return (
 		<Container style={{ marginTop: '50px', marginBottom: '50px' }}>
 			<BreadCrumb str={match.url} category={category.split('=').pop()} />

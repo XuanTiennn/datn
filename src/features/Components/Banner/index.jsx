@@ -1,13 +1,12 @@
 import { Button, Grid, Hidden, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
+import { XLayout, XLayout_Center } from 'Components/x-layout/XLayout';
 import React, { useContext } from 'react';
 import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
 import { useHistory } from 'react-router-dom';
-import { ContextGlobal } from '../../../app/ContextGlobal';
 import Enumeration from 'utils/enum';
-import { XLayout, XLayout_Box, XLayout_Center, XLayout_Left, XLayout_Right } from 'Components/x-layout/XLayout';
-import CategoryMain from '../Header/submenu/categoryMain';
+import { ContextGlobal } from '../../../app/ContextGlobal';
 const useStyles = makeStyles((theme) => ({
 	root: {},
 	img: {
@@ -16,6 +15,7 @@ const useStyles = makeStyles((theme) => ({
 		maxWidth: '300px',
 		overflow: 'hidden',
 		width: '100%',
+		marginTop:'200px'
 	},
 	column: {
 		display: 'flex',
@@ -99,12 +99,7 @@ function Banner() {
 					))}
 				</Carousel>
 			</XLayout_Center>
-			<XLayout_Right>
-				<XLayout_Box style={{ display: 'flex', flexDirection: 'column' }}>
-					<img style={{cursor:'pointer'}} onClick={() => history.push(`/news/`)} src="https://res.cloudinary.com/dzpks7wzs/image/upload/v1649668274/N16_ecommers/unnamedx_lh2hc5.webp" />
-					<img style={{cursor:'pointer'}} src="https://res.cloudinary.com/dzpks7wzs/image/upload/v1649668274/N16_ecommers/unnamedx_lh2hc5.webp" />
-				</XLayout_Box>
-			</XLayout_Right>
+			
 		</XLayout>
 	);
 }

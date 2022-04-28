@@ -11,7 +11,7 @@ export const exportTimeSheet = async (data, org) => {
 	 */
 	let sheet = workbook.addWorksheet();
 	//title sheet
-	sheet.getRow(1).values = ['Tên sản phẩm', 'Loại', 'Màu', 'Số lượt xem', 'Giá', 'Đã bán'];
+	sheet.getRow(1).values = ['Tên sản phẩm', 'Loại', 'Màu', 'Số lượt xem', 'Giá', 'Đã bán', 'Số tiền'];
 	//key of data sheet
 	sheet.columns = [
 		{ key: 'title', width: 50 },
@@ -21,15 +21,18 @@ export const exportTimeSheet = async (data, org) => {
 		{ key: 'views', width: 10 },
 		{ key: 'price', width: 20 },
 		{ key: 'sold', width: 10 },
+		{ key: 'moneysold', width: 15 },
 	];
 	let arr = [];
 	if (data?.length > 0) {
 		data.forEach((item, index) => {
 			arr.push({
 				...item,
+				moneysold: item.sold * item.price,
 			});
 		});
 	}
+	sheet.getRow(data?.length).values = ['Tổng:', arr.reduce((total, item) => (total += item.moneysold), 0)];
 
 	sheet.addRows(arr);
 	for (let i = 0; i < sheet.columns.length; i++) {

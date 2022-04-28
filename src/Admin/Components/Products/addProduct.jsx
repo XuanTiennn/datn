@@ -162,16 +162,7 @@ function AddProduct(props) {
 			<XLayout>
 				<XLayout_Top>
 					<div className="p-grid p-formgrid p-fluid">
-						<div className="p-field p-col-4 p-md-3">
-							<span className="p-float-label">
-								<InputText
-									value={product.product_id}
-									onChange={(e) => handleChange('product_id', e.target.value)}
-									disabled
-								/>
-								<label className="require">{'Mã sản phẩm'}</label>
-							</span>
-						</div>
+						
 						<div className="p-field p-col-4 p-md-3">
 							<span className="p-float-label">
 								<InputText
@@ -183,12 +174,10 @@ function AddProduct(props) {
 						</div>
 						<div className="p-field p-col-4 p-md-3">
 							<span className="p-float-label">
-								<InputNumber
-									// mode="currency"
-									// currency=""
-									suffix="VNĐ"
+								<InputText
+									type="number"
 									value={product.price}
-									onChange={(e) => handleChange('price', e.value)}
+									onChange={(e) => handleChange('price', e.target.value)}
 								/>
 								<label className="require">{'Giá sản phẩm'}</label>
 							</span>
@@ -241,7 +230,6 @@ function AddProduct(props) {
 									optionLabel="name"
 									onChange={(e) => handleChange('status', e.value)}
 								/>
-								<label className="require">{'Trạng thái'}</label>
 							</span>
 						</div>
 						<div className="p-field p-col-4 p-md-3">

@@ -190,6 +190,7 @@ function Header(props) {
 			transformOrigin={{ vertical: 'top', horizontal: 'right' }}
 			open={isMenuOpen}
 			onClose={handleMenuClose}
+			style={{position:'absolute',top:'50px',right:'10px',zIndex:'999999'}}
 		>
 			<MenuItem
 				onClick={() => {
@@ -289,7 +290,7 @@ function Header(props) {
 	const [click, setClick] = useState(false);
 	const [searchTerm, setSearchTerm] = useState('');
 	return (
-		<Container>
+		<Container className='p-p-0' style={{position:'fixed',top:0,left:0,zIndex:9999}}>
 			<Grid container>
 				<Grid item className={classes.grow}>
 					<AppBar elevation={0} className={classes.appbar} position="static" id="back-to-top-anchor">

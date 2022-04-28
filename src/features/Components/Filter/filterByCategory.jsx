@@ -6,12 +6,11 @@ import {
 	makeStyles,
 	Radio,
 	RadioGroup,
-	Typography,
+	Typography
 } from '@material-ui/core';
+import clsx from 'clsx';
 import React, { useContext } from 'react';
 import { ContextGlobal } from '../../../app/ContextGlobal';
-import clsx from 'clsx';
-import ConvertStr from './../../../utils/convertStr';
 FilterByCategory.propTypes = {};
 
 const useStyles = makeStyles({

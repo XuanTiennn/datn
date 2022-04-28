@@ -52,7 +52,17 @@ function ProductDetail(prop, ref) {
 			showSuccess();
 			setOpen(false);
 			setCallBack(!callback);
+			showWarning();
 		}
+	};
+
+	const showWarning = () => {
+		toast.current.show({
+			severity: 'success',
+			summary: 'Thao tác thành công',
+
+			life: 3000,
+		});
 	};
 	const getPayload = (payload, image) => {
 		setPayload(payload);
@@ -74,15 +84,17 @@ function ProductDetail(prop, ref) {
 	};
 	return (
 		<div>
+			<Toast ref={toast} />
+
 			<Dialog
 				contentStyle={{ overflowy: 'scroll' }}
 				visible={open}
 				onHide={onHide}
 				footer={footer}
-				header="Xác nhận"
-				style={{ width: '80vw' }}
+				header={refMode.current === "create" ? "Thêm mới sản phẩm" :"Sửa mới sản phẩm"}
+				style={{ width: '55vw',marginLeft:'20px' }}
 			>
-				<Toast ref={toast} />
+				
 				<AddProduct getPayload={getPayload} productId={productId} />
 			</Dialog>
 		</div>

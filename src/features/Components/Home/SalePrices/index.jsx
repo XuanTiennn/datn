@@ -30,8 +30,8 @@ function SalePrice(props) {
 
 	if (!products) return null;
 	return (
-		<Paper elevation={0} style={{ marginTop: '20px', padding: '20px',border:'1px solid #edeef5' }}>
-			<Typography component="h2" variant="h4" className="font-dosis">
+		<Paper elevation={0} style={{ marginTop: '20px', padding: '20px', border: '1px solid #edeef5' }}>
+			<Typography component="h2" variant="h4" className="font-dosis" style={{ fontSize: '19px' }}>
 				Giá ưu đãi hôm nay
 			</Typography>
 			<Carousel
@@ -41,7 +41,6 @@ function SalePrice(props) {
 				itemClass="carousel-item-padding-40-px"
 				infinite={true}
 				transitionDuration={1000}
-
 			>
 				{products?.map((item) => (item.salePercen > 1 ? <Soldest product={item} /> : null))}
 			</Carousel>

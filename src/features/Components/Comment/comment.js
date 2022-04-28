@@ -28,7 +28,7 @@ const Comment = (props) => {
 	return (
 		<div>
 			<div
-				className="p-col-10 p-py-0 p-px-1 p-mt-2 p-p-2"
+				className="p-col-10 p-py-0 p-px-1 p-mt-6 p-p-2"
 				style={{ border: '1px solid brown', borderRadius: '5px', width: '100%', textAlign: 'right' }}
 			>
 				<span className="p-float-label">
