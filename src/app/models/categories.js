@@ -8,6 +8,10 @@ const category = new mongoose.Schema(
       trim: true,
       unique: true,
     },
+    images: {
+      type: Object,
+      require: true,
+    },
   },
   {
     timestamps: true,

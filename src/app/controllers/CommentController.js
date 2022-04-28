@@ -63,7 +63,7 @@ const comment = {
       } else {
         param.productId = req.params.id;
       }
-      const allComment = await Comment.find({ productId : req.params.id });
+      const allComment = await Comment.find({ productId: req.params.id });
       const features = new APIfeatures(
         Comment.find({ productId: req.params.id }),
         req.query
@@ -71,11 +71,16 @@ const comment = {
         .filtering()
         .sorting()
         .paginating();
+
+      let count = allComment.reduce((obj, item) => {
+        return { ...obj, [item.rating]: (obj[item.rating] || 0) + 1 };
+      }, {});
       const comments = await features.query;
       res.json({
         status: "success",
         total: allComment.length,
         comments,
+        count,
       });
     } catch (error) {
       return res.status(500).json({ mgs: error.message });

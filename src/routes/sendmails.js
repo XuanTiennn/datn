@@ -4,9 +4,9 @@ const nodemailer = require("nodemailer");
 router.post("/quenmatkhau", (req, res) => {
   const { receiEmail } = req.body;
 
-  const user = "xtienclone2@gmail.com";
+  const user = "xtcomputer.shop@gmail.com";
   const pass = "tien2000";
-  const subject = "Yêu cầu đặt lại mật khẩu cho Shop Cart - E-Commerce ";
+  const subject = "Yêu cầu đặt lại mật khẩu-XTComputer";
 
   // create transport
   const transport = nodemailer.createTransport({
@@ -20,7 +20,7 @@ router.post("/quenmatkhau", (req, res) => {
     subject: subject + Date.now(),
     html: `Xin chào ${receiEmail}!
 
-    Ai đó đã yêu cầu mật khẩu mới cho tài khoản sau trên Shop Cart - Ecommerce:
+    Ai đó đã yêu cầu mật khẩu mới cho tài khoản sau trên XTComputer:
     
     Tên người dùng: ${receiEmail}
     
@@ -51,7 +51,7 @@ router.post("/notiUser", (req, res) => {
   const { userInfor, cart } = req.body;
   const email = userInfor.email;
   const name = userInfor.name;
-  const user = "xtienclone2@gmail.com";
+  const user = "xtcomputer.shop@gmail.com";
   const pass = "tien2000";
   const subject = "Thông báo đặt hàng thành công!";
 

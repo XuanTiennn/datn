@@ -4,7 +4,7 @@ const Products = require("../../app/models/products");
 const category = {
   getCategory: async (req, res) => {
     try {
-      const categories=await Category.find()
+      const categories = await Category.find();
       res.json(categories);
     } catch (error) {
       res.status(500).json({ mgs: error.message });
@@ -13,12 +13,12 @@ const category = {
   createCategory: async (req, res) => {
     try {
       //chỉ admin mới có thể thêm ,sửa ,xóa category
-      const { name } = req.body;
+      const { name,images } = req.body;
       const category = await Category.findOne({ name });
       if (category)
         return res.status(400).json({ mgs: "Loại mặt hàng này đã tồn tại." });
 
-      const newCategory = new Category({ name });
+      const newCategory = new Category({ name, images });
       await newCategory.save();
 
       res.json({ mgs: "Thêm loại sản phẩm thành công." });
@@ -42,8 +42,8 @@ const category = {
   },
   editCategory: async (req, res) => {
     try {
-      const { name } = req.body;
-      await Category.findOneAndUpdate({ _id: req.params.id }, { name });
+      const { name, images } = req.body;
+      await Category.findOneAndUpdate({ _id: req.params.id }, { name, images });
       res.json({ mgs: "Đã cập nhật một loại mặt hàng." });
     } catch (error) {
       res.status(500).json({ mgs: error.message });

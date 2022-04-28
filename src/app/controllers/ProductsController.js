@@ -51,15 +51,17 @@ class APIfeatures {
 const ProductsController = {
   getProducts: async (req, res) => {
     try {
+      const allProduct = Products.find();
       const features = new APIfeatures(Products.find(), req.query)
         .filtering()
         .sorting()
         .paginating();
 
       const products = await features.query;
+
       res.json({
         status: "success",
-        total: products.length,
+        total: allProduct.length,
         products,
       });
     } catch (error) {
@@ -99,7 +101,7 @@ const ProductsController = {
         salePercen,
         service,
         status,
-        views
+        views,
       });
 
       await newProduct.save();
@@ -129,7 +131,7 @@ const ProductsController = {
         salePercen,
         service,
         status,
-        views
+        views,
       } = req.body;
       if (!images) return res.status(400).json({ mgs: "không ảnh upload" });
       await Products.findOneAndUpdate(
@@ -145,7 +147,7 @@ const ProductsController = {
           salePercen,
           service,
           status,
-          views
+          views,
         }
       );
       res.json({ mgs: "Đã cập nhật một sản phẩm" });
@@ -155,7 +157,10 @@ const ProductsController = {
   },
   editStatus: async (req, res) => {
     try {
-      await Products.findOneAndUpdate({_id:req.body.id},{status:req.body.status});
+      await Products.findOneAndUpdate(
+        { _id: req.body.id },
+        { status: req.body.status }
+      );
       res.json({ mgs: "Đã cập nhật một sản phẩm" });
     } catch (error) {
       return res.status(500).json({ mgs: error.message });
