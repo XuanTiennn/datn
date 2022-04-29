@@ -1,67 +1,74 @@
-import { Button, FormGroup, FormLabel, IconButton, Input, TextField } from '@material-ui/core';
-import InputAdornment from '@material-ui/core/InputAdornment';
+import { Button, FormGroup, FormLabel } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import Visibility from '@material-ui/icons/Visibility';
-import VisibilityOff from '@material-ui/icons/VisibilityOff';
 import axios from 'axios';
-import React, { useContext, useState } from 'react';
+import { InputText } from 'primereact/inputtext';
+import { Password } from 'primereact/password';
+import { Toast } from 'primereact/toast';
+import React, { useContext, useRef, useState } from 'react';
 import { ContextGlobal } from './../../../app/ContextGlobal/index';
-Password.propTypes = {};
+
 const useStyles = makeStyles((theme) => ({
 	form: {
-		display: 'flex',
-		flexDirection: 'column',
-		maxWidth: '400px',
-		padding: '30px',
+		textAlign: 'center',
+		padding: '10px',
 	},
 	formgroup: {
 		flexDirection: 'row',
 		justifyContent: 'space-between',
 		margin: '10px 0',
 		alignItems: 'center',
-		width: '100%',
+		width: '550px',
+		display: 'flex',
 	},
-	label: {},
-	inputaaazz21: {},
 }));
-function Password({ user = {} }) {
+function ChangePassword({ user = {} }) {
 	const classes = useStyles();
 	const state = useContext(ContextGlobal);
 	const [token] = state.token;
+	const [userInfor] = state.userApi.user;
+	const toast = useRef(null);
+
 	const [valuezz, setValuezz] = useState({
-		
 		password: '',
 		newpassword: '',
 		comfirmnewpassword: '',
 	});
-	const [show, setShow] = useState(false);
 	const handleSubmit = async (e) => {
 		try {
 			e.preventDefault();
-			const res = await axios.put(`/user/repassword`, {email: user.email, ...valuezz }, { headers: { authorization: token } });
-			alert(res.data.msg);
-			console.log(valuezz);
+			const res = await axios.put(
+				`/user/repassword`,
+				{ email: user.email, ...valuezz },
+				{ headers: { authorization: token } }
+			);
+			showSuccess(res.data.msg);
 		} catch (error) {
 			alert(error.response.data.msg);
 		}
 	};
-
-	const handleChange = (e) => {
-		const { name, value } = e.target;
-		setValuezz({ ...valuezz, [name]: value });
+	const showSuccess = (title) => {
+		toast.current.show({ severity: 'success', summary: 'Thành công', detail: title, life: 3000 });
+	};
+	const handleChange = (prop, value) => {
+		const _p = { ...valuezz };
+		_p[prop] = value;
+		setValuezz(_p);
 	};
 	return (
 		<div>
+			<Toast ref={toast} position="bottom-right" />
+
 			<form className={classes.form} onSubmit={handleSubmit}>
 				<FormGroup className={classes.formgroup}>
 					<FormLabel className={classes.label} for="password">
 						Mật khẩu hiện tại
 					</FormLabel>
-					<TextField
-						className={classes.inputaaazz21}
+					<InputText
+						className="p-inputtext-sm"
 						name="password"
 						variant="outlined"
-						onChange={handleChange}
+						onChange={(e) => handleChange('password', e.target.value)}
+						value={valuezz.password}
 					/>
 				</FormGroup>
 
@@ -69,34 +76,28 @@ function Password({ user = {} }) {
 					<FormLabel className={classes.label} for="newpassword">
 						Mật khẩu mới
 					</FormLabel>
-					<TextField
-						className={classes.input}
+					<InputText
+						className="p-inputtext-sm"
 						name="newpassword"
 						variant="outlined"
-						onChange={handleChange}
+						value={valuezz.newpassword}
+						onChange={(e) => handleChange('newpassword', e.target.value)}
 					/>
 				</FormGroup>
 				<FormGroup className={classes.formgroup}>
 					<FormLabel className={classes.label} for="comfirmnewpassword">
 						Xác nhận mật khẩu mới
 					</FormLabel>
-					<Input
-						className={classes.input}
-						name="comfirmnewpassword"
-						variant="outlined"
-						onChange={handleChange}
-						type={show ? 'text' : 'password'}
-						endAdornment={
-							<InputAdornment position="end">
-								<IconButton aria-label="toggle password visibility" onClick={() => setShow(!show)}>
-									{show ? <Visibility /> : <VisibilityOff />}
-								</IconButton>
-							</InputAdornment>
-						}
+
+					<Password
+						className="p-inputtext-sm"
+						onChange={(e) => handleChange('comfirmnewpassword', e.target.value)}
+						toggleMask
+						value={valuezz.comfirmnewpassword}
 					/>
 				</FormGroup>
 
-				<Button type="submit" variant="outlined" color="primary">
+				<Button style={{ margin: 'auto' }} type="submit" variant="outlined" color="primary">
 					Cập nhật
 				</Button>
 			</form>
@@ -104,4 +105,4 @@ function Password({ user = {} }) {
 	);
 }
 
-export default Password;
+export default ChangePassword;

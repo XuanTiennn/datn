@@ -13,7 +13,7 @@ import Loading from '../../../features/Components/Process';
 import XToolbar from './../../../Components/x-toolbar/XToolbar';
 import Enumeration from './../../../utils/enum';
 import NewDetail from './newDetail';
-import  Pagination  from '@material-ui/lab/Pagination';
+import Pagination from '@material-ui/lab/Pagination';
 News.propTypes = {};
 const useStyles = makeStyles({
 	table: {
@@ -118,7 +118,6 @@ function News(props) {
 		setPage(event.page);
 	};
 
-	
 	if (loading) return <Loading />;
 	try {
 		return (
@@ -141,34 +140,16 @@ function News(props) {
 
 				<XLayout_Center className="position-relative">
 					<DataTable
-						// className="p-datatable-gridlines p-datatable-paging border-none"
-						emptyMessage={'common.no-record-found'}
-						scrollable
-						scrollDirection="both"
-						scrollHeight="flex"
 						value={news}
-						className="p-datatable-gridlines p-datatable-inline-edit border-all"
-						style={{ width: '100%' }}
-						selectionMode="checkbox"
+						responsiveLayout="scroll"
+						className="p-datatable-customers"
 						dataKey="_id"
-						lazy
-						paginator
-						// first={data.first}
-						rows={10}
-						totalRecords={products.length}
-						rowsPerPageOptions={[10, 20, 50, 100]}
-						onPage={onPage}
+						rowHover
 						selection={selectedServices}
 						onSelectionChange={(e) => setSelectedServices(e.value)}
-						paginatorTemplate="RowsPerPageDropdown CurrentPageReport FirstPageLink PrevPageLink NextPageLink LastPageLink"
-						currentPageReportTemplate="{first} - {last} / {totalRecords}"
+						emptyMessage="No customers found."
+						showGridlines
 					>
-						<Column
-							style={{ flex: '0 0 50px' }}
-							selectionMode="multiple"
-							// headerStyle={{ width: '50px' }}
-						></Column>
-
 						<Column
 							field="title"
 							header={<label className="require">{'Tiêu đề'}</label>}
@@ -192,12 +173,11 @@ function News(props) {
 						<Column
 							frozen
 							alignFrozen="right"
-							bodyClassName="p-p-0 p-d-flex p-jc-center p-ai-center frozen-right-first-column"
 							headerClassName="frozen-right-first-column"
 							header={'Thao tác'}
 							body={(row) => (
 								<>
-									<div className="p-d-flex w100 p-jc-center p-ai-center">
+									<div>
 										<Button
 											className="p-button-rounded p-button-text"
 											icon="pi pi-pencil"
@@ -222,14 +202,14 @@ function News(props) {
 				</XLayout_Center>
 				<ShowConfirmFunction title="Bạn có chắc chắn muốn xóa bản ghi này ?" ref={refConfirm} />
 				<NewDetail ref={ref} />
-				<Box style={{ marginTop: '40px', display: 'flex', justifyContent: 'flex-end' }}>
-					{/* <Pagination
-						count={Math.ceil(news.length / 9)}
+				{/* <Box style={{ marginTop: '40px', display: 'flex', justifyContent: 'flex-end' }}>
+					<Pagination
+						count={Math.ceil(news?.length / 9)}
 						color="primary"
 						page={page}
 						onChange={(e, value) => setPage(value)}
-					/> */}
-				</Box>
+					/>
+				</Box> */}
 			</XLayout>
 
 			// 	{/* <ConfirmDelete ref={ref} /> */}

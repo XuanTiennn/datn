@@ -20,6 +20,8 @@ import { Toast } from 'primereact/toast';
 import React, { useContext, useRef, useState } from 'react';
 import { ContextGlobal } from '../../../app/ContextGlobal';
 import { Button } from 'primereact/button';
+import { DataTable } from 'primereact/datatable';
+import { Column } from 'primereact/column';
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -33,6 +35,10 @@ const useStyles = makeStyles((theme) => ({
 		alignItems: 'center',
 		marginTop: '10px',
 	},
+	img: {
+		width: '80px',
+	},
+
 }));
 function Category(props) {
 	const state = useContext(ContextGlobal);
@@ -72,16 +78,19 @@ function Category(props) {
 			setValue('');
 			setIsEdit(false);
 			setImages({});
+
 			setCallback(!callback);
 		} catch (err) {
 			console.log(err);
 		}
 	};
 
-	const handleEdit = (id, name) => {
+	const handleEdit = (id, name, images) => {
+		console.log(images);
 		setId(id);
 		setValue(name);
 		setIsEdit(true);
+		setImages(images);
 	};
 	const handleImgChange = async (e) => {
 		e.preventDefault();
@@ -124,7 +133,7 @@ function Category(props) {
 			life: 3000,
 		});
 	};
-	console.log(toast);
+
 	const handleRemove = async (id) => {
 		try {
 			if (window.confirm('bạn có muốn xóa loại sản phẩm này không ?')) {
@@ -138,6 +147,7 @@ function Category(props) {
 			alert(failr);
 		}
 	};
+	console.log(images);
 	if (category.length === 0) {
 		return (
 			<Paper className={classes.root}>
@@ -164,9 +174,9 @@ function Category(props) {
 		<Paper className={classes.root}>
 			<Container>
 				<Typography variant="h5" component="h2" style={{ padding: '15px 0' }}>
-					Quản lý loại sản phẩm
+					Quản lý danh mục sản phẩm
 				</Typography>
-				<Grid container spacing={2} style={{ justifyContent: 'space-around' }}>
+				<Grid container style={{ justifyContent: 'space-evenly' }}>
 					<Grid item>
 						<form className={classes.form} onSubmit={handleSubmit}>
 							<TextField
@@ -191,9 +201,9 @@ function Category(props) {
 						{loading ? (
 							<ProgressSpinner />
 						) : (
-							<Box className={classes.images}>
+							<Box className={classes.images} className='p-mt-3'>
 								<>
-									<img className={classes.img} src={images ? images.url : ''} alt="img" />{' '}
+									<img className={classes.img} src={images ? images.url : ''}  />{' '}
 									<ClearIcon
 										className={classes.iconClear}
 										onClick={() => handleRemoveImage(images.public_id)}
@@ -203,33 +213,41 @@ function Category(props) {
 						)}
 					</Grid>
 					<Grid component="ul" item>
-						<Table>
-							<TableBody>
-								{category.map((cate) => (
-									<TableRow key={cate._id}>
-										<TableCell className={classes.fontsize}>
-											<Typography variant="h6">{cate.name}</Typography>
-										</TableCell>
-										<TableCell>
-											<Button
-												icon="pi pi-pencil p-button-warning"
-												onClick={() => handleEdit(cate._id, cate.name)}
-												label="Sửa"
-											></Button>
-										</TableCell>
-
-										<TableCell>
-											<Button
-												className="p-button-outlined p-button-danger "
-												icon="pi pi-trash"
-												onClick={() => handleRemove(cate._id)}
-												label="Xóa"
-											></Button>
-										</TableCell>
-									</TableRow>
-								))}
-							</TableBody>
-						</Table>
+						<DataTable
+							value={category}
+							responsiveLayout="scroll"
+							className="p-datatable-customers"
+							dataKey="_id"
+							rowHover
+							emptyMessage="No customers found."
+							showGridlines
+						>
+							<Column
+								field="name"
+								header="Ảnh"
+								body={(d) => <img style={{ width: '30px' }} src={d.images.url} />}
+							></Column>
+							<Column field="name" header="Tên danh mục"></Column>
+							<Column
+								field="name"
+								header="Thao tác"
+								body={(d) => (
+									<>
+										<Button
+											icon="pi pi-pencil p-button-warning"
+											onClick={() => handleEdit(d._id, d.name, d.images)}
+											label="Sửa"
+										></Button>
+										<Button
+											className="p-button-outlined p-button-danger "
+											icon="pi pi-trash"
+											onClick={() => handleRemove(d._id)}
+											label="Xóa"
+										></Button>
+									</>
+								)}
+							></Column>
+						</DataTable>
 					</Grid>
 				</Grid>
 			</Container>

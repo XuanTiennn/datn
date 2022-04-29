@@ -1,13 +1,14 @@
-import { Container, Grid, RadioGroup, FormControl, Radio, FormControlLabel } from '@material-ui/core';
+import { FormControl, FormControlLabel, Grid, Radio, RadioGroup } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import axios from 'axios';
 import { XLayout, XLayout_Center } from 'Components/x-layout/XLayout';
-import React, { forwardRef, useContext, useImperativeHandle, useState } from 'react';
-import { ContextGlobal } from '../../../../app/ContextGlobal';
-import StepThree from './stepThree';
 import { InputText } from 'primereact/inputtext';
 import { InputTextarea } from 'primereact/inputtextarea';
+import { Toast } from 'primereact/toast';
+import React, { forwardRef, useContext, useImperativeHandle, useRef, useState } from 'react';
+import { ContextGlobal } from '../../../../app/ContextGlobal';
 import Enumeration from './../../../../utils/enum';
+import StepThree from './stepThree';
 CheckoutPayment.propTypes = {};
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -40,6 +41,7 @@ function CheckoutPayment(props, ref) {
 		derivery: 'tietkiem',
 	});
 	const [show, setshow] = useState(false);
+	const toast = useRef();
 	const addToCart = async (cart) => {
 		await axios.patch('/user/addcart', { cart }, { headers: { Authorization: token } });
 	};
@@ -66,13 +68,23 @@ function CheckoutPayment(props, ref) {
 	const applyChange = (prop, value) => {
 		const _payload = { ...payload };
 		_payload[prop] = value;
+		if (_payload.phone.length === 0) {
+			showSuccess('Số điện thoại không được để trống');
+		} else if (_payload.address.length === 0) {
+			showSuccess('Địa chỉ không được để trống');
+		}
 		setPayload(_payload);
+	};
+	const showSuccess = (title) => {
+		toast.current.show({ severity: 'warn', summary: 'Lỗi', detail: title, life: 3000 });
 	};
 	return (
 		<XLayout className="p-p-2" style={{ backgroundColor: '#ececec', marginTop: '150px' }}>
+			<Toast ref={toast} position="bottom-right" />
+
 			<XLayout_Center style={{ backgroundColor: 'white' }}>
 				<div className="p-col-12" style={{ display: 'flex' }}>
-					<div className="p-col-5">
+					<div className="p-col-5" style={{ display: 'flex' }}>
 						<div>
 							<p style={{ fontSize: '18px' }}>Hình thức giao hàng</p>
 							<FormControl component="fieldset">
@@ -93,11 +105,15 @@ function CheckoutPayment(props, ref) {
 									onChange={(e) => applyChange('address', e.target.value)}
 									placeholder="Địa chỉ nhận hàng"
 								/>
+								<p style={{ fontSize: '18px' }}>Tên người nhận hàng</p>
+
 								<InputText
 									value={payload.name}
 									onChange={(e) => applyChange('name', e.target.value)}
 									placeholder="Tên người nhận hàng"
 								/>
+								<p style={{ fontSize: '18px' }}>Số điện thoại</p>
+
 								<InputText
 									value={payload.phone}
 									onChange={(e) => applyChange('phone', e.target.value)}

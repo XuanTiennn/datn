@@ -114,7 +114,7 @@ function Products(props) {
 	const addProduct = (id) => {
 		ref.current.create();
 	};
-
+	console.log(products);
 	const handleChangStatus = async (e, id) => {
 		try {
 			const { checked } = e.target;
@@ -181,76 +181,7 @@ function Products(props) {
 			// 					</NativeSelect>
 			// 				</Box>
 			// 				<TableContainer>
-			// 					<Table className={classes.table} aria-label="simple table">
-			// 						<TableHead>
-			// 							<TableRow>
-			// 								<TableCell>
-			// 									Chọn
-			// 									<Checkbox checked={ischecked} onChange={handleCheckAll} />
-			// 								</TableCell>
-			// 								<TableCell>Tên</TableCell>
-			// 								<TableCell align="center">Ảnh</TableCell>
-
-			// 								<TableCell align="center">Giá</TableCell>
-			// 								<TableCell align="center">Tình trạng</TableCell>
-			// 								<TableCell align="center">Giảm giá</TableCell>
-			// 								<TableCell align="center">Đã bán</TableCell>
-			// 								<TableCell colSpan="2" align="center">
-			// 									Thao tác
-			// 								</TableCell>
-			// 							</TableRow>
-			// 						</TableHead>
-			// 						<TableBody>
-			// 							{products.map((row) => (
-			// 								<TableRow key={row.name}>
-			// 									<TableCell>
-			// 										<Checkbox
-			// 											checked={row.checked}
-			// 											onChange={() => handleChange(row._id)}
-			// 										/>
-			// 									</TableCell>
-			// 									<TableCell component="th" scope="row">
-			// 										{row.title}
-			// 									</TableCell>
-			// 									<TableCell align="center">
-			// 										<img className={classes.img} src={row.images.url} alt="" />
-			// 									</TableCell>
-
-			// 									<TableCell align="center">{row.price}</TableCell>
-			// 									<TableCell align="center">
-			// 										<Switch
-			// 											checked={row.status}
-			// 											color="primary"
-			// 											name="status"
-			// 											onChange={(e) => handleChangStatus(e, row._id)}
-			// 										/>
-			// 									</TableCell>
-			// 									<TableCell align="center">{row.salePercen}</TableCell>
-			// 									<TableCell align="center">{row.sold}</TableCell>
-			// 									<TableCell align="center">
-			// 										<Link to={`${row._id}`}>
-			// 											<Tooltip title="Delete">
-			// 												<IconButton aria-label="delete">
-			// 													<EditIcon />
-			// 												</IconButton>
-			// 											</Tooltip>
-			// 										</Link>
-			// 									</TableCell>
-			// 									<TableCell align="center">
-			// 										<Tooltip title="Delete">
-			// 											<IconButton aria-label="delete">
-			// 												<DeleteIcon
-			// 													style={{ cursor: 'pointer' }}
-			// 													onClick={() =>
-			// 														handleRemove(row._id, row.images.public_id)
-			// 													}
-			// 												/>
-			// 											</IconButton>
-			// 										</Tooltip>
-			// 									</TableCell>
-			// 								</TableRow>
-			// 							))}
-			// 						</TableBody>
+			//
 			// 					</Table>
 			// 				</TableContainer>
 			// 			</Grid>
@@ -261,30 +192,14 @@ function Products(props) {
 					<XToolbar
 						className="p-mb-2"
 						left={() => (
-							<Button
-								variant="contained"
-								// className={classes.button}
-								icon="pi pi-plus-circle"
-								onClick={() => addProduct()}
-							>
+							<Button variant="contained" icon="pi pi-plus-circle" onClick={() => addProduct()}>
 								Thêm mới
 							</Button>
 						)}
 						right={() => (
 							<>
-								{' '}
-								{/* <Button
-									variant="contained"
-									// className={classes.buttonRemove}
-									color="secondary"
-									onClick={() => actionPopUp('', '', true)}
-									icon="pi pi-trash"
-									disabled={selectedServices?.length > 0}
-								>
-									Xóa
-								</Button> */}
 								<NativeSelect
-									onChange={handleChange}
+									// onChange={handleChange}
 									value={category}
 									name="category"
 									onChange={(e) => setCategory(e.target.value)}
@@ -300,25 +215,19 @@ function Products(props) {
 					></XToolbar>
 				</XLayout_Top>
 
-				<XLayout_Center className="position-relative">
+				<XLayout_Center className="position-relative" style={{ overflow: 'hidden' }}>
 					<DataTable
-						// className="p-datatable-gridlines p-datatable-paging border-none"
 						emptyMessage={'common.no-record-found'}
 						scrollable
 						scrollDirection="both"
-						scrollHeight="flex"
+						showGridlines
 						value={products}
-						className="p-datatable-gridlines p-datatable-inline-edit border-all"
-						style={{ width: '100%' }}
+						className="p-datatable-customers"
 						selectionMode="checkbox"
 						dataKey="_id"
 						lazy
-						// first={data.first}
-						rows={10}
 						selection={selectedServices}
 						onSelectionChange={(e) => setSelectedServices(e.value)}
-						paginatorTemplate="RowsPerPageDropdown CurrentPageReport FirstPageLink PrevPageLink NextPageLink LastPageLink"
-						currentPageReportTemplate="{first} - {last} / {totalRecords}"
 					>
 						<Column style={{ flex: '0 0 40px' }} selectionMode="multiple"></Column>
 						<Column
@@ -334,12 +243,14 @@ function Products(props) {
 						<Column
 							field="title"
 							header={<label className="require">{'Tên'}</label>}
-							style={{ flex: '1 0 250px' }}
+							style={{ flex: '1 0 150px'}}
+							body={(d)=><span style={{overflow:'hidden',maxWidth:'150px',whiteSpace:'nowrap',textOverflow:'ellipsis'}}>{d.title}</span>}
 						></Column>
 						<Column
 							field="price"
+							headerStyle={{ width: '100%', textAlign: 'center' }}
 							header={<label className="require">{'Giá'}</label>}
-							style={{ flex: '1 0 100px', textAlign: 'center' }}
+							style={{ flex: '1 0 100px' }}
 							body={(d) => <span style={{ width: '100%' }}>{FormatNumber(d.price)}</span>}
 						></Column>
 						<Column
@@ -359,13 +270,13 @@ function Products(props) {
 							field="salePercen"
 							header={<label className="require">{'Giảm giá'}</label>}
 							style={{ flex: '1 0 40px', textAlign: 'center' }}
-							body={(d) => <span style={{ width: '100%' }}>{d.salePercen}</span>}
+							body={(d) => <span style={{ marginLeft:'20px' }}>{d.salePercen}</span>}
 						></Column>
 						<Column
 							field="sold"
 							header={<label className="require">{'Đã bán'}</label>}
 							style={{ flex: '1 0 50px', textAlign: 'center' }}
-							body={(d) => <span style={{ width: '100%' }}>{d.sold}</span>}
+							body={(d) => <span style={{ marginLeft:'20px' }}>{d.sold}</span>}
 						></Column>
 						<Column
 							frozen

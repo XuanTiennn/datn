@@ -268,7 +268,7 @@ function DetailsProduct() {
 													style={{ width: '200px' }}
 													variant="contained"
 													label="Thêm vào giỏ hàng"
-													onClick={addToCart}
+													onClick={()=>addToCart()}
 													className="p-button-infor p-ml-2"
 												></Button>
 											</div>

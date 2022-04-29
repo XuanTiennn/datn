@@ -14,8 +14,7 @@ const useStyles = makeStyles((theme) => ({
 		alignItems: 'center',
 	},
 	originalPric: {
-		
-		fontSize:'16px'
+		fontSize: '16px',
 	},
 	promotion: {
 		marginLeft: theme.spacing(2),
@@ -113,20 +112,11 @@ function Stepthree({ value = {}, handleChange }) {
 						<Paper className="p-p-2">
 							<Box>
 								<Box className={classes.flexbetween}>
-									<Typography variant="body2">Tạm tính :</Typography>
-									<Typography variant="body2">
-										{totalPrice > 0 ? FormatNumber(totalPrice) : 0}
-									</Typography>
-								</Box>
-								<Box className={classes.flexbetween}>
 									<Typography variant="body2">Thành Tiền :</Typography>
 									<Typography className={classes.totalPricee} variant="body2">
 										{totalPrice > 0 ? FormatNumber(totalPrice) : 0}
 									</Typography>
 								</Box>
-								<Typography textAlign="right" variant="caption" gutterBottom>
-									(Đã bao gồm VAT nếu có)
-								</Typography>
 							</Box>
 							<Box></Box>
 						</Paper>

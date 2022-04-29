@@ -6,7 +6,7 @@ import Infor from './Infor';
 import ListCategory from './listCategory';
 import Manageorder from './manageorder';
 import OrderedCheckout from './orderedCheckout';
-import Password from './password';
+import ChangePassword from './password';
 
 User.propTypes = {};
 
@@ -33,7 +33,7 @@ function User(props) {
 								<OrderedCheckout />
 							</Route>
 							<Route path={`${url}/password`} exact>
-								<Password user={user} />
+								<ChangePassword user={user} />
 							</Route>
 						</Switch>
 					</Paper>

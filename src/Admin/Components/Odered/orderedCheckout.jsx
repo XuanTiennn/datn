@@ -1,15 +1,14 @@
-import { Box, Button, Container, makeStyles, Paper, Typography } from '@material-ui/core';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableContainer from '@material-ui/core/TableContainer';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
+import { Box, Container, makeStyles, Typography } from '@material-ui/core';
 import Pagination from '@material-ui/lab/Pagination';
-import { defaultasReact, useContext } from 'react';
+import { Button } from 'primereact/button';
+import { Column } from 'primereact/column';
+import { DataTable } from 'primereact/datatable';
+import { useContext, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ContextGlobal } from './../../../app/ContextGlobal/index';
+import XToolbar from './../../../Components/x-toolbar/XToolbar';
 import Enumeration from './../../../utils/enum';
+import { exportTimeSheet } from './export';
 
 const useStyles = makeStyles((theme) => ({
 	root: { height: '100%' },
@@ -83,55 +82,62 @@ const useStyles = makeStyles((theme) => ({
 function OrderedCheckout({ paymentsCheckout = [], handleChangePagination, page }) {
 	const classes = useStyles();
 	const state = useContext(ContextGlobal);
-	const [paymentsCheckouts,setPaymentsCheckouts] = state.paymentCheckOutApi.paymentsCheckouts;
-
-	
+	const [paymentsCheckouts, setPaymentsCheckouts] = state.paymentCheckOutApi.paymentsCheckouts;
+	const [selectedCustomers, setSelectedCustomers] = useState(null);
 	return (
 		<div>
 			<Container className={classes.root} style={{ height: '100%' }}>
-				<Typography variant="h5" component="h2" style={{ padding: '15px' }}>
-					Quản lý đơn hàng
-				</Typography>
-				<Typography variant="subtitile2" component="span" style={{ padding: '15px' }}>
-					Số đơn hàng({paymentsCheckouts.result})
-				</Typography>
-				<TableContainer component={Paper}>
-					<Table className={classes.table} aria-label="simple table">
-						<TableHead>
-							<TableRow>
-								<TableCell align="center">Payment ID</TableCell>
-								<TableCell align="center">Ngày đặt hàng</TableCell>
-								<TableCell align="center">Xem chi tiết</TableCell>
-								<TableCell align="center">Trạng thái</TableCell>
-							</TableRow>
-						</TableHead>
-						<TableBody>
-							{paymentsCheckout.map((item) => (
-								<TableRow key={item._id}>
-									<TableCell component="th" scope="row" align="center">
-										{item._id}
-									</TableCell>
+				<XToolbar
+					left={() => (
+						<>
+							<Typography variant="h6" component="h4" >
+								Quản lý đơn hàng
+							</Typography>
+							<Typography variant="h6" component="span" >
+								Số đơn hàng({paymentsCheckouts.result})
+							</Typography>
+						</>
+					)}
+					right={() => (
+						<Button
+							icon="pi pi-file-excel"
+							label="Tải thống kê báo cáo"
+							onClick={() => exportTimeSheet(paymentsCheckout)}
+						></Button>
+					)}
+				></XToolbar>
+				<DataTable
+					value={paymentsCheckout}
+					responsiveLayout="scroll"
+					className="p-datatable-customers"
+					dataKey="_id"
+					rowHover
+					selection={selectedCustomers}
+					onSelectionChange={(e) => setSelectedCustomers(e.value)}
+					emptyMessage="No customers found."
+					showGridlines
+				>
+					<Column selectionMode="multiple" headerStyle={{ width: '3em' }}></Column>
 
-									<TableCell align="center">
-										{new Date(item.createdAt).toLocaleDateString()}
-									</TableCell>
-									<TableCell align="center">
-										<Link to={`orderdCheckout/${item._id}`}>
-											<Button color="primary" variant="contained">
-												Xem
-											</Button>
-										</Link>
-									</TableCell>
-									<TableCell align="center">
-										<span color="" variant="outlined">
-											{Enumeration.states.find((i) => i.code === item.state)?.name}
-										</span>
-									</TableCell>
-								</TableRow>
-							))}
-						</TableBody>
-					</Table>
-				</TableContainer>
+					<Column field="_id" header="Mã đơn hàng"></Column>
+					<Column
+						field="createdAt"
+						header="Ngày đặt hàng"
+						body={(d) => <span>{new Date(d.createdAt).toLocaleDateString()}</span>}
+					></Column>
+					<Column
+						body={(d) => <span>{Enumeration.states.find((item) => item.code === d.state)?.name}</span>}
+						header="Trạng thái"
+					></Column>
+					<Column
+						body={(d) => (
+							<Link to={`orderdCheckout/${d._id}`}>
+								<Button label="Xem" color="primary" variant="contained"></Button>
+							</Link>
+						)}
+						header="Xem"
+					></Column>
+				</DataTable>
 				<Box style={{ display: 'flex', justifyContent: 'flex-end', margin: '15px 15px 0 0' }}>
 					<Pagination
 						count={Math.ceil(paymentsCheckouts.result / 9)}

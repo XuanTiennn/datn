@@ -30,7 +30,7 @@ function ListCategory(props) {
 	const { url } = useRouteMatch();
 	return (
 		<div>
-			<List component="nav" aria-label="main mailbox folders">
+			<List component="nav" aria-label="main mailbox folders" style={{backgroundColor:'white'}}>
 				{data.map((item) => (
 					<ListItem onClick={() => history.push(`${url}${item.path}`)} button>
 						<ListItemIcon>{item.icon}</ListItemIcon>
