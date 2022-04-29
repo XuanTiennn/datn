@@ -208,7 +208,7 @@ const UserController = {
         { _id: req.params.id },
         { name, phone, gender, birthday, address, state }
       );
-      return res.status(400).json({ msg: "Đã Cập nhật thành công" });
+      return res.json({ msg: "Đã Cập nhật thành công" });
     } catch (error) {
       return res.status(500).json({ msg: error.message });
     }
