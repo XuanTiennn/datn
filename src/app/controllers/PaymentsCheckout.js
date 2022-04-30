@@ -88,9 +88,6 @@ const PaymentsCheckOutController = {
         state,
         userId: user,
       });
-      cart.filter((item) => {
-        return sold(item._id, item.quantity, item.sold);
-      });
       await newPayment.save();
 
       res.json({ mgs: "Đặt hàng thành công." });
@@ -100,7 +97,18 @@ const PaymentsCheckOutController = {
   },
   editState: async (req, res) => {
     try {
-      await paymentsCheckout.findOneAndUpdate({ _id: req.body._id }, { ...req.body });
+      await paymentsCheckout.findOneAndUpdate(
+        { _id: req.body._id },
+        { ...req.body }
+      );
+      if (req.body.state === "SUCCESS") {
+        req.body.cart.filter((item) => {
+          return sold(item._id, item.quantity, item.sold);
+        });
+        req.body.cart.filter((item) => {
+          return remain(item._id, item.remain, item.quantity);
+        });
+      }
       res.json({ ...req.body });
     } catch (error) {
       return res.status(500).json({ mgs: error.message });
@@ -109,5 +117,8 @@ const PaymentsCheckOutController = {
 };
 const sold = async (id, quantity, oldSold) => {
   await Products.findOneAndUpdate({ _id: id }, { sold: quantity + oldSold });
+};
+const remain = async (id, remain, quantity) => {
+  await Products.findOneAndUpdate({ _id: id }, { remain: remain - quantity });
 };
 module.exports = PaymentsCheckOutController;

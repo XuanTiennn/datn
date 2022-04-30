@@ -60,6 +60,10 @@ const Products = new Schema(
       type: Boolean,
       default: true,
     },
+    remain: {
+      type: Number,
+      default: 0,
+    },
     views: Number,
   },
   { timestamps: true }
