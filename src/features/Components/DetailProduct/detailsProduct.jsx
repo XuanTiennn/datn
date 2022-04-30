@@ -149,7 +149,7 @@ function DetailsProduct() {
 	}
 
 	const addToCart = (to) => {
-		if (!product.status) {
+		if (product.remain <= 0) {
 			alert('Sản phẩm này hiện đã hết vui lòng quay lại sau !');
 		} else if (!isLogined) {
 			alert('Vui lòng đăng nhập để thực hiện thao tác này.');
@@ -211,16 +211,19 @@ function DetailsProduct() {
 											<Typography className={classes.sold} component="p" variant="body1">
 												{product.sold > 0 ? `Đã bán ${product.sold} ` : ''}
 											</Typography>
+											<Typography className={classes.sold} component="p" variant="body1">
+												{product.remain > 0 ? `Còn ${product.remain} ` : ''}
+											</Typography>
 
 											<Typography className={classes.sold} component="p" variant="body1">
 												Tình trạng:
 												<Typography
-													style={{ color: product.status ? '' : 'red' }}
+													style={{ color: product.remain > 0 ? '' : 'red' }}
 													className={classes.status}
 													component="span"
 													variant="body1"
 												>
-													{product.status ? 'Còn hàng' : 'Hết hàng'}
+													{product.remain > 0 ? 'Còn hàng' : 'Hết hàng'}
 												</Typography>
 											</Typography>
 											<Typography className={clsx(classes.flex)} component="p" variant="body2">
@@ -268,7 +271,7 @@ function DetailsProduct() {
 													style={{ width: '200px' }}
 													variant="contained"
 													label="Thêm vào giỏ hàng"
-													onClick={()=>addToCart()}
+													onClick={() => addToCart()}
 													className="p-button-infor p-ml-2"
 												></Button>
 											</div>

@@ -66,6 +66,7 @@ function DetailsOrderdCheckout({ paymentsCheckOut = [], token, aftersubmit }) {
 			life: 3000,
 		});
 	};
+	console.log(orderDetails);
 	if (orderDetails.length === 0) return null;
 	return (
 		<Container className={classes.root}>

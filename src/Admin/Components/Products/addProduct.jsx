@@ -71,7 +71,7 @@ function AddProduct(props) {
 		category: '',
 		color: '',
 		salePercent: 0,
-		status: true,
+		remain: '',
 	};
 	const history = useHistory();
 	const params = useParams();
@@ -162,7 +162,6 @@ function AddProduct(props) {
 			<XLayout>
 				<XLayout_Top>
 					<div className="p-grid p-formgrid p-fluid">
-						
 						<div className="p-field p-col-4 p-md-3">
 							<span className="p-float-label">
 								<InputText
@@ -223,12 +222,9 @@ function AddProduct(props) {
 						</div>
 						<div className="p-field p-col-4 p-md-3">
 							<span className="p-float-label">
-								<Dropdown
-									value={product.status}
-									options={Enumeration.status_product}
-									optionValue="code"
-									optionLabel="name"
-									onChange={(e) => handleChange('status', e.value)}
+								<InputText
+									value={product.remain}
+									onChange={(e) => handleChange('remain', e.target.value)}
 								/>
 							</span>
 						</div>

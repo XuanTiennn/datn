@@ -68,9 +68,9 @@ function CheckoutPayment(props, ref) {
 	const applyChange = (prop, value) => {
 		const _payload = { ...payload };
 		_payload[prop] = value;
-		if (_payload.phone.length === 0) {
+		if (_payload.phone?.length === 0) {
 			showSuccess('Số điện thoại không được để trống');
-		} else if (_payload.address.length === 0) {
+		} else if (_payload.address?.length === 0) {
 			showSuccess('Địa chỉ không được để trống');
 		}
 		setPayload(_payload);

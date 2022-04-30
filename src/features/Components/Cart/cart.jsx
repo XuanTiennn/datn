@@ -153,6 +153,7 @@ function Cart(props) {
 			</>
 		);
 	};
+	console.log(cart);
 	return (
 		<Box className={classes.root}>
 			<Dialog visible={show} onHide={onHide} header="Chú ý" footer={footer}>
@@ -187,6 +188,7 @@ function Cart(props) {
 												>
 													{product.title}
 												</Typography>
+												<p className="p-ml-2">Còn:{product.remain}</p>
 											</Box>
 											<Box>
 												<Box>
@@ -197,28 +199,34 @@ function Cart(props) {
 													</Box>
 												</Box>
 												<Box>
-													<form>
-														<Box className={classes.flex}>
-															<Typography
-																className={classes.spanbutton}
-																variant="body2"
-																onClick={() => decrement(product)}
-															>
-																-
-															</Typography>
-															<input
-																className={classes.input}
-																value={product.quantity > 0 ? product.quantity : 0}
-															/>
-															<Typography
-																className={classes.spanbutton}
-																variant="body2"
-																onClick={() => increment(product)}
-															>
-																+
-															</Typography>
-														</Box>
-													</form>
+													<Box className={classes.flex}>
+														<Button
+															style={{ width: '30px', height: '30px' }}
+															onClick={() => decrement(product)}
+															label="-"
+															className="p-p-0"
+															disabled={product.quantity == 1}
+														></Button>
+														<span
+															style={{
+																width: '30px',
+																height: '30px',
+																display: 'flex',
+																justifyContent: 'center',
+																alignItems: 'center',
+															}}
+														>
+															{product.quantity > 0 ? product.quantity : 0}
+														</span>
+														<Button
+															style={{ width: '30px', height: '30px' }}
+															onClick={() => increment(product)}
+															disabled={product.quantity === product.remain}
+															label="+"
+															className="p-p-0"
+														></Button>
+													</Box>
+
 													<Button
 														className="p-button-outlined p-button-danger p-button-sm p-mt-2"
 														onClick={() => handleRemove(product)}
@@ -250,9 +258,6 @@ function Cart(props) {
 										{totalPrice > 0 ? FormatNumber(totalPrice) : 0}
 									</Typography>
 								</Box>
-								<Typography textAlign="right" variant="caption" gutterBottom>
-									(Đã bao gồm VAT nếu có)
-								</Typography>
 							</Box>
 							<Box></Box>
 						</Paper>

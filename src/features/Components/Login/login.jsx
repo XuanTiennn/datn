@@ -96,7 +96,7 @@ function Login(props, ref) {
 	};
 
 	return (
-		<Dialog visible={show} onHide={() => setShow(false)}>
+		<Dialog visible={show} onHide={() => setShow(false)} style={{marginTop:'80px'}}>
 			{/* <Fade in={open}> */}
 			<Paper className={classes.paper}>
 				<form className={classes.form} onSubmit={handleSubmit}>

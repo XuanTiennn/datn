@@ -84,7 +84,7 @@ const ListComment = (props) => {
 			<div style={{ border: '1px solid #eee', backgroundColor: 'white', padding: '5px', borderRadius: '5px' }}>
 				<h5 style={{ fontSize: '26px' }}>ĐÁNH GIÁ SẢN PHẨM</h5>
 				<Count count={listComment.count} change={onChange} />
-				<Toast ref={toast} />
+				<Toast ref={toast} position="bottom-right" />
 				<div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '10px', marginRight: '10px' }}>
 					<Button
 						onClick={() => getData(page, '-likes', 'pagi')}

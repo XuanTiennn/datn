@@ -25,7 +25,7 @@ function NewDetail(props) {
 		return { __html: newItem?.content };
 	}
 	return (
-		<XLayout className="p-p-4">
+		<XLayout className="p-p-4" style={{marginTop:'100px'}}>
 			<XLayout_Top>
 				<h1>{newItem?.title}</h1>
 			</XLayout_Top>

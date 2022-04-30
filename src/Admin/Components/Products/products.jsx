@@ -223,13 +223,13 @@ function Products(props) {
 						showGridlines
 						value={products}
 						className="p-datatable-customers"
-						selectionMode="checkbox"
+						// selectionMode="checkbox"
 						dataKey="_id"
 						lazy
 						selection={selectedServices}
 						onSelectionChange={(e) => setSelectedServices(e.value)}
 					>
-						<Column style={{ flex: '0 0 40px' }} selectionMode="multiple"></Column>
+						{/* <Column style={{ flex: '0 0 40px' }} selectionMode="multiple"></Column> */}
 						<Column
 							field="img"
 							header={<label className="require">{'Ảnh'}</label>}
@@ -248,28 +248,21 @@ function Products(props) {
 						></Column>
 						<Column
 							field="price"
-							headerStyle={{ width: '100%', textAlign: 'center' }}
+							// headerStyle={{ width: '100%', textAlign: 'center' }}
 							header={<label className="require">{'Giá'}</label>}
-							style={{ flex: '1 0 100px' }}
+							style={{ flex: '1 0 50px' }}
 							body={(d) => <span style={{ width: '100%' }}>{FormatNumber(d.price)}</span>}
 						></Column>
 						<Column
-							field="status"
-							header={<label className="require">{'Trạng thái'}</label>}
+							field="remain"
+							header={<label className="require">{'Số lượng còn'}</label>}
 							style={{ flex: '1 0 20px' }}
-							body={(row) => (
-								<Switch
-									checked={row.status}
-									color="primary"
-									name="status"
-									onChange={(e) => handleChangStatus(e, row._id)}
-								/>
-							)}
+						
 						></Column>
 						<Column
 							field="salePercen"
 							header={<label className="require">{'Giảm giá'}</label>}
-							style={{ flex: '1 0 40px', textAlign: 'center' }}
+							style={{ flex: '1 0 20px', textAlign: 'center' }}
 							body={(d) => <span style={{ marginLeft:'20px' }}>{d.salePercen}</span>}
 						></Column>
 						<Column
@@ -281,12 +274,12 @@ function Products(props) {
 						<Column
 							frozen
 							alignFrozen="right"
-							bodyClassName="p-p-0 p-d-flex p-jc-center p-ai-center frozen-right-first-column"
+							// bodyClassName="p-p-0 p-d-flex p-jc-center p-ai-center frozen-right-first-column"
 							headerClassName="frozen-right-first-column"
 							header={'Thao tác'}
 							body={(row) => (
 								<>
-									<div className="p-d-flex w100 p-jc-center p-ai-center">
+									<div className="p-d-flex ">
 										<Button
 											className="p-button-rounded p-button-text"
 											icon="pi pi-pencil"
@@ -305,7 +298,7 @@ function Products(props) {
 									</div>
 								</>
 							)}
-							style={{ flex: '0 0 50px' }}
+							style={{ flex: '0 0 80px' }}
 						></Column>
 					</DataTable>
 					<Box style={{ marginTop: '40px', display: 'flex', justifyContent: 'flex-end' }}>

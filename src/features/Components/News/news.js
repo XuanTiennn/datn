@@ -13,13 +13,13 @@ function News(props) {
 		setNews(res.data.reverse());
 	}, []);
 	return (
-		<XLayout className="p-p-6">
+		<XLayout className="p-p-6" style={{marginTop:'100px'}}>
 			<XLayout_Center>
 				{news.map((item) => (
 					<div
 						className="p-col-12 p-grid p-formgrid p-fluid"
 						style={{ cursor: 'pointer', fontSize: '18px' }}
-						onClick={() => history.push(`${item._id}`)}
+						onClick={() => history.push(`news/${item._id}`)}
 					>
 						<div className="p-col-3">
 							<img src={item?.images?.url} />
