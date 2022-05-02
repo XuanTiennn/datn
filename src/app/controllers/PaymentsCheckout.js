@@ -35,7 +35,7 @@ class APIfeatures {
       const sortBy = this.queryString.sort.split(",").join(" ");
       this.query = this.query.sort(sortBy);
     } else {
-      this.query = this.query.sort("-createAt");
+      this.query = this.query.sort("-createdAt");
     }
 
     return this;
@@ -61,6 +61,58 @@ const PaymentsCheckOutController = {
       res.json({
         status: "success",
         result: payments.length,
+        payments,
+      });
+    } catch (error) {
+      res.status(500).json({ mgs: error.message });
+    }
+  },
+  filterByDate: async (req, res) => {
+    try {
+      let _p = {};
+      if (req.body.state) {
+        _p = {
+          createdAt: {
+            $gte: new Date(req.body.dateFrom).toLocaleDateString(),
+            $lte: req.body.dateTo
+              ? new Date(req.body.dateTo).toLocaleDateString()
+              : new Date().toLocaleDateString(),
+          },
+          state: req.body.state || undefined,
+        };
+      } else {
+        _p = {
+          createdAt: {
+            $gte: new Date(req.body.dateFrom).toLocaleDateString(),
+            $lte: req.body.dateTo
+              ? new Date(req.body.dateTo).toLocaleDateString()
+              : new Date().toLocaleDateString(),
+          },
+        };
+      }
+      const features = new APIfeatures(
+        paymentsCheckout.find({
+          ..._p,
+        }),
+        req.query
+      )
+        // .filtering()
+        // .sorting()
+        .paginating();
+      const pagi = await paymentsCheckout.find({
+        createdAt: {
+          $gte: new Date(req.body.dateFrom).toLocaleDateString(),
+          $lte: req.body.dateTo
+            ? new Date(req.body.dateTo).toLocaleDateString()
+            : new Date().toLocaleDateString(),
+        },
+        state: req.body.state,
+      });
+      const payments = await features.query;
+
+      res.json({
+        status: "success",
+        result: pagi.length,
         payments,
       });
     } catch (error) {

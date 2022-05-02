@@ -9,6 +9,9 @@ router
   .route("/paymentsCheckout")
   .get(auth, authAdmin, PaymentsCheckoutController.getPayment)
   .post(auth, PaymentsCheckoutController.createPayment);
+router
+  .route("/paymentsCheckout/filter")
+  .post(auth, authAdmin, PaymentsCheckoutController.filterByDate);
 
 router
   .route("/paymentsCheckout/:id")
