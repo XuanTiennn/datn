@@ -12,11 +12,11 @@ import MoreIcon from '@material-ui/icons/MoreVert';
 import SearchIcon from '@material-ui/icons/Search';
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 import axios from 'axios';
-import React, { useContext, useState, useRef } from 'react';
+import { Button } from 'primereact/button';
+import React, { useContext, useRef, useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { ContextGlobal } from '../../../app/ContextGlobal';
 import Login from '../Login/login';
-import Register from '../Register/register';
 import MenuMobile from './MenuMobile';
 import SearchField from './searchField';
 import Submenu from './submenu';
@@ -146,20 +146,7 @@ function Header(props) {
 		setMobileMoreAnchorEl(event.currentTarget);
 	};
 
-	const [openRegister, setOpenRegister] = React.useState(false);
-
-	const handleOpenRegister = () => {
-		setOpenRegister(true);
-	};
-
-	const handleCloseRegister = () => {
-		setOpenRegister(false);
-	};
 	const [openLogin, setOpenLogin] = React.useState(false);
-
-	const handleOpenLogin = () => {
-		setOpenLogin(true);
-	};
 
 	const handleCloseLogin = () => {
 		setOpenLogin(false);
@@ -170,7 +157,6 @@ function Header(props) {
 	const [isLogined] = state.userApi.isLogined;
 	const [isAdmin] = state.userApi.isAdmin;
 	const [cart] = state.userApi.cart;
-	const [search, setSearch] = state.productsAPI.search;
 	const handleLogout = async () => {
 		await axios.get('/user/logout');
 		localStorage.clear();
@@ -190,7 +176,7 @@ function Header(props) {
 			transformOrigin={{ vertical: 'top', horizontal: 'right' }}
 			open={isMenuOpen}
 			onClose={handleMenuClose}
-			style={{position:'absolute',top:'50px',right:'10px',zIndex:'999999'}}
+			style={{ position: 'absolute', top: '50px', right: '10px', zIndex: '999999' }}
 		>
 			<MenuItem
 				onClick={() => {
@@ -200,7 +186,7 @@ function Header(props) {
 			>
 				<Link to="/about">Đăng xuất</Link>
 			</MenuItem>
-			{isLogined && (
+			{isLogined && !isAdmin && (
 				<MenuItem
 					onClick={() => {
 						history.push('/user');
@@ -223,6 +209,7 @@ function Header(props) {
 			transformOrigin={{ vertical: 'top', horizontal: 'right' }}
 			open={isMobileMenuOpen}
 			onClose={handleMobileMenuClose}
+			style={{zIndex:'99999'}}
 		>
 			{isLogined ? (
 				<>
@@ -236,18 +223,16 @@ function Header(props) {
 					</MenuItem>
 				</>
 			) : (
-				<>
+				<div style={{display:'flex',flexDirection:'column'}}>
 					<Typography
 						style={{ padding: '5px', float: 'right' }}
 						className={classes.link}
 						component="a"
 						color="inherit"
 						onClick={() => refLogin.current.login()}
-						
 					>
 						Đăng nhập
 					</Typography>
-					{/* <Login ref={refLogin} open={openLogin} handleClose={handleCloseLogin} onClickQ={handleCloseLogin} /> */}
 
 					<Typography
 						style={{ padding: '5px', float: 'right' }}
@@ -255,12 +240,10 @@ function Header(props) {
 						component="a"
 						color="inherit"
 						onClick={() => refLogin.current.register()}
-						
 					>
 						Đăng ký
 					</Typography>
-					<Register open={openRegister} handleClose={handleCloseRegister} />
-				</>
+				</div>
 			)}
 
 			<MenuItem onClick={() => history.push('/cart')}>
@@ -290,14 +273,12 @@ function Header(props) {
 	const [click, setClick] = useState(false);
 	const [searchTerm, setSearchTerm] = useState('');
 	return (
-		<Container className='p-p-0' style={{position:'fixed',top:0,left:0,zIndex:9999}}>
+		<Container className="p-p-0" style={{ position: 'fixed', top: 0, left: 0, zIndex: 9999 }}>
 			<Grid container>
 				<Grid item className={classes.grow}>
 					<AppBar elevation={0} className={classes.appbar} position="static" id="back-to-top-anchor">
 						<Toolbar>
-							<Box className={classes.menuIcon}>
-								<MenuMobile />
-							</Box>
+							
 							<Typography className={classes.title} variant="h6" noWrap onClick={() => history.push('/')}>
 								{isAdmin ? (
 									'Admin'
@@ -352,14 +333,12 @@ function Header(props) {
 											component="a"
 											color="inherit"
 											onClick={() => refLogin.current.login()}
-											
 										>
 											Đăng nhập
 										</Typography>
 										<Login ref={refLogin} open={openLogin} handleClose={handleCloseLogin} />
 
 										<Typography
-											
 											className={classes.link}
 											component="a"
 											color="inherit"
@@ -367,12 +346,18 @@ function Header(props) {
 										>
 											Đăng ký
 										</Typography>
-										<Register open={openRegister} handleClose={handleCloseRegister} />
 									</>
 								)}
 
 								{isAdmin ? (
-									''
+									<Button
+										onClick={() => {
+											handleLogout();
+											handleMenuClose();
+										}}
+									>
+										<Link to="/">Đăng xuất</Link>
+									</Button>
 								) : (
 									<>
 										<IconButton
@@ -386,7 +371,7 @@ function Header(props) {
 										</IconButton>
 									</>
 								)}
-								{isLogined && (
+								{isLogined && !isAdmin && (
 									<IconButton
 										edge="end"
 										aria-label="account of current user"
@@ -415,7 +400,7 @@ function Header(props) {
 						{isAdmin ? '' : <Submenu />}
 					</AppBar>
 					{renderMobileMenu}
-					{isLogined ? renderMenu : ''}
+					{isLogined && !isAdmin ? renderMenu : ''}
 				</Grid>
 			</Grid>
 		</Container>

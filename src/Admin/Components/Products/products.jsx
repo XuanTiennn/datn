@@ -82,7 +82,7 @@ function Products(props) {
 	const ref = useRef(null);
 	const refConfirm = useRef(null);
 	const [open, setOpen] = useState(false);
-	console.log(state);
+	
 	const actionPopUp = async (id, public_id, multiple) => {
 		if (multiple) {
 			refConfirm.current.multiple(id, public_id);

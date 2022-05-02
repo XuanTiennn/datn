@@ -15,15 +15,17 @@ import { XLayout, XLayout_Center, XLayout_Top } from 'Components/x-layout/XLayou
 import XToolbar from 'Components/x-toolbar/XToolbar';
 import { Button } from 'primereact/button';
 import { exportTimeSheet } from './exportExcel';
-
+import axios from 'axios';
+import Enumeration from './../../../utils/enum';
 DarshBoard.propTypes = {};
 
-function DarshBoard({ paymentCheckOut = [] }) {
+function DarshBoard({ paymentCheckOut = [], token }) {
 	const state = useContext(ContextGlobal);
 	const [allProductSold] = state.productsAPI.allProductSold;
 	const [allProduct] = state.productsAPI.allProduct;
 	const [allUser] = state.userApi.allUser;
 	const [categories] = state.categoryApi.category;
+	const [paymentsCheckouts, setPaymentsCheckouts] = useState([]);
 
 	const array = [];
 	const totalItem = [];
@@ -41,23 +43,53 @@ function DarshBoard({ paymentCheckOut = [] }) {
 
 	let arrayGroupByDate = GroupData(flatarray, 'category');
 	const dataNumbers = Object.values(arrayGroupByDate).map((item) => item.reduce((total, i) => (total += i), 0));
-
+	useEffect(() => {
+		try {
+			const getPayments = async () => {
+				const res = await axios.get('/api/paymentsCheckout?limit=1000', { headers: { Authorization: token } });
+				setPaymentsCheckouts(res.data.payments);
+			};
+			getPayments();
+		} catch (error) {
+			console.log(error);
+		}
+	}, []);
+	const calculatorTotalPrice = () => {
+		const _p = [...paymentsCheckouts];
+		const p_success = _p.filter((item) => item.state === Enumeration.SUCCESS);
+		const _p_cart = [];
+		p_success.map((item) => {
+			_p_cart.push(...item.cart);
+		});
+		const price = _p_cart.reduce((total, item) => {
+			return (total += item.price * item.quantity);
+		}, 0);
+		return price;
+	};
 	const data = [
 		{
 			backgroundcolor: 'linear-gradient(to right,#0ac282,#0df3a3)',
 			id: 2,
 			icon: <MonetizationOnIcon />,
 			title: 'Tổng thu nhập',
-			number: FormatNumber(totalPrice),
+			number: FormatNumber(calculatorTotalPrice()),
 		},
 		{
 			backgroundcolor: 'linear-gradient(to right,#01a9ac,#01dbdf)',
 			id: 3,
 			icon: <ShoppingCartIcon />,
 			title: 'Số đơn hàng',
-			number: flatarray.length,
+			number: paymentsCheckouts.length,
+		},
+		{
+			backgroundcolor: 'linear-gradient(to right,#01a9ac,#01dbdf)',
+			id: 3,
+			icon: <ShoppingCartIcon />,
+			title: 'Số đơn hàng thành công',
+			number: paymentsCheckouts.filter((item) => item.state === Enumeration.SUCCESS)?.length,
 		},
 	];
+
 	const [data1, setData1] = useState([]);
 	useEffect(() => {
 		// handleData();
@@ -67,10 +99,9 @@ function DarshBoard({ paymentCheckOut = [] }) {
 		allProduct?.products?.map((item) => {
 			arr.push(item[type]);
 		});
-		console.log(arr);
+
 		return arr;
 	};
-	console.log(data1);
 	const [chartData] = useState({
 		labels: handleData('title'),
 		datasets: [
@@ -81,7 +112,7 @@ function DarshBoard({ paymentCheckOut = [] }) {
 			},
 		],
 	});
-	console.log(allProduct);
+
 	const [lightOptions] = useState({
 		plugins: {
 			legend: {
@@ -107,7 +138,6 @@ function DarshBoard({ paymentCheckOut = [] }) {
 					{data.map((item) => (
 						<Grid item xs={12} sm={6} md={4} lg={4}>
 							<CardCount
-								
 								backgroundcolor={item.backgroundcolor}
 								icon={item.icon}
 								title={item.title}

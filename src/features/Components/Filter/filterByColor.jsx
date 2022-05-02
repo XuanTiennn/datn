@@ -6,7 +6,7 @@ import {
 	makeStyles,
 	Radio,
 	RadioGroup,
-	Typography
+	Typography,
 } from '@material-ui/core';
 import clsx from 'clsx';
 import React, { useContext } from 'react';
@@ -86,10 +86,6 @@ const colors = [
 		label: 'Trắng',
 		value: 'trang',
 	},
-	{
-		label: 'Tím',
-		value: 'tim',
-	},
 ];
 
 function FilterByColor(props) {
@@ -101,7 +97,7 @@ function FilterByColor(props) {
 			<Box>
 				<FormControl component="fieldset">
 					<FormLabel component="legend">
-						<Typography variant="body1" component="h2">
+						<Typography style={{ fontSize: '16px' }} component="h2">
 							Màu sắc
 						</Typography>
 					</FormLabel>

@@ -3,13 +3,16 @@ import Pagination from '@material-ui/lab/Pagination';
 import { Button } from 'primereact/button';
 import { Column } from 'primereact/column';
 import { DataTable } from 'primereact/datatable';
-import { useContext, useState } from 'react';
+import { useContext, useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { ContextGlobal } from './../../../app/ContextGlobal/index';
 import XToolbar from './../../../Components/x-toolbar/XToolbar';
 import Enumeration from './../../../utils/enum';
 import { exportTimeSheet } from './export';
-
+import { Calendar } from 'primereact/calendar';
+import axios from 'axios';
+import { Dropdown } from 'primereact/dropdown';
+import { ProgressBar } from 'primereact/progressbar';
 const useStyles = makeStyles((theme) => ({
 	root: { height: '100%' },
 	table: {
@@ -79,35 +82,99 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-function OrderedCheckout({ paymentsCheckout = [], handleChangePagination, page }) {
+function OrderedCheckout({ paymentsCheckout = [], handleChangePagination, page, token }) {
 	const classes = useStyles();
 	const state = useContext(ContextGlobal);
 	const [paymentsCheckouts, setPaymentsCheckouts] = state.paymentCheckOutApi.paymentsCheckouts;
 	const [selectedCustomers, setSelectedCustomers] = useState(null);
+	const [filter, setfilter] = useState({ dateFrom: null, dateTo: null });
+	const [payments, setPayments] = useState({});
+	const [loading, setloading] = useState(false);
+	useEffect(() => {
+		const _p = { ...payments };
+		const _f = { ...filter };
+		_p.payments = paymentsCheckout;
+		_p.result = paymentsCheckouts.result;
+		setPayments(_p);
+		setfilter(_f);
+	}, [page]);
+	const getDataByDate = async (filter) => {
+		try {
+			setloading(true);
+			const res = await axios.post(
+				`/api/paymentsCheckout/filter`,
+				{ ...filter },
+				{ headers: { Authorization: token } }
+			);
+			if (res) {
+				setPayments(res.data);
+				setloading(false);
+			}
+		} catch (error) {
+			console.log(error);
+		}
+	};
+	const applyChang = (prop, value) => {
+		const _p = { ...filter };
+		_p[prop] = value;
+		setfilter(_p);
+		getDataByDate(_p);
+	};
+	if (loading) {
+		return <ProgressBar mode="indeterminate" style={{ height: '6px' }}></ProgressBar>;
+	}
 	return (
 		<div>
-			<Container className={classes.root} style={{ height: '100%' }}>
+			<Container className={classes.root} style={{ height: '100%',padding:'0' }}>
 				<XToolbar
 					left={() => (
 						<>
-							<Typography variant="h6" component="h4" >
-								Quản lý đơn hàng
-							</Typography>
-							<Typography variant="h6" component="span" >
+							<Typography variant="h6" component="span">
 								Số đơn hàng({paymentsCheckouts.result})
 							</Typography>
 						</>
 					)}
 					right={() => (
-						<Button
-							icon="pi pi-file-excel"
-							label="Tải thống kê báo cáo"
-							onClick={() => exportTimeSheet(paymentsCheckout)}
-						></Button>
+						<>
+							<Dropdown
+								options={Enumeration.states}
+								optionLabel="name"
+								optionValue="code"
+								value={filter?.state}
+								onChange={(e) => applyChang('state', e.value)}
+								style={{ width: '150px' }}
+								className="p-mr-2"
+								showClear
+								placeholder="Trạng thái"
+							></Dropdown>
+							<Calendar
+								id="icon"
+								value={filter?.dateFrom}
+								onChange={(e) => applyChang('dateFrom', e.target.value)}
+								showIcon
+								style={{ height: '25px', width: '200px' }}
+							/>
+							<Calendar
+								id="icon"
+								value={filter?.dateTo}
+								onChange={(e) => applyChang('dateTo', e.target.value)}
+								showIcon
+								style={{ height: '25px', width: '200px' }}
+							/>
+							<Button
+								icon="pi pi-file-excel"
+								label="Tải thống kê báo cáo"
+								onClick={() =>
+									exportTimeSheet(
+										selectedCustomers?.length > 0 ? selectedCustomers : paymentsCheckout
+									)
+								}
+							></Button>
+						</>
 					)}
 				></XToolbar>
 				<DataTable
-					value={paymentsCheckout}
+					value={payments.payments}
 					responsiveLayout="scroll"
 					className="p-datatable-customers"
 					dataKey="_id"
@@ -116,6 +183,7 @@ function OrderedCheckout({ paymentsCheckout = [], handleChangePagination, page }
 					onSelectionChange={(e) => setSelectedCustomers(e.value)}
 					emptyMessage="No customers found."
 					showGridlines
+					style={{ height: '100%' }}
 				>
 					<Column selectionMode="multiple" headerStyle={{ width: '3em' }}></Column>
 
@@ -123,7 +191,7 @@ function OrderedCheckout({ paymentsCheckout = [], handleChangePagination, page }
 					<Column
 						field="createdAt"
 						header="Ngày đặt hàng"
-						body={(d) => <span>{new Date(d.createdAt).toLocaleDateString()}</span>}
+						body={(d) => <span>{new Date(d.createdAt).toLocaleString()}</span>}
 					></Column>
 					<Column
 						body={(d) => <span>{Enumeration.states.find((item) => item.code === d.state)?.name}</span>}

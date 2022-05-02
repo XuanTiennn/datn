@@ -3,7 +3,6 @@ import { useContext } from 'react';
 import { Redirect, Route, Switch, useRouteMatch } from 'react-router-dom';
 import Admin from '../../Admin';
 import { ContextGlobal } from '../../app/ContextGlobal/index';
-import BackToTop from './BackToTop/index';
 import Cart from './Cart/cart';
 import CheckoutPayment from './Cart/Checkout';
 import ContactUs from './ContactUs/index';
@@ -17,7 +16,6 @@ import SetPassword from './Login/setPassword';
 import NewDetail from './News/newDetail';
 import News from './News/news';
 import NotFound from './NotFound/notFound';
-import OderHistory from './OderHistory';
 import ListPage from './Products/listPages';
 import RegisterEmail from './RegisterEmail';
 import InforWeb from './Service/infor';
@@ -48,8 +46,6 @@ function MainPage() {
 					{isLogined ? (
 						<>
 							<Route path="/checkout/payment" exact component={CheckoutPayment} />
-							<Route path="/history" exact component={OderHistory} />
-							{/* <Route path="/history/details/:id" exact component={DetailOrder} /> */}
 							<Route path="/checkout/details/:id" exact component={OrderCheckoutDetails} />
 							<Route path="/user" component={User} />
 						</>

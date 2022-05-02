@@ -55,10 +55,14 @@ export const exportTimeSheet = async (data, org) => {
 		});
 	}
 	sheet.addRows(arr);
+	console.log(arr);
 	// sheet.insertRow(11, {id: 1, name: 'John Doe', dob: new Date(1970,1,1)});
 	sheet.getCell(`F${data.length + 2}`).value = FormatNumber(
-		arr.reduce((total, item) => (total += item.totalMoney), 0)
+		arr
+			.filter((item) => item.state === 'Giao hàng thành công')
+			.reduce((total, item) => (total += item.totalMoney), 0)
 	);
+	sheet.getCell(`E${data.length + 2}`).value = 'Số tiền thu được:';
 	for (let i = 0; i < sheet.columns.length; i++) {
 		//header row 1
 		sheet.getCell(1, i + 1).style = {

@@ -8,7 +8,7 @@ import clsx from 'clsx';
 import React from 'react';
 import FullscreenIcon from '@material-ui/icons/Fullscreen';
 import FullscreenExitIcon from '@material-ui/icons/FullscreenExit';
-const drawerWidth = 250;
+const drawerWidth = 200;
 
 const useStyles = makeStyles((theme) => ({
 	appBar: {
@@ -90,38 +90,7 @@ function HeaderAdmin({ handleDrawerOpen, handleLogout, open }) {
 				style={{ padding: '0' }}
 			>
 				<Toolbar>
-					<IconButton
-						color="inherit"
-						aria-label="open drawer"
-						onClick={handleDrawerOpen}
-						edge="start"
-						className={clsx(classes.menuButton, {
-							[classes.hide]: open,
-						})}
-					>
-						<MenuIcon />
-					</IconButton>
 					<Box className={classes.box}>
-						<li>
-							<FullscreenIcon
-								className={clsx(classes.menuButton, {
-									[classes.hide]: openn,
-								})}
-								onClick={() => {
-									goFullScreen();
-									handleFullscreen();
-								}}
-							/>
-							<FullscreenExitIcon
-								className={clsx(classes.menuButton, {
-									[classes.hide]: !openn,
-								})}
-								onClick={() => {
-									closeScreen();
-									handleFullscreenExit();
-								}}
-							/>
-						</li>
 						<Typography className={classes.link} component="a" color="inherit" onClick={handleLogout}>
 							Đăng xuất
 						</Typography>

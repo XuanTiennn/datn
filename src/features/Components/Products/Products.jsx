@@ -25,10 +25,11 @@ function Products(props) {
 			setService('');
 		}
 	}, [match.url, category]);
-console.log(products);
+
 	return (
 		<Container style={{ marginTop: '50px', marginBottom: '50px' }}>
 			<BreadCrumb str={match.url} category={category.split('=').pop()} />
+
 			<Paper elevation={0}>
 				<Grid container spacing={4} style={{ padding: '15px' }}>
 					<Grid item lg={3}>

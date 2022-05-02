@@ -15,7 +15,7 @@ const data = [
 	{
 		id: 3,
 		icon: <MenuBookIcon />,
-		title: 'Quản lý đơn hàng',
+		title: 'Đơn hàng',
 		path: '/ordered',
 	},
 	{

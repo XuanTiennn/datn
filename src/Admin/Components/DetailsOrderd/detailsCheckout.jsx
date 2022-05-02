@@ -12,11 +12,6 @@ import Enumeration from './../../../utils/enum';
 import axios from 'axios';
 import { Toast } from 'primereact/toast';
 const useStyles = makeStyles((theme) => ({
-	root: {
-		padding: theme.spacing(2, 0),
-		marginTop: '20px',
-	},
-
 	img: {
 		maxWidth: '100px',
 	},
@@ -70,7 +65,7 @@ function DetailsOrderdCheckout({ paymentsCheckOut = [], token, aftersubmit }) {
 	if (orderDetails.length === 0) return null;
 	return (
 		<Container className={classes.root}>
-			<TableContainer component={Paper}>
+			<TableContainer component={Paper} className="p-p-2">
 				<Toast ref={toast} />
 				<Typography style={{ margin: '10px' }} component="h2" variant="h5">
 					Thông tin khách hàng
@@ -106,7 +101,8 @@ function DetailsOrderdCheckout({ paymentsCheckOut = [], token, aftersubmit }) {
 						<TableCell>Hình ảnh sản phẩm</TableCell>
 						<TableCell align="center">Tên sản phẩm</TableCell>
 						<TableCell align="center">Loại sản phẩm</TableCell>
-						<TableCell align="center">Số lượng</TableCell>
+						<TableCell align="center">Số lượng còn</TableCell>
+						<TableCell align="center">Số lượng mua</TableCell>
 						<TableCell align="center">Giá</TableCell>
 					</TableHead>
 					<TableBody>
@@ -117,6 +113,7 @@ function DetailsOrderdCheckout({ paymentsCheckOut = [], token, aftersubmit }) {
 								</TableCell>
 								<TableCell align="center">{item.title}</TableCell>
 								<TableCell align="center">{item.category}</TableCell>
+								<TableCell align="center">{item.remain}</TableCell>
 								<TableCell align="center">{item.quantity}</TableCell>
 								<TableCell align="center">{formatNumber(item.price * item.quantity)}</TableCell>
 							</TableRow>
@@ -124,7 +121,7 @@ function DetailsOrderdCheckout({ paymentsCheckOut = [], token, aftersubmit }) {
 					</TableBody>
 				</Table>
 				{orderDetails.state === Enumeration.INIT && (
-					<>
+					<div style={{ display: 'flex' }}>
 						<button
 							onClick={() => changeState(Enumeration.APPROVE)}
 							style={{
@@ -145,26 +142,56 @@ function DetailsOrderdCheckout({ paymentsCheckOut = [], token, aftersubmit }) {
 								color: 'red',
 								border: '1px solid red',
 								borderRadius: '5px',
+								margin: '0 10px',
 							}}
 						>
 							Hủy đơn hàng
 						</button>
 						<textarea placeholder="Lý do" onChange={(e) => setReason(e.target.value)}></textarea>
-					</>
+					</div>
 				)}
 				{orderDetails.state === Enumeration.APPROVE && (
 					<button
-						onClick={() => changeState(Enumeration.SUCCESS)}
+						onClick={() => changeState(Enumeration.TRANSPORTING)}
 						style={{
 							padding: '5px',
 							backgroundColor: 'white',
-							color: 'green',
-							border: '1px solid green',
+							color: 'orange',
+							border: '1px solid orange',
 							borderRadius: '5px',
 						}}
 					>
-						Giao hàng thành công
+						Đang giao hàng
 					</button>
+				)}
+				{orderDetails.state === Enumeration.TRANSPORTING && (
+					<div style={{ display: 'flex' }}>
+						<button
+							onClick={() => changeState(Enumeration.SUCCESS)}
+							style={{
+								padding: '5px',
+								backgroundColor: 'white',
+								color: 'green',
+								border: '1px solid green',
+								borderRadius: '5px',
+							}}
+						>
+							Giao hàng thành công
+						</button>
+						<button
+							onClick={() => changeState(Enumeration.CANCEL)}
+							style={{
+								padding: '5px',
+								backgroundColor: 'white',
+								color: 'red',
+								border: '1px solid red',
+								borderRadius: '5px',
+							}}
+						>
+							Hủy đơn hàng
+						</button>
+						<textarea placeholder="Lý do" onChange={(e) => setReason(e.target.value)}></textarea>
+					</div>
 				)}
 			</TableContainer>
 		</Container>

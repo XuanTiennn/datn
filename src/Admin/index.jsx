@@ -23,7 +23,7 @@ function Admin(props) {
 	const state = useContext(ContextGlobal);
 	const [PaymentCheckout, setPaymentCheckout] = useState([]);
 
-	const [paymentsCheckouts,setPaymentsCheckouts] = state.paymentCheckOutApi.paymentsCheckouts;
+	const [paymentsCheckouts, setPaymentsCheckouts] = state.paymentCheckOutApi.paymentsCheckouts;
 	const [page, setPage] = useState(1);
 	const [token] = state.token;
 	useEffect(() => {
@@ -47,7 +47,7 @@ function Admin(props) {
 		import('../Components/layout.scss');
 	}
 	return (
-		<XLayout style={{marginTop:'100px'}}>
+		<XLayout style={{ marginTop: '80px' }}>
 			<XLayout_Left>
 				<Links />
 			</XLayout_Left>
@@ -69,6 +69,7 @@ function Admin(props) {
 							paymentsCheckout={PaymentCheckout}
 							aftersubmit={aftersubmit}
 							page={page}
+							token={token}
 							handleChangePagination={(value) => setPage(value)}
 						/>
 					</Route>
@@ -77,7 +78,7 @@ function Admin(props) {
 					</Route>
 					<Route path={`${url}/:id`} component={AddProduct} />
 					<Route path={`${url}`} component={DarshBoard}>
-						<DarshBoard paymentCheckOut={paymentsCheckouts.payments} />
+						<DarshBoard paymentCheckOut={paymentsCheckouts.payments} token={token} />
 					</Route>
 				</Switch>
 			</XLayout_Center>

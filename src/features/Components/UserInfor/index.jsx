@@ -4,7 +4,6 @@ import { Route, Switch, useRouteMatch } from 'react-router-dom';
 import { ContextGlobal } from '../../../app/ContextGlobal';
 import Infor from './Infor';
 import ListCategory from './listCategory';
-import Manageorder from './manageorder';
 import OrderedCheckout from './orderedCheckout';
 import ChangePassword from './password';
 
@@ -25,9 +24,6 @@ function User(props) {
 						<Switch>
 							<Route path={`${url}`} exact>
 								<Infor user={user} />
-							</Route>
-							<Route path={`${url}/orderd`} exact>
-								<Manageorder />
 							</Route>
 							<Route path={`${url}/ordered`} exact>
 								<OrderedCheckout />

@@ -15,7 +15,7 @@ import { Toast } from 'primereact/toast';
 const useStyles = makeStyles((theme) => ({
 	root: {
 		padding: theme.spacing(2, 0),
-		marginTop: '20px',
+		marginTop: '100px',
 	},
 
 	img: {

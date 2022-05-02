@@ -31,7 +31,7 @@ function SalePrice(props) {
 	if (!products) return null;
 	return (
 		<Paper elevation={0} style={{ marginTop: '20px', padding: '20px', border: '1px solid #edeef5' }}>
-			<Typography component="h2" variant="h4" className="font-dosis" style={{ fontSize: '19px' }}>
+			<Typography component="h2" variant="h4" className="font-dosis" style={{ color: 'rgb(238, 77, 45)', fontSize: '19px' }}>
 				Giá ưu đãi hôm nay
 			</Typography>
 			<Carousel

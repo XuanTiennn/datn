@@ -94,7 +94,6 @@ function Slider(props) {
 		slide.map((item) => {
 			return <img src={item.images.url} />;
 		});
-	
 
 	const handleRemoveSlider = async () => {
 		try {
@@ -111,7 +110,7 @@ function Slider(props) {
 	};
 	return (
 		<>
-			<Container style={{height:'100%'}}>
+			<Container style={{ height: '100%' }}>
 				<Typography variant="h5" component="h2" style={{ padding: '15px 0' }}>
 					Quản lý slide
 				</Typography>
@@ -152,19 +151,16 @@ function Slider(props) {
 						</Box>
 						<Box className={classes.select}>
 							<Typography variant="body1" component="span" style={{ marginRight: '15px' }}>
-								Lọc theo mặt hàng
+								Lọc theo danh mục
 							</Typography>
 							<NativeSelect
-								onChange={handleChange}
 								value={category}
 								name="category"
 								onChange={(e) => setCategory(e.target.value)}
 							>
-								<option value="">Chọn</option>
-								<option value="category=dienthoai">Điện thoại</option>
-								<option value="category=laptop">Laptop</option>
-								<option value="category=quanao">Thời trang</option>
-								<option value="category=mypham">Mỹ phẩm</option>
+								{state.categoryApi.category[0].map((item) => (
+									<option value={`category=${item.name}`}>{item.name}</option>
+								))}
 							</NativeSelect>
 						</Box>
 						<Paper>

@@ -52,18 +52,29 @@ function CheckoutPayment(props, ref) {
 		},
 	}));
 	const handleCreatePayment = async () => {
-		const res = await axios.post(
-			'/api/paymentsCheckout',
-			{ cart, ...payload, state: Enumeration.INIT },
-			{ headers: { Authorization: token } }
-		);
-		// console.log(res);
-		await axios.post('/api/notiUser', { userInfor, cart });
+		const _payload = { ...payload };
+		let error = false;
 
-		setCart([]);
-		addToCart([]);
-		alert(res.data.mgs);
-		window.location.href = '/';
+		if (_payload.phone == undefined || _payload.phone?.length === 0) {
+			error = true;
+			showSuccess('Số điện thoại không được để trống');
+		} else if (_payload.address == undefined || _payload.address?.length === 0) {
+			error = true;
+			showSuccess('Địa chỉ không được để trống');
+		}
+
+		if (!error) {
+			const res = await axios.post(
+				'/api/paymentsCheckout',
+				{ cart, ...payload, state: Enumeration.INIT },
+				{ headers: { Authorization: token } }
+			);
+			alert(res.data.mgs);
+			setCart([]);
+			addToCart([]);
+			window.location.href = '/';
+			await axios.post('/api/notiUser', { userInfor, cart });
+		}
 	};
 	const applyChange = (prop, value) => {
 		const _payload = { ...payload };

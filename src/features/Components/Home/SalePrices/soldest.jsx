@@ -17,8 +17,7 @@ const useStyles = makeStyles((theme) => ({
 		padding: theme.spacing(1),
 		height: '250px',
 		maxWidth: '220px',
-		border:'1px solid #edeef5',
-		
+		border: '1px solid #edeef5',
 	},
 	img: {
 		maxWidth: '200px',
@@ -28,11 +27,10 @@ const useStyles = makeStyles((theme) => ({
 	salePercen: {
 		position: 'absolute',
 		top: '0',
-		left: '0',
-		backgroundColor: 'rgb(255, 66, 78)',
+		right: '0',
+		backgroundColor: 'rgba(255,212,36,.9)',
 		marginLeft: '0',
-		borderBottomRightRadius: '100%',
-		color: 'white',
+		color: '#ee4d2d',
 		padding: '2px 8px 4px 2px',
 	},
 	sold: { textAlign: 'center' },
@@ -46,7 +44,7 @@ function Soldest({ product = {} }) {
 	const classes = useStyles();
 	return (
 		<div>
-			<Card elevation={0} className={classes.root} >
+			<Card elevation={0} className={classes.root}>
 				<CardActionArea>
 					<Link to={`/products/${product._id}`}>
 						<CardMedia
@@ -72,7 +70,7 @@ function Soldest({ product = {} }) {
 								component="span"
 								className={classes.salePercen}
 							>
-								{product.salePercen > 0 ? `-${product.salePercen}%` : ''}
+								Giảm {product.salePercen > 0 ? `-${product.salePercen}%` : ''}
 							</Typography>
 						</Box>
 					</CardContent>

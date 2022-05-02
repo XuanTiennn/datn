@@ -9,10 +9,10 @@ import axios from 'axios';
 TopTrending.propTypes = {};
 const useStyles = makeStyles((theme) => ({
 	root: { marginTop: '30px' },
-	title: { padding: '10px 0' },
+
 	img: {
-		width: '150px',
-		height: '150px',
+		width: '120px',
+		height: '120px',
 		borderRadius: '100%',
 	},
 	wrap: {
@@ -39,19 +39,20 @@ function TopTrending(props) {
 	}, []);
 	return (
 		<XLayout className={classes.root}>
-			<XLayout_Center style={{ backgroundColor: 'white' }}>
-				<Typography
-					className={classes.title}
-					variant="h4"
-					component="h3"
-					style={{ color: 'rgb(238, 77, 45)', fontSize: '19px' }}
-				>
+			<XLayout_Center style={{ backgroundColor: 'white', padding: '20px' }}>
+				<Typography component="h2" variant="h5" style={{ color: 'rgb(238, 77, 45)', fontSize: '19px' }}>
 					Danh mục
 				</Typography>
 				<Grid container>
 					{categories?.map((item) => (
 						<Grid item xs={12} sm={3} md={2}>
-							<Link to="/products" onClick={() => setCategory('category=' + item.name)}>
+							<Link
+								to="/products"
+								onClick={() => {
+									setCategory('category=' + item.name);
+									window.scrollTo(0, 0);
+								}}
+							>
 								<Box className={classes.wrap}>
 									<img className={classes.img} src={item?.images?.url} alt={item.name} />
 									<Typography>{item.name}</Typography>

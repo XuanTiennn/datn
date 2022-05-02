@@ -6,7 +6,7 @@ import {
 	makeStyles,
 	Radio,
 	RadioGroup,
-	Typography
+	Typography,
 } from '@material-ui/core';
 import clsx from 'clsx';
 import React, { useContext } from 'react';
@@ -77,17 +77,11 @@ function FilterByCategory(props) {
 			<Box>
 				<FormControl component="fieldset">
 					<FormLabel component="legend">
-						<Typography variant="body1" component="h2">
+						<Typography style={{ fontSize: '16px' }} component="h2">
 							Danh mục sản phẩm
 						</Typography>
 					</FormLabel>
-					<RadioGroup
-						name="category"
-						value={category}
-						onChange={(e) => setCategory(e.target.value)}
-
-						// onChange={(e) => setCategory(ConvertStr(e.target.value).replace(/\s/g, ''))}
-					>
+					<RadioGroup name="category" value={category} onChange={(e) => setCategory(e.target.value)}>
 						<FormControlLabel value={''} control={<StyledRadio />} label="Tất cả" />
 
 						{categories.map((item) => (

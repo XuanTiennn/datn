@@ -5,25 +5,16 @@ import Drawer from '@material-ui/core/Drawer';
 import IconButton from '@material-ui/core/IconButton';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import { useTheme } from '@material-ui/core/styles';
-import CategoryIcon from '@material-ui/icons/Category';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
-import DashboardIcon from '@material-ui/icons/Dashboard';
-import ListIcon from '@material-ui/icons/List';
-import MailIcon from '@material-ui/icons/Mail';
-import InboxIcon from '@material-ui/icons/MoveToInbox';
-import PeopleIcon from '@material-ui/icons/People';
-import ShopIcon from '@material-ui/icons/Shop';
-import ViewCarouselIcon from '@material-ui/icons/ViewCarousel';
 import axios from 'axios';
 import clsx from 'clsx';
 import React from 'react';
 import { Link } from 'react-router-dom';
 import HeaderAdmin from '../Header';
-const drawerWidth = 250;
+const drawerWidth = 200;
 
 const useStyles = makeStyles((theme) => ({
 	root: {
