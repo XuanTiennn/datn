@@ -1,27 +1,13 @@
-import {
-	Box,
-	Container,
-	Grid,
-	makeStyles,
-	Paper,
-	Table,
-	TableBody,
-	TableCell,
-	TableRow,
-	TextField,
-	Typography,
-} from '@material-ui/core';
+import { Box, Container, Grid, makeStyles, Paper, TextField, Typography } from '@material-ui/core';
 import ClearIcon from '@material-ui/icons/Clear';
-import DeleteIcon from '@material-ui/icons/Delete';
-import EditIcon from '@material-ui/icons/Edit';
 import axios from 'axios';
+import { Button } from 'primereact/button';
+import { Column } from 'primereact/column';
+import { DataTable } from 'primereact/datatable';
 import { ProgressSpinner } from 'primereact/progressspinner';
 import { Toast } from 'primereact/toast';
 import React, { useContext, useRef, useState } from 'react';
 import { ContextGlobal } from '../../../app/ContextGlobal';
-import { Button } from 'primereact/button';
-import { DataTable } from 'primereact/datatable';
-import { Column } from 'primereact/column';
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -38,7 +24,6 @@ const useStyles = makeStyles((theme) => ({
 	img: {
 		width: '80px',
 	},
-
 }));
 function Category(props) {
 	const state = useContext(ContextGlobal);
@@ -51,42 +36,37 @@ function Category(props) {
 	const [isEdit, setIsEdit] = useState(false);
 	const [loading, setLoading] = useState(false);
 	const [isAdmin] = state.userApi.isAdmin;
-	const toast = useRef(null);
-	//console.log(category);
+	const toast = useRef();
 
 	const classes = useStyles();
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 		try {
+			let res;
 			if (isEdit) {
-				const res = await axios.put(
+				res = await axios.put(
 					`/api/category/${getId}`,
 					{ name: value, images },
 					{ headers: { Authorization: token } }
 				);
-				alert(res.data.mgs);
 			} else {
-				const res = await axios.post(
-					'/api/category',
-					{ name: value, images },
-					{ headers: { Authorization: token } }
-				);
-				alert(res.data.mgs);
+				res = await axios.post('/api/category', { name: value, images }, { headers: { Authorization: token } });
 			}
-			// showWarning();
-			setValue('');
-			setIsEdit(false);
-			setImages({});
-
-			setCallback(!callback);
+			if (res.status == 200) {
+				setValue('');
+				setIsEdit(false);
+				setImages({});
+				setCallback(!callback);
+				console.log(res);
+				showSuccess(res.data.mgs);
+			}
 		} catch (err) {
 			console.log(err);
 		}
 	};
 
 	const handleEdit = (id, name, images) => {
-		console.log(images);
 		setId(id);
 		setValue(name);
 		setIsEdit(true);
@@ -126,36 +106,43 @@ function Category(props) {
 			console.log(error);
 		}
 	};
-	const showWarning = () => {
+	const showSuccess = (title) => {
 		toast.current.show({
 			severity: 'success',
 			summary: 'Thao tác thành công',
+			detail: title,
+			life: 3000,
+		});
+	};
+	const showWarr = (title) => {
+		toast.current.show({
+			severity: 'warn',
+			summary: 'Thao tác thất bại',
+			detail: title,
 			life: 3000,
 		});
 	};
 
 	const handleRemove = async (id) => {
 		try {
-			if (window.confirm('bạn có muốn xóa loại sản phẩm này không ?')) {
+			if (window.confirm('Bạn có muốn xóa loại sản phẩm này không ?')) {
 				const res = await axios.delete(`/api/category/${id}`, { headers: { Authorization: token } });
-
-				alert(res.data.mgs);
-				setCallback(!callback);
+				if (res) {
+					showSuccess(res.data.mgs);
+					setCallback(!callback);
+				}
 			}
 		} catch (err) {
-			const failr = err.response.data.mgs;
-			alert(failr);
+			showWarr(err.data.mgs);
 		}
 	};
-	console.log(images);
+
 	if (category.length === 0) {
 		return (
 			<Paper className={classes.root}>
 				<Typography component="h2" variant="h3">
 					Bạn chưa có loại sản phẩm nào
 				</Typography>
-				<Toast ref={toast} />
-
 				<form className={classes.form} onSubmit={handleSubmit}>
 					<TextField
 						required="true"
@@ -172,6 +159,7 @@ function Category(props) {
 	}
 	return (
 		<Paper className={classes.root}>
+			<Toast ref={toast} position="bottom-right" />{' '}
 			<Container>
 				<Typography variant="h5" component="h2" style={{ padding: '15px 0' }}>
 					Quản lý danh mục sản phẩm
@@ -201,9 +189,9 @@ function Category(props) {
 						{loading ? (
 							<ProgressSpinner />
 						) : (
-							<Box className={classes.images} className='p-mt-3'>
+							<Box className="p-mt-3">
 								<>
-									<img className={classes.img} src={images ? images.url : ''}  />{' '}
+									<img className={classes.img} src={images ? images.url : ''} />{' '}
 									<ClearIcon
 										className={classes.iconClear}
 										onClick={() => handleRemoveImage(images.public_id)}
@@ -225,7 +213,7 @@ function Category(props) {
 							<Column
 								field="name"
 								header="Ảnh"
-								body={(d) => <img style={{ width: '30px' }} src={d.images.url} />}
+								body={(d) => <img style={{ width: '30px' }} src={d.images?.url} />}
 							></Column>
 							<Column field="name" header="Tên danh mục"></Column>
 							<Column

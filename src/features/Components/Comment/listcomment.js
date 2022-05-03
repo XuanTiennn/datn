@@ -15,12 +15,14 @@ const ListComment = (props) => {
 	const [payload, setPayload] = useState({});
 	const [page, setPage] = useState(1);
 	const [loading, setLoading] = useState(false);
+	const [total, settotal] = useState(0);
 
 	const toast = useRef(null);
 
 	const [listComment, setlistComment] = useState(comments);
 	useEffect(() => {
 		setlistComment(comments);
+		TotalRating(comments);
 	}, [comments]);
 	const applyChange = (prop, value) => {
 		const _p = { ...payload };
@@ -50,6 +52,13 @@ const ListComment = (props) => {
 			onPage(res.data);
 			setLoading(false);
 		}
+	};
+	const TotalRating = (listComment) => {
+		settotal(
+			Object.keys(listComment.count).reduce((t, i) => {
+				return (t += i * listComment.count[i]);
+			}, 0) / listComment.total
+		);
 	};
 	const update = async (item) => {
 		if (!isLogined) {
@@ -83,7 +92,7 @@ const ListComment = (props) => {
 		return (
 			<div style={{ border: '1px solid #eee', backgroundColor: 'white', padding: '5px', borderRadius: '5px' }}>
 				<h5 style={{ fontSize: '26px' }}>ĐÁNH GIÁ SẢN PHẨM</h5>
-				<Count count={listComment.count} change={onChange} />
+				<Count count={listComment.count} total={Math.round(total)} change={onChange} />
 				<Toast ref={toast} position="bottom-right" />
 				<div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '10px', marginRight: '10px' }}>
 					<Button

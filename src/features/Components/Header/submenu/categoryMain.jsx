@@ -52,7 +52,7 @@ function CategoryMain(props) {
 						<Link
 							className={classes.item}
 							to="/products"
-							// onClick={() => setCategory('category=' + item.name)}
+							
 							onClick={() => setCategory('category=' + ConvertStr(item.name).replace(/\s/g, ''))}
 
 						>

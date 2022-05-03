@@ -101,7 +101,14 @@ function FilterByColor(props) {
 							Màu sắc
 						</Typography>
 					</FormLabel>
-					<RadioGroup name="color" value={color} onChange={(e) => setColor(e.target.value)}>
+					<RadioGroup
+						name="color"
+						value={color}
+						onChange={(e) => {
+							setColor(e.target.value);
+							window.scrollTo(0, 0);
+						}}
+					>
 						<FormControlLabel value={''} control={<StyledRadio />} label="Tất cả" />
 						{colors.map((color) => (
 							<FormControlLabel

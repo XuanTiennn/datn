@@ -6,7 +6,7 @@ DoughnutChart.propTypes = {};
 
 function DoughnutChart({ list = [], labels = [] }) {
 	const data = {
-		labels: labels.map((item) => item.name),
+		labels: labels,
 		datasets: [
 			{
 				label: '# of Votes',

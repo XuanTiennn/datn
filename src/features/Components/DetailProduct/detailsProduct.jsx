@@ -12,6 +12,7 @@ import RecentProducts from './recentProducts';
 import { Button } from 'primereact/button';
 import Comment from './../Comment/comment';
 import ListComment from './../Comment/listcomment';
+import Loading from 'Components/loading/loading';
 const useStyles = makeStyles((theme) => ({
 	root: {
 		marginTop: '50px',
@@ -112,6 +113,7 @@ function DetailsProduct() {
 	const params = useParams();
 	const [product, setProduct] = useState([]);
 	const [comments, setcomments] = useState([]);
+	const [loading, setloading] = useState(false);
 	const classes = useStyles();
 	let isService = '';
 	const addCart = data.userApi.addToCart;
@@ -119,11 +121,13 @@ function DetailsProduct() {
 		if (params.id) {
 			try {
 				const getItem = async () => {
+					setloading(true);
 					let res = await axios.get(`/api/products/${params.id}`);
 					let comments = await axios.get(`/api/comment/${params.id}?page=1&`);
-					console.log(comments);
+
 					setcomments(comments.data);
 					setProduct(res.data);
+					setloading(false);
 					res.data.views = res.data.views ? res.data.views + 1 : 1;
 					await axios.put(`/api/products/${res.data._id}`, { ...res.data });
 				};
@@ -174,9 +178,10 @@ function DetailsProduct() {
 	useEffect(() => {
 		window.scrollTo(0, 0);
 	}, [match.url]);
-	console.log(comments);
-	if (product?.length === 0) return null;
-	else
+
+	if (product?.length === 0) {
+		return null;
+	} else
 		return (
 			<Box style={{ backgroundColor: '#F7F8FD' }}>
 				<Container className={classes.root}>
@@ -310,6 +315,8 @@ function DetailsProduct() {
 										</Grid>
 									</Paper>
 								</Box>
+							</Grid>
+							<Grid lg={12}>
 								<ListComment isLogined={isLogined} comments={comments} onPage={onPage} />
 								{isLogined && <Comment product={product} state={state} afterSubmit={afterSubmit} />}
 							</Grid>

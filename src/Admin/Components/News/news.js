@@ -9,11 +9,11 @@ import { useHistory } from 'react-router-dom';
 import ShowConfirmFunction from 'utils/commonFunction';
 import { ContextGlobal } from '../../../app/ContextGlobal/index';
 import { XLayout, XLayout_Center, XLayout_Top } from '../../../Components/x-layout/XLayout';
-import Loading from '../../../features/Components/Process';
 import XToolbar from './../../../Components/x-toolbar/XToolbar';
 import Enumeration from './../../../utils/enum';
 import NewDetail from './newDetail';
 import Pagination from '@material-ui/lab/Pagination';
+import Loading from './../../../Components/loading/loading';
 News.propTypes = {};
 const useStyles = makeStyles({
 	table: {
@@ -71,7 +71,8 @@ function News(props) {
 		const res = await axios.get('/api/news');
 		setNews(res.data);
 	}, [callback]);
-	const actionPopUp = async (id, public_id, multiple) => {
+	const actionPopUp = async (row,id, public_id, multiple) => {
+		console.log(row);
 		if (multiple) {
 			refConfirm.current.multiple(id, public_id);
 		} else {
@@ -103,11 +104,11 @@ function News(props) {
 		ref.current.create();
 	};
 
-	const handleChangStatus = async (e, id) => {
+	const handleChangStatus = async (e, id, row) => {
 		try {
 			const { checked } = e.target;
 			setLoading(true);
-			await axios.patch('/api/news', { id, status: checked });
+			await axios.patch(`/api/news/${id}`, { ...row, status: checked });
 			setCallBack(!callback);
 			setLoading(false);
 		} catch (error) {
@@ -118,7 +119,7 @@ function News(props) {
 		setPage(event.page);
 	};
 
-	if (loading) return <Loading />;
+	if (loading) return <Loading loading={loading} />;
 	try {
 		return (
 			<XLayout className="p-p-2">
@@ -165,7 +166,7 @@ function News(props) {
 									checked={row.status}
 									color="primary"
 									name="status"
-									onChange={(e) => handleChangStatus(e, row._id)}
+									onChange={(e) => handleChangStatus(e, row._id, row)}
 								/>
 							)}
 						></Column>
@@ -191,7 +192,7 @@ function News(props) {
 											tooltip={Enumeration.crud.delete}
 											tooltipOptions={{ position: 'bottom' }}
 											icon="pi pi-trash"
-											onClick={() => actionPopUp(row._id, row.images.public_id)}
+											onClick={() => actionPopUp(row,row._id, row?.images?.public_id)}
 										></Button>
 									</div>
 								</>

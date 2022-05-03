@@ -15,7 +15,7 @@ Cart.propTypes = {};
 const useStyles = makeStyles((theme) => ({
 	root: {
 		padding: theme.spacing(2, 0),
-		marginTop: '20px',
+		marginTop: '80px',
 	},
 	flex: { display: 'flex' },
 	flexbetween: {
@@ -153,7 +153,7 @@ function Cart(props) {
 			</>
 		);
 	};
-	console.log(cart);
+
 	return (
 		<Box className={classes.root}>
 			<Dialog visible={show} onHide={onHide} header="Chú ý" footer={footer}>
@@ -263,7 +263,7 @@ function Cart(props) {
 						</Paper>
 						<Button style={{ marginTop: '10px', color: 'blueviolet', color: 'white' }} variant="contained">
 							<Link style={{ color: 'white' }} to="checkout/payment">
-								Tiến hành đặt hàng
+								Tiếp tục
 							</Link>
 						</Button>
 						<Box

@@ -125,12 +125,12 @@ function OrderedCheckout({ paymentsCheckout = [], handleChangePagination, page, 
 	}
 	return (
 		<div>
-			<Container className={classes.root} style={{ height: '100%',padding:'0' }}>
+			<Container className='p-mt-2' style={{ height: '100%',padding:'0' }}>
 				<XToolbar
 					left={() => (
 						<>
-							<Typography variant="h6" component="span">
-								Số đơn hàng({paymentsCheckouts.result})
+							<Typography variant="h6" component="span" style={{fontSize:'16px'}}>
+								Số đơn({paymentsCheckouts.result})
 							</Typography>
 						</>
 					)}
@@ -153,6 +153,7 @@ function OrderedCheckout({ paymentsCheckout = [], handleChangePagination, page, 
 								onChange={(e) => applyChang('dateFrom', e.target.value)}
 								showIcon
 								style={{ height: '25px', width: '200px' }}
+								placeholder="Từ ngày"
 							/>
 							<Calendar
 								id="icon"
@@ -160,13 +161,14 @@ function OrderedCheckout({ paymentsCheckout = [], handleChangePagination, page, 
 								onChange={(e) => applyChang('dateTo', e.target.value)}
 								showIcon
 								style={{ height: '25px', width: '200px' }}
+								placeholder="Đến ngày"
 							/>
 							<Button
 								icon="pi pi-file-excel"
 								label="Tải thống kê báo cáo"
 								onClick={() =>
 									exportTimeSheet(
-										selectedCustomers?.length > 0 ? selectedCustomers : paymentsCheckout
+										selectedCustomers?.length > 0 ? selectedCustomers : payments.payments
 									)
 								}
 							></Button>

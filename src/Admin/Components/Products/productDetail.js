@@ -28,9 +28,7 @@ function ProductDetail(prop, ref) {
 			setProductId(id);
 		},
 	}));
-	const showSuccess = () => {
-		toast.current.show({ severity: 'success', summary: 'Success Message', detail: 'Message Content', life: 3000 });
-	};
+
 	const handleAction = async () => {
 		let res;
 		const _product = { ...payload };
@@ -49,21 +47,20 @@ function ProductDetail(prop, ref) {
 				break;
 		}
 		if (res) {
-			showSuccess();
+			showSuccess(res.data.mgs);
 			setOpen(false);
 			setCallBack(!callback);
-			showWarning();
+			// showWarning();
 		}
 	};
-
-	const showWarning = () => {
-		toast.current.show({
-			severity: 'success',
-			summary: 'Thao tác thành công',
-
-			life: 3000,
-		});
+	const showSuccess = (title) => {
+		toast.current.show({ 
+			severity: 'success', 
+			summary: 'Thao tác thành công', 
+			detail: title, 
+			life: 3000 });
 	};
+	
 	const getPayload = (payload, image) => {
 		setPayload(payload);
 
@@ -84,17 +81,16 @@ function ProductDetail(prop, ref) {
 	};
 	return (
 		<div>
-			<Toast ref={toast} />
+			<Toast ref={toast} position='bottom-right' />
 
 			<Dialog
 				contentStyle={{ overflowy: 'scroll' }}
 				visible={open}
 				onHide={onHide}
 				footer={footer}
-				header={refMode.current === "create" ? "Thêm mới sản phẩm" :"Sửa mới sản phẩm"}
-				style={{ width: '55vw',marginLeft:'20px' }}
+				header={refMode.current === 'create' ? 'Thêm mới sản phẩm' : 'Sửa mới sản phẩm'}
+				style={{ width: '55vw', marginLeft: '20px' }}
 			>
-				
 				<AddProduct getPayload={getPayload} productId={productId} />
 			</Dialog>
 		</div>

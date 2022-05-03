@@ -22,11 +22,11 @@ const useStyles = makeStyles((theme) => ({
 	},
 	img: {
 		borderRadius: '15px',
-		transition:'.4s',
-		'&:hover':{
-			transform:'scale(1.1)',
-			transition:'.4s'
-		}
+		transition: '.4s',
+		'&:hover': {
+			transform: 'scale(1.1)',
+			transition: '.4s',
+		},
 	},
 	text: {
 		padding: '1.875rem 2.5rem',
@@ -48,9 +48,9 @@ function Thumbnails(props) {
 	const arr = [
 		{
 			id: 0,
-			title: 'Microsoft',
-			img: 'https://res.cloudinary.com/dzpks7wzs/image/upload/v1649644056/N16_ecommers/unnamed1_p5pmze.webp',
-			category: 'Microsoft',
+			title: 'Dell',
+			img: 'https://res.cloudinary.com/dzpks7wzs/image/upload/v1651545858/N16_ecommers/images_qjenis.jpg',
+			category: 'Dell',
 		},
 		{
 			id: 1,
@@ -79,7 +79,13 @@ function Thumbnails(props) {
 					<Grid item xs={12} sm={12} md={6} lg={3} className={classes.box}>
 						<Link to="/products">
 							{' '}
-							<Box className={classes.wrap} onClick={() => setCategory(`category=${item.category}`)}>
+							<Box
+								className={classes.wrap}
+								onClick={() => {
+									setCategory(`category=${item.category}`);
+									window.scrollTo(0, 0);
+								}}
+							>
 								<img
 									className={classes.img}
 									style={{ height: '155px' }}

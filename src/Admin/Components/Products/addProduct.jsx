@@ -75,7 +75,7 @@ function AddProduct(props) {
 	};
 	const history = useHistory();
 	const params = useParams();
-	//console.log(params);
+
 	const classes = useStyles();
 	const [product, setProduct] = useState(initState);
 	useEffect(async () => {
@@ -173,12 +173,12 @@ function AddProduct(props) {
 						</div>
 						<div className="p-field p-col-4 p-md-3">
 							<span className="p-float-label">
-								<InputText
-									type="number"
+								<InputNumber
+									// type="number"
+									placeholder="Giá sản phẩm"
 									value={product.price}
-									onChange={(e) => handleChange('price', e.target.value)}
+									onChange={(e) => handleChange('price', e.value)}
 								/>
-								<label className="require">{'Giá sản phẩm'}</label>
 							</span>
 						</div>
 						<div className="p-field p-col-4 p-md-3">
@@ -202,10 +202,10 @@ function AddProduct(props) {
 						<div className="p-field p-col-4 p-md-3">
 							<span className="p-float-label">
 								<InputText
+									placeholder="Phần trăm giảm giá"
 									value={product.salePercen}
 									onChange={(e) => handleChange('salePercen', e.target.value)}
 								/>
-								<label className="require">{'Phần trăm giảm giá'}</label>
 							</span>
 						</div>
 						<div className="p-field p-col-4 p-md-3">
@@ -225,13 +225,14 @@ function AddProduct(props) {
 								<InputText
 									value={product.remain}
 									onChange={(e) => handleChange('remain', e.target.value)}
+									placeholder="Số lượng còn"
 								/>
 							</span>
 						</div>
 						<div className="p-field p-col-4 p-md-3">
 							<span className="p-float-label">
 								<Dropdown
-									label="Màu sắc"
+									placeholder="Màu sắc"
 									value={product.color}
 									options={Enumeration.color_product}
 									optionLabel="name"

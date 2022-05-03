@@ -7,7 +7,7 @@ import React from 'react';
 
 CardCount.propTypes = {};
 
-function CardCount({ backgroundcolor = '', icon, title = '', number = 0 }) {
+function CardCount({ className, style, backgroundcolor = '', icon, title = '', number = 0 }) {
 	const useStyles = makeStyles({
 		root: {
 			minWidth: 275,
@@ -27,7 +27,7 @@ function CardCount({ backgroundcolor = '', icon, title = '', number = 0 }) {
 		},
 		title: {
 			color: 'white',
-			fontSize: '20px',
+			fontSize: '16px',
 		},
 		pos: {
 			marginBottom: 12,
@@ -45,32 +45,30 @@ function CardCount({ backgroundcolor = '', icon, title = '', number = 0 }) {
 	});
 	const classes = useStyles();
 	return (
-		
-			<Grid container>
-				<Grid item lg={4}>
-					<Card className={classes.root}>
-						<CardContent className={classes.content}>
-							<Box>
-								<Typography
-									className={classes.title}
-									color="textSecondary"
-									gutterBottom
-									component="h2"
-									variant="h4"
-								>
-									{title}
-								</Typography>
+		<Grid container className={className} style={style}>
+			<Grid item lg={4}>
+				<Card className={classes.root}>
+					<CardContent className={classes.content}>
+						<Box>
+							<Typography
+								className={classes.title}
+								color="textSecondary"
+								gutterBottom
+								component="h2"
+								variant="h4"
+							>
+								{title}
+							</Typography>
 
-								<Typography className={classes.pos} color="textSecondary" variant="h5">
-									{number}
-								</Typography>
-							</Box>
-							<Typography className={classes.icon}>{icon}</Typography>
-						</CardContent>
-					</Card>
-				</Grid>
+							<Typography className={classes.pos} color="textSecondary" variant="h5">
+								{number}
+							</Typography>
+						</Box>
+						<Typography className={classes.icon}>{icon}</Typography>
+					</CardContent>
+				</Card>
 			</Grid>
-		
+		</Grid>
 	);
 }
 

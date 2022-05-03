@@ -14,10 +14,6 @@ function Users(props) {
 	return (
 		<Paper style={{ height: '100%' }}>
 			<Container>
-				<Typography variant="h5" component="h2" style={{ padding: '15px' }}>
-					Quản lý người dùng
-				</Typography>
-
 				<DataTable
 					value={users}
 					responsiveLayout="scroll"
@@ -41,12 +37,17 @@ function Users(props) {
 						body={(d) => <span>{new Date(d.createdAt).toLocaleDateString()}</span>}
 						header="Ngày tạo"
 					></Column>
+
 					<Column
-						body={(d) => 
-							<Link to={`user/details/${d._id}`}>
-								<Button label="Xem" color="primary" variant="contained"></Button>
-							</Link>
-						}
+						body={(d) => (
+							<>
+								{d.role !== 1 && (
+									<Link to={`user/details/${d._id}`}>
+										<Button label="Xem" color="primary" variant="contained"></Button>
+									</Link>
+								)}
+							</>
+						)}
 						header="Xem"
 					></Column>
 				</DataTable>

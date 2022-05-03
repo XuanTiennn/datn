@@ -1,17 +1,13 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { Line } from 'react-chartjs-2';
 import { Paper } from '@material-ui/core';
+import React from 'react';
+import { Line } from 'react-chartjs-2';
 import GroupData from '../../../../utils/groupData';
 LineChart.propTypes = {};
 
 function LineChart({ payments = [], countpaypal = [] }) {
 	const labelsTime = payments.map((item) => item.createdAt);
-
-	const countOrder = payments.map((item) => item.cart?.length);
 	const time = new Set(labelsTime.map((item) => new Date(item).toLocaleDateString()));
 	const array = [];
-	const arrayItemOrder = [];
 	//filter by createdAt
 	Array.from(time).map((i) => {
 		payments.filter((item) => {

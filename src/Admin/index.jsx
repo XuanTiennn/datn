@@ -51,7 +51,7 @@ function Admin(props) {
 			<XLayout_Left>
 				<Links />
 			</XLayout_Left>
-			<XLayout_Center style={{ height: '100%' }}>
+			<XLayout_Center style={{ height: '100%',overflow:'hidden' }}>
 				<Switch>
 					<Route path={`${url}/products`} component={Products} />
 					<Route path={`${url}/category`} component={Category} />

@@ -81,7 +81,14 @@ function FilterByCategory(props) {
 							Danh mục sản phẩm
 						</Typography>
 					</FormLabel>
-					<RadioGroup name="category" value={category} onChange={(e) => setCategory(e.target.value)}>
+					<RadioGroup
+						name="category"
+						value={category}
+						onChange={(e) => {
+							setCategory(e.target.value);
+							window.scrollTo(0, 0);
+						}}
+					>
 						<FormControlLabel value={''} control={<StyledRadio />} label="Tất cả" />
 
 						{categories.map((item) => (

@@ -33,22 +33,20 @@ function ShowConfirmFunction(prop, ref) {
 		handleRemove();
 		setOpen(false);
 	};
-	// const handleRemoveAll = () => {
-	// 	products.forEach((item) => {
-	// 		if (item.checked) handleRemove(item._id, item.images.public_id);
-	// 	});
-	// };
-	const handleRemove = async () => {
-		console.log(infor);
-		try {
-			const destroy = axios.post(
-				'/api/destroy',
-				{ public_id: infor.public_id },
-				{ headers: { Authorization: token } }
-			);
-			const res = axios.delete(`/api/products/${infor.id}`, { headers: { Authorization: token } });
 
-			await destroy;
+	const handleRemove = async () => {
+		try {
+			if (infor.public_id) {
+				const destroy = axios.post(
+					'/api/destroy',
+					{ public_id: infor.public_id },
+					{ headers: { Authorization: token } }
+				);
+				await destroy;
+			}
+
+			const res = axios.delete(`/api/news/${infor.id}`, { headers: { Authorization: token } });
+
 			await res;
 			setCallBack(!callback);
 		} catch (error) {

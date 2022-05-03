@@ -19,7 +19,13 @@ const Comment = (props) => {
 				userId: state.userApi.user[0],
 				likes: 0,
 			});
-			afterSubmit({ ...payload, productId: product._id, userId: state.userApi.user[0] });
+			afterSubmit({
+				...payload,
+				rating: payload.rating ? payload.rating : 5,
+				createdAt: new Date(),
+				productId: product._id,
+				userId: state.userApi.user[0],
+			});
 			setPayload({ content: '' });
 		} catch (error) {
 			console.log(error);

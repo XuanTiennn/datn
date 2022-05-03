@@ -2,13 +2,13 @@ import { Box } from '@material-ui/core';
 import React from 'react';
 import FilterByCategory from './filterByCategory';
 import FilterByColor from './filterByColor';
-import FilterByService from './filterByService';
+import FilterByPrice from './filterByPrice';
 
 function Filter(props) {
 	return (
 		<Box>
 			<FilterByCategory />
-			{/* <FilterByService /> */}
+			<FilterByPrice />
 			<FilterByColor />
 		</Box>
 	);
