@@ -15,7 +15,10 @@ const comment = new mongoose.Schema(
       require: true,
     },
     likes: Number,
-    rating: Number,
+    rating: {
+      type: Number,
+      default: 5,
+    },
   },
   {
     timestamps: true,

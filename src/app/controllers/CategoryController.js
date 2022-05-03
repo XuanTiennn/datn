@@ -13,7 +13,7 @@ const category = {
   createCategory: async (req, res) => {
     try {
       //chỉ admin mới có thể thêm ,sửa ,xóa category
-      const { name,images } = req.body;
+      const { name, images } = req.body;
       const category = await Category.findOne({ name });
       if (category)
         return res.status(400).json({ mgs: "Loại mặt hàng này đã tồn tại." });
@@ -28,7 +28,9 @@ const category = {
   },
   deleteCategory: async (req, res) => {
     try {
-      const product = await Products.findOne({ category: req.params.id });
+      const category = await Category.findById(req.params.id);
+
+      const product = await Products.findOne({ category: category.name });
       if (product)
         return res
           .status(400)

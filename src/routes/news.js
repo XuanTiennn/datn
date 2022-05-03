@@ -12,7 +12,7 @@ router
 router
   .route("/news/:id")
   .delete(auth, authAdmin, NewsController.deleteNew)
-  .put(NewsController.editNew)
+  .patch(NewsController.editNew)
   .get(NewsController.getItem); 
 
 module.exports = router;
