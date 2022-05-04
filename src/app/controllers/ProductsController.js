@@ -52,17 +52,58 @@ const ProductsController = {
   getProducts: async (req, res) => {
     try {
       const allProduct = Products.find();
-      const features = new APIfeatures(Products.find(), req.query)
+      let query1;
+      let query2;
+      if (req.query.category && req.query.category.includes(",")) {
+        query1 = req.query.category.split(",");
+      } else {
+        query1 = req.query.category;
+      }
+      // if (req.query.color && req.query.color.includes(",")) {
+      //   query2 = req.query.color.split(",");
+      // } else if (req.query.color && req.query.color.length > 0) {
+      //   query2 = [req.query.color];
+      // } else {
+      //   query2 = ["Trắng", "Xanh", "Đen", "Vàng", "Đỏ"];
+      // }
+      delete req.query.category;
+      // req.query.color &&
+      //   req.query.color.includes(",") &&
+      //   delete req.query.color;
+      const features = new APIfeatures(
+        Products.find({
+          category: { $in: query1 },
+        }),
+        // Products.find({
+        //   $and: [{ category: { $in: query1 } }, { color: { $in: query2 } }],
+        // }),
+        req.query
+      )
         .filtering()
         .sorting()
         .paginating();
-
       const products = await features.query;
 
       res.json({
         status: "success",
         total: allProduct.length,
         products,
+        query1,
+        query2,
+      });
+    } catch (error) {
+      return res.status(500).json({ mgs: error.message });
+    }
+  },
+  searchProducts: async (req, res) => {
+    try {
+      const allProduct = await Products.find({
+        category: { $in: req.body.categories },
+      });
+
+      res.json({
+        status: "success",
+        allProduct,
       });
     } catch (error) {
       return res.status(500).json({ mgs: error.message });
@@ -83,7 +124,7 @@ const ProductsController = {
         service,
         status,
         views,
-        remain
+        remain,
       } = req.body;
       if (!images) return res.status(400).json({ mgs: "Không có ảnh upload" });
 
@@ -103,7 +144,7 @@ const ProductsController = {
         service,
         status,
         views,
-        remain
+        remain,
       });
 
       await newProduct.save();
@@ -134,7 +175,7 @@ const ProductsController = {
         service,
         status,
         views,
-        remain
+        remain,
       } = req.body;
       if (!images) return res.status(400).json({ mgs: "không ảnh upload" });
       await Products.findOneAndUpdate(
@@ -151,7 +192,7 @@ const ProductsController = {
           service,
           status,
           views,
-          remain
+          remain,
         }
       );
       res.json({ mgs: "Đã cập nhật một sản phẩm" });

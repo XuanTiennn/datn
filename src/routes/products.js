@@ -13,5 +13,6 @@ router
   .delete(ProductsController.deleteProduct)
   .put(ProductsController.editProduct)
   .get(ProductsController.getItem);
+router.route("/products/filter").post(ProductsController.searchProducts);
 
 module.exports = router;
