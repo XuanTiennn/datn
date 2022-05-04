@@ -9,8 +9,9 @@ import {
 	Typography,
 } from '@material-ui/core';
 import clsx from 'clsx';
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { ContextGlobal } from '../../../app/ContextGlobal';
+import { Checkbox } from 'primereact/checkbox';
 const useStyles = makeStyles({
 	root: {
 		'&:hover': {
@@ -91,7 +92,26 @@ const colors = [
 function FilterByColor(props) {
 	const state = useContext(ContextGlobal);
 	const [color, setColor] = state.productsAPI.color;
+	const [selectedCategories, setSelectedCategories] = useState([]);
+	const onCategoryChange = async (e) => {
+		let _selectedCategories = [...selectedCategories];
 
+		if (e.checked) {
+			_selectedCategories.push(e.value.label);
+		} else {
+			for (let i = 0; i < _selectedCategories.length; i++) {
+				const selectedCategory = _selectedCategories[i];
+
+				if (selectedCategory === e.value.label) {
+					_selectedCategories.splice(i, 1);
+					break;
+				}
+			}
+		}
+
+		setSelectedCategories(_selectedCategories);
+		setColor(`color=${_selectedCategories}`);
+	};
 	return (
 		<div>
 			<Box>
@@ -118,6 +138,25 @@ function FilterByColor(props) {
 							/>
 						))}
 					</RadioGroup>
+					{/* {colors.map((category) => {
+						return (
+							<div
+								key={category.label}
+								className="field-checkbox"
+								style={{ display: 'flex', alignItems: 'center' }}
+							>
+								<Checkbox
+									className="p-m-1"
+									inputId={category.label}
+									name="label"
+									value={category}
+									onChange={onCategoryChange}
+									checked={selectedCategories.some((item) => item === category.label)}
+								/>
+								<label htmlFor={category.label}>{category.label}</label>
+							</div>
+						);
+					})} */}
 				</FormControl>
 			</Box>
 		</div>

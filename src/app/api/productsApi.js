@@ -14,7 +14,10 @@ function ProductsApi() {
 	const [sort, setSort] = useState('');
 	const [result, setResult] = useState(0);
 	const [color, setColor] = useState('');
-	const [service, setService] = useState('');
+	const [mode, setmode] = useState('lte');
+	const [priceTo, setPriceTo] = useState(9999999999999);
+	const [loading, setloading] = useState(false);
+
 	const tg = [];
 	useEffect(() => {
 		try {
@@ -44,21 +47,23 @@ function ProductsApi() {
 	}, [callback]);
 
 	useEffect(() => {
+		setloading(true)
 		const getproducts = async () => {
 			const res = await axios.get(
-				`/api/products?page=${page}&${sort}&${category}&title[regex]=${search}&${color}&${service}`
+				`/api/products?page=${page}&${sort}&${category}&title[regex]=${search}&${color}&price[${mode}]=${priceTo}`
 			);
 			setProducts(res.data.products);
 			setResult(res.data.result);
+			setloading(false)
 		};
 
 		getproducts();
-	}, [callback, page, sort, search, result, category, color, service]);
+	}, [callback, page, sort, search, result, category, color, mode, priceTo]);
 
 	useEffect(() => {
 		const getproductsLoadMore = async () => {
 			const res = await axios.get(
-				`/api/products?page=${page}&${sort}&${category}&title[regex]=${search}&${color}&${service}`
+				`/api/products?page=${page}&${sort}&title[regex]=${search}&${color}`
 			);
 			res.data.products?.forEach((item) => {
 				tg.push(item);
@@ -67,7 +72,7 @@ function ProductsApi() {
 			setProductsLoadMore([...productsLoadMore, ...tg]);
 		};
 		getproductsLoadMore();
-	}, [callback, page, result, category]);
+	}, [callback, page, result]);
 
 	return {
 		products: [products, setProducts],
@@ -81,8 +86,10 @@ function ProductsApi() {
 		search: [search, setSearch],
 		sort: [sort, setSort],
 		color: [color, setColor],
-		service: [service, setService],
+		priceTo: [priceTo, setPriceTo],
+		mode: [mode, setmode],
 		result: [result, setResult],
+		loading: [loading, setloading],
 	};
 }
 

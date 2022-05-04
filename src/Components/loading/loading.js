@@ -6,7 +6,7 @@ Loading.propTypes = {};
 function Loading({ loading }) {
 	if (loading) {
 		return <ProgressBar mode="indeterminate" style={{ height: '6px' }}></ProgressBar>;
-	}
+	} else return null;
 }
 
 export default Loading;

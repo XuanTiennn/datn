@@ -1,15 +1,7 @@
-import {
-	Box,
-	FormControl,
-	FormControlLabel,
-	FormLabel,
-	makeStyles,
-	Radio,
-	RadioGroup,
-	Typography,
-} from '@material-ui/core';
+import { Box, FormControl, FormLabel, makeStyles, Radio, Typography } from '@material-ui/core';
 import clsx from 'clsx';
-import React, { useContext } from 'react';
+import { Checkbox } from 'primereact/checkbox';
+import React, { useContext, useEffect, useState } from 'react';
 import { ContextGlobal } from '../../../app/ContextGlobal';
 FilterByCategory.propTypes = {};
 
@@ -71,7 +63,36 @@ function FilterByCategory(props) {
 	const state = useContext(ContextGlobal);
 	const [categories] = state.categoryApi.category;
 	const [category, setCategory] = state.productsAPI.category;
+	const [selectedCategories, setSelectedCategories] = useState([]);
+	const [flag, setFlag] = useState(false);
 
+	useEffect(() => {
+		if (!flag) {
+			const arr = [];
+			arr.push(category.slice(category.indexOf('=') + 1));
+			setSelectedCategories(arr);
+		}
+	}, [category]);
+	const onCategoryChange = async (e) => {
+		setFlag(true);
+		let _selectedCategories = [...selectedCategories];
+
+		if (e.checked) {
+			_selectedCategories.push(e.value.name);
+		} else {
+			for (let i = 0; i < _selectedCategories.length; i++) {
+				const selectedCategory = _selectedCategories[i];
+
+				if (selectedCategory === e.value.name) {
+					_selectedCategories.splice(i, 1);
+					break;
+				}
+			}
+		}
+
+		setSelectedCategories(_selectedCategories);
+		setCategory(`category=${_selectedCategories}`);
+	};
 	return (
 		<div>
 			<Box>
@@ -81,25 +102,26 @@ function FilterByCategory(props) {
 							Danh mục sản phẩm
 						</Typography>
 					</FormLabel>
-					<RadioGroup
-						name="category"
-						value={category}
-						onChange={(e) => {
-							setCategory(e.target.value);
-							window.scrollTo(0, 0);
-						}}
-					>
-						<FormControlLabel value={''} control={<StyledRadio />} label="Tất cả" />
 
-						{categories.map((item) => (
-							<FormControlLabel
-								key={item._id}
-								value={'category=' + item.name}
-								control={<StyledRadio />}
-								label={item.name}
-							/>
-						))}
-					</RadioGroup>
+					{categories.map((category) => {
+						return (
+							<div
+								key={category.name}
+								className="field-checkbox"
+								style={{ display: 'flex', alignItems: 'center' }}
+							>
+								<Checkbox
+									className="p-m-1"
+									inputId={category.name}
+									name="category"
+									value={category}
+									onChange={onCategoryChange}
+									checked={selectedCategories.some((item) => item === category.name)}
+								/>
+								<label htmlFor={category.name}>{category.name}</label>
+							</div>
+						);
+					})}
 				</FormControl>
 			</Box>
 		</div>
