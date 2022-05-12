@@ -1,7 +1,9 @@
-import { Box, Button, Container, Grid, makeStyles, Paper, Typography } from '@material-ui/core';
+import { Box, Container, Grid, makeStyles, Paper, Typography } from '@material-ui/core';
 import React, { useContext, useEffect, useState } from 'react';
 import { ContextGlobal } from '../../../../app/ContextGlobal';
 import FormatNumber from './../../../../utils/formatNumber';
+import { Button } from 'primereact/button';
+import axios from 'axios';
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -67,7 +69,23 @@ function Stepthree({ value = {}, handleChange }) {
 		};
 		getTotal();
 	}, [cart]);
-
+	// const momo = () => {
+	// 	const res = axios.post('https://test-payment.momo.vn/gw_payment/transactionProcessor', {
+	// 		accessKey: 'JfhWrPPlnbU8ohqz',
+	// 		partnerCode: 'MOMOEO3220220510',
+	// 		requestType: 'captureMoMoWallet',
+	// 		notifyUrl: 'locahost:3000/',
+	// 		returnUrl: 'locahost:3000/',
+	// 		orderId: 'MM1540456472575',
+	// 		amount: '150000',
+	// 		orderInfo: 'SDK team.',
+	// 		requestId: 'MM1540456472575',
+	// 		extraData: 'email=abc@gmail.com',
+	// 		signature: '',
+	// 		secretKey:'umSz0pHl7z7mfXTSBvH06vU774heLAkx'
+	// 	});
+	// 	console.log(res);
+	// };
 	return (
 		<Box className={classes.root}>
 			<Container className="p-p-0">
@@ -120,14 +138,12 @@ function Stepthree({ value = {}, handleChange }) {
 							</Box>
 							<Box></Box>
 						</Paper>
-						<Button
-							style={{ marginTop: '10px' }}
-							variant="contained"
-							color="secondary"
-							onClick={handleChange}
-						>
+						<Button style={{ marginTop: '10px' }} className="p-button-outlined" onClick={handleChange}>
 							Tiến hành đặt hàng
 						</Button>
+						{/* <Button style={{ marginTop: '10px' }} className="p-button-outlined" onClick={momo}>
+							Thanh toán = momo
+						</Button> */}
 					</Grid>
 				</Grid>
 			</Container>

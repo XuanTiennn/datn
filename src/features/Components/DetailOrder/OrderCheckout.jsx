@@ -128,7 +128,7 @@ function OrderCheckoutDetails({ payments = [] }) {
 					</TableBody>
 				</Table>
 				{orderDetails.state === Enumeration.INIT && (
-					<>
+					<div style={{display:'flex',marginLeft:'20px'}}>
 						<button
 							onClick={() => changeState(Enumeration.CANCEL)}
 							style={{
@@ -137,12 +137,13 @@ function OrderCheckoutDetails({ payments = [] }) {
 								color: 'red',
 								border: '1px solid red',
 								borderRadius: '5px',
+								marginRight:'10px'
 							}}
 						>
 							Hủy đơn hàng
 						</button>
 						<textarea placeholder="Lý do" onChange={(e) => setReason(e.target.value)}></textarea>
-					</>
+					</div>
 				)}
 			</TableContainer>
 		</Container>

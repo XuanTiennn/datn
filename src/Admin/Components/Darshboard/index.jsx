@@ -111,7 +111,7 @@ function DarshBoard({ paymentCheckOut = [], token }) {
 	return (
 		<XLayout className="p-mt-2">
 			<XLayout_Top>
-				<XToolbar
+				{/* <XToolbar
 					right={() => (
 						<Button
 							icon="pi pi-file-excel"
@@ -119,7 +119,7 @@ function DarshBoard({ paymentCheckOut = [], token }) {
 							onClick={() => exportTimeSheet(allProduct.products)}
 						></Button>
 					)}
-				></XToolbar>
+				></XToolbar> */}
 			</XLayout_Top>
 			<XLayout_Center>
 				<div style={{ display: 'flex' }}>

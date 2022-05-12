@@ -10,7 +10,7 @@ function PaymentCheckoutApi(token) {
 			if (token) {
 				const getPayments = async () => {
 					const res = await axios.get('/user/historyCheckout?limit=1000', { headers: { Authorization: token } });
-					setPaymentsCheckout(res.data);
+					setPaymentsCheckout(res.data.reverse());
 				};
 				getPayments();
 			}

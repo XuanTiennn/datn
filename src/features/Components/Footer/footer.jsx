@@ -34,9 +34,8 @@ const list = [
 			' Hướng dẫn đặt hàng',
 			' Phương thức vận chuyển',
 			' Chính sách đổi trả',
-			' Hướng dẫn trả góp',
 			' Chính sách hàng nhập khẩu',
-			' Hỗ trợ khách hàng: hotro@tiki.vn',
+			' Hỗ trợ khách hàng:xtcomputer.shop@gmail.com',
 		],
 	},
 	{
@@ -46,13 +45,13 @@ const list = [
 	},
 	{
 		id: 3,
-		title: 'THANH TOÁN',
-		datalist: [' Paypal', ' MOMO', ' Internet Banking'],
+		title: 'KẾT NỐI VỚI CHÚNG TÔI',
+		datalist: [' FACEBOOK', ' ZALO', 'YOUTUBE'],
 	},
 	{
 		id: 4,
 		title: 'THÔNG TIN LIÊN HỆ',
-		datalist: [' Địa chỉ:Việt Nam', ' Sđt:0123456', ' Email:123@gmail.com'],
+		datalist: [' Địa chỉ:Việt Nam', ' Sđt:0773395570', ' Email:XTCOMPUTER.SHOP@gmail.com'],
 	},
 ];
 function Footer() {

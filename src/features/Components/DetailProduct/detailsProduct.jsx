@@ -13,6 +13,7 @@ import { Button } from 'primereact/button';
 import Comment from './../Comment/comment';
 import ListComment from './../Comment/listcomment';
 import Loading from 'Components/loading/loading';
+import { SkeletonDemo } from './sketon';
 const useStyles = makeStyles((theme) => ({
 	root: {
 		marginTop: '50px',
@@ -180,7 +181,7 @@ function DetailsProduct() {
 	}, [match.url]);
 
 	if (product?.length === 0) {
-		return null;
+		return <SkeletonDemo />;
 	} else
 		return (
 			<Box style={{ backgroundColor: '#F7F8FD' }}>
@@ -281,7 +282,7 @@ function DetailsProduct() {
 												></Button>
 											</div>
 
-											<Toast ref={toast} />
+											<Toast ref={toast} position='bottom-right' />
 										</Box>
 									</Grid>
 								</Grid>

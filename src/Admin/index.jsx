@@ -68,7 +68,7 @@ function Admin(props) {
 						<OrderedCheckout
 							paymentsCheckout={PaymentCheckout}
 							aftersubmit={aftersubmit}
-							page={page}
+							// page={page}
 							token={token}
 							handleChangePagination={(value) => setPage(value)}
 						/>

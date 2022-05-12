@@ -82,7 +82,7 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-function OrderedCheckout({ paymentsCheckout = [], handleChangePagination, page, token }) {
+function OrderedCheckout({ paymentsCheckout = [], handleChangePagination, token }) {
 	const classes = useStyles();
 	const state = useContext(ContextGlobal);
 	const [paymentsCheckouts, setPaymentsCheckouts] = state.paymentCheckOutApi.paymentsCheckouts;
@@ -90,14 +90,22 @@ function OrderedCheckout({ paymentsCheckout = [], handleChangePagination, page, 
 	const [filter, setfilter] = useState({ dateFrom: null, dateTo: null });
 	const [payments, setPayments] = useState({});
 	const [loading, setloading] = useState(false);
-	useEffect(() => {
+	const [page, setPage] = useState(1);
+
+	useEffect(async () => {
 		const _p = { ...payments };
 		const _f = { ...filter };
-		_p.payments = paymentsCheckout;
+
+		const res = await axios.get(`/api/paymentsCheckout?page=${page}`, {
+			headers: { Authorization: token },
+		});
+
+		_p.payments = res.data.payments;
 		_p.result = paymentsCheckouts.result;
 		setPayments(_p);
 		setfilter(_f);
 	}, [page]);
+
 	const getDataByDate = async (filter) => {
 		try {
 			setloading(true);
@@ -125,11 +133,11 @@ function OrderedCheckout({ paymentsCheckout = [], handleChangePagination, page, 
 	}
 	return (
 		<div>
-			<Container className='p-mt-2' style={{ height: '100%',padding:'0' }}>
+			<Container className="p-mt-2" style={{ height: '100%', padding: '0' }}>
 				<XToolbar
 					left={() => (
 						<>
-							<Typography variant="h6" component="span" style={{fontSize:'16px'}}>
+							<Typography variant="h6" component="span" style={{ fontSize: '16px' }}>
 								Số đơn({paymentsCheckouts.result})
 							</Typography>
 						</>
@@ -212,7 +220,7 @@ function OrderedCheckout({ paymentsCheckout = [], handleChangePagination, page, 
 					<Pagination
 						count={Math.ceil(paymentsCheckouts.result / 9)}
 						page={page}
-						onChange={(e, value) => handleChangePagination(value)}
+						onChange={(e, value) => setPage(value)}
 						variant="outlined"
 						color="primary"
 					/>

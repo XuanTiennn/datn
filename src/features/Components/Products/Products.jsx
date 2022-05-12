@@ -8,6 +8,7 @@ import FilterBySort from '../Filter/filterBySort';
 import PaginationPr from '../Pagination';
 import Filter from './../Filter/index';
 import ProductItem from './product';
+import { SkeletonDemo } from './../DetailProduct/sketon';
 
 function Products(props) {
 	const data = useContext(ContextGlobal);
@@ -28,37 +29,34 @@ function Products(props) {
 		}
 	}, [match.url, category]);
 	console.log(products);
-	// if (products.length === 0) {
-	// 	return <Loading loading={loading} />;
-	// } else {
-		return (
-			<Container style={{ marginTop: '50px', marginBottom: '50px' }}>
-				<BreadCrumb str={match.url} category={category.split('=').pop()} />
 
-				<Paper elevation={0}>
-					<Grid container spacing={4} style={{ padding: '15px' }}>
-						<Grid item lg={3}>
-							<Filter />
-						</Grid>
-						<Grid item lg={9}>
-							<FilterBySort />
+	return (
+		<Container style={{ marginTop: '50px', marginBottom: '50px' }}>
+			<BreadCrumb str={match.url} category={category.split('=').pop()} />
 
-							<Grid container spacing={0}>
-								{products.map((product) => (
-									<Grid key={product._id} item xs={12} sm={6} md={4} lg={3}>
-										<ProductItem product={product} />
-									</Grid>
-								))}
-							</Grid>
+			<Paper elevation={0}>
+				<Grid container spacing={4} style={{ padding: '15px' }}>
+					<Grid item lg={3}>
+						<Filter />
+					</Grid>
+					<Grid item lg={9}>
+						<FilterBySort />
+
+						<Grid container spacing={0}>
+							{products.map((product) => (
+								<Grid key={product._id} item xs={12} sm={6} md={4} lg={3}>
+									<ProductItem product={product} />
+								</Grid>
+							))}
 						</Grid>
 					</Grid>
-				</Paper>
-				<Box style={{ marginTop: '40px', display: 'flex', justifyContent: 'flex-end' }}>
-					<PaginationPr />
-				</Box>
-			</Container>
-		);
-	}
-// }
+				</Grid>
+			</Paper>
+			<Box style={{ marginTop: '40px', display: 'flex', justifyContent: 'flex-end' }}>
+				<PaginationPr />
+			</Box>
+		</Container>
+	);
+}
 
 export default Products;

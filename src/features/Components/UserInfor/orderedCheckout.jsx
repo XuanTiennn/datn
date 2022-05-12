@@ -1,4 +1,4 @@
-import { Button, Container, makeStyles, Paper, Typography } from '@material-ui/core';
+import { Container, makeStyles, Paper, Typography } from '@material-ui/core';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -9,6 +9,7 @@ import { default as React, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { ContextGlobal } from '../../../app/ContextGlobal';
 import Enumeration from './../../../utils/enum';
+import { Button } from 'primereact/button';
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -94,7 +95,7 @@ function OrderedCheckout(props) {
 			</Typography>
 		);
 	}
-	console.log(paymentsCheckout);
+	
 	return (
 		<div>
 			<Container className={classes.root}>
@@ -121,9 +122,7 @@ function OrderedCheckout(props) {
 									</TableCell>
 									<TableCell align="center">
 										<Link to={`/checkout/details/${item._id}`}>
-											<Button color="primary" variant="contained">
-												Xem
-											</Button>
+											<Button label="Xem" className='p-button-round p-button-outlined p-button-sm'></Button>
 										</Link>
 									</TableCell>
 									<TableCell align="center">

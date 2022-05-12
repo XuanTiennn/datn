@@ -47,14 +47,14 @@ function ProductsApi() {
 	}, [callback]);
 
 	useEffect(() => {
-		setloading(true)
+		setloading(true);
 		const getproducts = async () => {
 			const res = await axios.get(
 				`/api/products?page=${page}&${sort}&${category}&title[regex]=${search}&${color}&price[${mode}]=${priceTo}`
 			);
 			setProducts(res.data.products);
 			setResult(res.data.result);
-			setloading(false)
+			setloading(false);
 		};
 
 		getproducts();
@@ -62,9 +62,7 @@ function ProductsApi() {
 
 	useEffect(() => {
 		const getproductsLoadMore = async () => {
-			const res = await axios.get(
-				`/api/products?page=${page}&${sort}&title[regex]=${search}&${color}`
-			);
+			const res = await axios.get(`/api/products?page=${page}`);
 			res.data.products?.forEach((item) => {
 				tg.push(item);
 			});
