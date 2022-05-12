@@ -1,4 +1,5 @@
 const Products = require("../models/products");
+const Category = require("../models/categories");
 
 class APIfeatures {
   constructor(query, queryString) {
@@ -52,31 +53,26 @@ const ProductsController = {
   getProducts: async (req, res) => {
     try {
       const allProduct = Products.find();
-      let query1;
-      let query2;
+      const allCate =await Category.find();
+      let query1=[];
+
       if (req.query.category && req.query.category.includes(",")) {
         query1 = req.query.category.split(",");
+      } else if (req.query.category && req.query.category.length > 0) {
+        query1 = [req.query.category];
       } else {
-        query1 = req.query.category;
+        allCate.map((item) => {
+          query1.push(item.name);
+        });
       }
-      // if (req.query.color && req.query.color.includes(",")) {
-      //   query2 = req.query.color.split(",");
-      // } else if (req.query.color && req.query.color.length > 0) {
-      //   query2 = [req.query.color];
-      // } else {
-      //   query2 = ["Trắng", "Xanh", "Đen", "Vàng", "Đỏ"];
-      // }
+
       delete req.query.category;
-      // req.query.color &&
-      //   req.query.color.includes(",") &&
-      //   delete req.query.color;
+
       const features = new APIfeatures(
         Products.find({
           category: { $in: query1 },
         }),
-        // Products.find({
-        //   $and: [{ category: { $in: query1 } }, { color: { $in: query2 } }],
-        // }),
+
         req.query
       )
         .filtering()
@@ -89,7 +85,7 @@ const ProductsController = {
         total: allProduct.length,
         products,
         query1,
-        query2,
+        allCate
       });
     } catch (error) {
       return res.status(500).json({ mgs: error.message });
