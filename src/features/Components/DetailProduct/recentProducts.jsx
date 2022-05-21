@@ -3,6 +3,7 @@ import Paper from '@material-ui/core/Paper';
 import React from 'react';
 import 'react-multi-carousel/lib/styles.css';
 import ProductItem from '../Products/product';
+import { useRouteMatch } from 'react-router-dom';
 
 // const responsive = {
 // 	desktop: {
@@ -22,17 +23,24 @@ import ProductItem from '../Products/product';
 // 	},
 // };
 export default function RecentProducts({ products = [], product }) {
+	const param = useRouteMatch();
 	return (
-		<Paper style={{ padding: '15px',position:'sticky',top:'0',right:'0',marginLeft:'10px' }}>
+		<Paper style={{ padding: '15px', position: 'sticky', top: '0', right: '0', marginLeft: '10px' }}>
 			<h3>Sản phẩm tương tự</h3>
-			<Grid container spacing={2} style={{ display: 'felx',flexDirection:'column', flexWrap: 'nowrap', overflow: 'auto' }}>
-				{products.map((products) =>
-					products.category === product.category ? (
-						<Grid item key={products._id}>
-							<ProductItem key={products._id} product={products} />
-						</Grid>
-					) : null
-				)}
+			<Grid
+				container
+				spacing={2}
+				style={{ display: 'felx', flexDirection: 'column', flexWrap: 'nowrap', overflow: 'auto' }}
+			>
+				{products
+					.filter((i) => i._id !== param?.params?.id)
+					.map((products) =>
+						products.category === product.category ? (
+							<Grid item key={products._id}>
+								<ProductItem key={products._id} product={products} />
+							</Grid>
+						) : null
+					)}
 			</Grid>
 		</Paper>
 	);

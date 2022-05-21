@@ -8,9 +8,9 @@ Count.propTypes = {};
 function Count({ change, count, total }) {
 	return (
 		<div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }} className="p-p-2">
-			<div style={{textAlign:'center'}}>
+			<div style={{ textAlign: 'center' }}>
 				<p style={{ color: '#ee4d2d' }}>
-					<span style={{ fontSize: '22px' }}>{total}</span> trên 5
+					<span style={{ fontSize: '22px' }}>{isNaN(total) ? 0 : total}</span> trên 5
 				</p>
 				<Rating style={{ color: '#ee4d2d' }} readOnly value={total} cancel={false} />
 			</div>

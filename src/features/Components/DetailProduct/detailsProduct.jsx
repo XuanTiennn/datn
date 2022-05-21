@@ -302,7 +302,7 @@ function DetailsProduct() {
 								</Box>
 							</Grid>
 
-							<Grid lg={10}>
+							<Grid lg={12}>
 								<Box className={classes.content}>
 									<h2>MÔ TẢ SẢN PHẨM</h2>
 									<Paper>

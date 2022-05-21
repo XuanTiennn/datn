@@ -1,20 +1,11 @@
-import { Backdrop, Button, Fade, makeStyles, Modal, Paper, Typography } from '@material-ui/core';
-import IconButton from '@material-ui/core/IconButton';
-import Input from '@material-ui/core/Input';
-import InputAdornment from '@material-ui/core/InputAdornment';
-import CancelOutlinedIcon from '@material-ui/icons/CancelOutlined';
-import Visibility from '@material-ui/icons/Visibility';
-import VisibilityOff from '@material-ui/icons/VisibilityOff';
+import { Button, makeStyles, Paper } from '@material-ui/core';
 import axios from 'axios';
-import React, { useState, useRef, useImperativeHandle, forwardRef } from 'react';
-import LoginWFB from './loginWFB';
-import LoginWGG from './loginWGG';
-import { Link } from 'react-router-dom';
+import { Dialog } from 'primereact/dialog';
 import { InputText } from 'primereact/inputtext';
 import { Password } from 'primereact/password';
-import { Divider } from 'primereact/divider';
-import { Dialog } from 'primereact/dialog';
-import Enumeration from 'utils/enum';
+import React, { forwardRef, useImperativeHandle, useRef, useState } from 'react';
+import { Link } from 'react-router-dom';
+import LoginWGG from './loginWGG';
 
 Login.propTypes = {};
 const useStyles = makeStyles((theme) => ({
