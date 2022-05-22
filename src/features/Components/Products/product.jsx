@@ -117,6 +117,9 @@ function ProductItem({ product = {} }) {
 					<Typography className={clsx(classes.sold, 'font-dosis')} component="p" variant="body1">
 						{product.sold > 0 ? `Đã bán ${product.sold} ` : <br></br>}
 					</Typography>
+					<Typography className={clsx(classes.sold, 'font-dosis')} component="p" variant="body1">
+						{product.remain > 0 ? `Còn ${product.remain} ` : <br></br>}
+					</Typography>
 					<Box style={{ display: 'flex' }}>
 						<Typography
 							variant="body2"

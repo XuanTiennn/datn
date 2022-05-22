@@ -60,7 +60,7 @@ function DarshBoard({ paymentCheckOut = [], token }) {
 	};
 	const bindData = (data) => {
 		const _cart = [];
-		data.forEach((i) => {
+		data.filter((item) => item.state === Enumeration.SUCCESS).forEach((i) => {
 			_cart.push(...i.cart);
 		});
 
