@@ -209,7 +209,7 @@ function Header(props) {
 			transformOrigin={{ vertical: 'top', horizontal: 'right' }}
 			open={isMobileMenuOpen}
 			onClose={handleMobileMenuClose}
-			style={{zIndex:'99999'}}
+			style={{ zIndex: '99999' }}
 		>
 			{isLogined ? (
 				<>
@@ -223,7 +223,7 @@ function Header(props) {
 					</MenuItem>
 				</>
 			) : (
-				<div style={{display:'flex',flexDirection:'column'}}>
+				<div style={{ display: 'flex', flexDirection: 'column' }}>
 					<Typography
 						style={{ padding: '5px', float: 'right' }}
 						className={classes.link}
@@ -278,18 +278,17 @@ function Header(props) {
 				<Grid item className={classes.grow}>
 					<AppBar elevation={0} className={classes.appbar} position="static" id="back-to-top-anchor">
 						<Toolbar>
-							
 							<Typography className={classes.title} variant="h6" noWrap onClick={() => history.push('/')}>
 								{isAdmin ? (
 									'Admin'
 								) : (
 									<Box className={classes.iconheader}>
 										<img
-											src="https://res.cloudinary.com/dzpks7wzs/image/upload/v1649644415/N16_ecommers/logo_kmgybl.svg"
+											src="https://res.cloudinary.com/dzpks7wzs/image/upload/v1654701943/N16_ecommers/AT-01_fvx6aq.png"
 											alt="icon"
 											style={{ width: '30px' }}
 										/>
-										<Typography className={classes.title}>XTComputer</Typography>
+										<Typography className={classes.title}>Atvietnamhair</Typography>
 									</Box>
 								)}
 							</Typography>

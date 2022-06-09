@@ -5,6 +5,7 @@ import SalePrice from './SalePrices';
 import SuggestForYou from './SuggestForyou';
 import Thumbnails from './Thumnails';
 import TopTrending from './TopTrendingCate';
+import Video from './video/video';
 
 HomePage.propTypes = {};
 
@@ -16,8 +17,8 @@ function HomePage(props) {
 		<>
 			<Banner />
 			<Container>
-				<Thumbnails />
-
+				{/* <Thumbnails /> */}
+				<Video />
 				<TopTrending />
 				<SalePrice />
 				<SuggestForYou />

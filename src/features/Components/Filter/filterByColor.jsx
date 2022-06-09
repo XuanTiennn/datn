@@ -68,23 +68,23 @@ function StyledRadio(props) {
 }
 const colors = [
 	{
-		label: 'Đỏ',
+		label: 'Red',
 		value: 'do',
 	},
 	{
-		label: 'Vàng',
+		label: 'Yellow',
 		value: 'vang',
 	},
 	{
-		label: 'Đen',
+		label: 'Black',
 		value: 'den',
 	},
 	{
-		label: 'Xanh',
+		label: 'Blue',
 		value: 'xanh',
 	},
 	{
-		label: 'Trắng',
+		label: 'White',
 		value: 'trang',
 	},
 ];

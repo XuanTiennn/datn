@@ -22,7 +22,7 @@ function SuggestForYou(props) {
 		<XLayout elevation={0} style={{ marginTop: '20px' }}>
 			<XLayout_Center item style={{ padding: '20px', backgroundColor: 'white' }}>
 				<Typography component="h2" variant="h5" style={{ color: 'rgb(238, 77, 45)', fontSize: '19px' }}>
-					Gợi ý cho bạn
+					Products
 				</Typography>
 				<Grid className="p-grid p-formgrid p-fluid">
 					{products?.map((product) => (

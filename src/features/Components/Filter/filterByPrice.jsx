@@ -13,20 +13,20 @@ function FilterByPrice(props) {
 		<div>
 			<Box>
 				<Typography variant="body1" component="h2">
-					Giá
+					Price
 				</Typography>
 				<div>
 					<Button
 						className="p-button-sm p-button-outlined p-p-1 p-mt-2 p-mb-2"
-						label="Cao hơn"
+						label="high than"
 						onClick={() => setmode('gte')}
 					></Button>
 					<Button
 						className="p-button-sm p-button-outlined p-p-1 p-ml-2 p-mt-2 p-mb-2"
-						label="Thấp hơn"
+						label="low than"
 						onClick={() => setmode('lte')}
 					></Button>
-					<InputNumber onChange={(e) => setPriceTo(e.value)} placeholder="Nhập giá" />
+					<InputNumber onChange={(e) => setPriceTo(e.value)} placeholder="Price" />
 				</div>
 			</Box>
 		</div>

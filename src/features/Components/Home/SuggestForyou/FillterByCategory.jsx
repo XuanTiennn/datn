@@ -46,7 +46,7 @@ export default function FilterByCategory() {
 					onChange={(e, value) => setSort(value)}
 					overflow="auto"
 				>
-					<Tab label="Mới nhất" value="" />
+					<Tab label="Newst" value="" />
 
 					{categories.map((item) => (
 						<Tab label={item.name} value={'category=' + item.name} />

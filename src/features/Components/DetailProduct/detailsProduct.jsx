@@ -208,28 +208,28 @@ function DetailsProduct() {
 													to="/products"
 													onClick={() => setCategory('category=' + product.category)}
 												>
-													<span style={{ color: 'rgb(130, 134, 158)' }}>Thương hiệu:</span>
+													<span style={{ color: 'rgb(130, 134, 158)' }}>Category:</span>
 													<span style={{ color: 'rgb(20, 53, 195)' }}>
 														{product.category}
 													</span>
 												</Link>
 											</Typography>
 											<Typography className={classes.sold} component="p" variant="body1">
-												{product.sold > 0 ? `Đã bán ${product.sold} ` : ''}
+												{product.sold > 0 ? `Sold ${product.sold} ` : ''}
 											</Typography>
 											<Typography className={classes.sold} component="p" variant="body1">
-												{product.remain > 0 ? `Còn ${product.remain} ` : ''}
+												{product.remain > 0 ? `remain ${product.remain} ` : ''}
 											</Typography>
 
 											<Typography className={classes.sold} component="p" variant="body1">
-												Tình trạng:
+												Status:
 												<Typography
 													style={{ color: product.remain > 0 ? '' : 'red' }}
 													className={classes.status}
 													component="span"
 													variant="body1"
 												>
-													{product.remain > 0 ? 'Còn hàng' : 'Hết hàng'}
+													{product.remain > 0 ? 'Stocking' : 'Out of stock'}
 												</Typography>
 											</Typography>
 											<Typography className={clsx(classes.flex)} component="p" variant="body2">
@@ -261,7 +261,7 @@ function DetailsProduct() {
 												</Typography>
 											</Typography>
 											<Typography>{isService}</Typography>
-											<div style={{ display: 'flex' }}>
+											{/* <div style={{ display: 'flex' }}>
 												<Button
 													style={{
 														width: '200px',
@@ -280,7 +280,7 @@ function DetailsProduct() {
 													onClick={() => addToCart()}
 													className="p-button-infor p-ml-2"
 												></Button>
-											</div>
+											</div> */}
 
 											<Toast ref={toast} position='bottom-right' />
 										</Box>
@@ -290,7 +290,7 @@ function DetailsProduct() {
 
 							<Grid lg={10}>
 								<Box className={classes.content}>
-									<h2>THÔNG TIN CHI TIẾT</h2>
+									<h2>INFORMATION DETAILS</h2>
 									<Paper>
 										<Grid container>
 											<div
@@ -304,7 +304,7 @@ function DetailsProduct() {
 
 							<Grid lg={12}>
 								<Box className={classes.content}>
-									<h2>MÔ TẢ SẢN PHẨM</h2>
+									<h2>PRODUCT DESCRIPTION</h2>
 									<Paper>
 										<Grid container>
 											<Typography className={classes.description} component="p" variant="body1">

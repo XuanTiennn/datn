@@ -10,12 +10,12 @@ import { ContextGlobal } from '../../../app/ContextGlobal';
 const useStyles = makeStyles((theme) => ({
 	root: {},
 	img: {
-		maxHeight: '300px',
+		// maxHeight: '300px',
 		display: 'block',
-		maxWidth: '300px',
+		// maxWidth: '300px',
 		overflow: 'hidden',
 		width: '100%',
-		marginTop:'200px'
+		marginTop: '100px',
 	},
 	column: {
 		display: 'flex',
@@ -77,7 +77,7 @@ function Banner() {
 				>
 					{slider?.map((item) => (
 						<Grid className={classes.box} container key={item._id}>
-							<Hidden only={['xs', 'md', 'sm']}>
+							{/* <Hidden only={['xs', 'md', 'sm']}>
 								<Grid className={classes.column} item lg={6}>
 									<Typography className={classes.title} component="h2" variant="h2">
 										{item.title}
@@ -91,15 +91,14 @@ function Banner() {
 										Xem ngay
 									</Button>
 								</Grid>
-							</Hidden>
-							<Grid className={classes.column} item xs={12} sm={12} md={12} lg={6}>
+							</Hidden> */}
+							<Grid className={classes.column} item xs={12} sm={12} md={12} lg={12}>
 								<img className={classes.img} src={item.images.url} alt="img" />
 							</Grid>
 						</Grid>
 					))}
 				</Carousel>
 			</XLayout_Center>
-			
 		</XLayout>
 	);
 }

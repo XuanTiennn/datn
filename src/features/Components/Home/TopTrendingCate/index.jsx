@@ -41,7 +41,7 @@ function TopTrending(props) {
 		<XLayout className={classes.root}>
 			<XLayout_Center style={{ backgroundColor: 'white', padding: '20px' }}>
 				<Typography component="h2" variant="h5" style={{ color: 'rgb(238, 77, 45)', fontSize: '19px' }}>
-					Danh mục
+					Categories
 				</Typography>
 				<Grid container>
 					{categories?.map((item) => (

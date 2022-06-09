@@ -82,7 +82,7 @@ function ProductItem({ product = {} }) {
 							className={classes.img}
 						/>
 					</Link>
-					{product.salePercen > 0 && (
+					{/* {product.salePercen > 0 && (
 						<div
 							className="p-p-2"
 							style={{
@@ -99,7 +99,7 @@ function ProductItem({ product = {} }) {
 								{FormatNumber((product.price * product.salePercen) / 100)}
 							</h5>
 						</div>
-					)}
+					)} */}
 				</div>
 
 				<CardContent>
@@ -115,10 +115,10 @@ function ProductItem({ product = {} }) {
 					</Link>
 
 					<Typography className={clsx(classes.sold, 'font-dosis')} component="p" variant="body1">
-						{product.sold > 0 ? `Đã bán ${product.sold} ` : <br></br>}
+						{product.sold > 0 ? `Sold ${product.sold} ` : <br></br>}
 					</Typography>
 					<Typography className={clsx(classes.sold, 'font-dosis')} component="p" variant="body1">
-						{product.remain > 0 ? `Còn ${product.remain} ` : <br></br>}
+						{product.remain > 0 ? `Remain ${product.remain} ` : <br></br>}
 					</Typography>
 					<Box style={{ display: 'flex' }}>
 						<Typography
@@ -127,7 +127,7 @@ function ProductItem({ product = {} }) {
 							component="p"
 							className={clsx(classes.price, 'font-dosis')}
 						>
-							{FormatNumber(product.price - (product.price * product.salePercen) / 100)}
+							${product.price}
 						</Typography>
 
 						<Typography
@@ -140,8 +140,8 @@ function ProductItem({ product = {} }) {
 						</Typography>
 					</Box>
 					{product.salePercen > 0 && (
-						<Typography style={{ textDecoration: 'line-through',color:'rgb(130, 134, 158)' }}>
-							{FormatNumber(product.price)}
+						<Typography style={{ textDecoration: 'line-through', color: 'rgb(130, 134, 158)' }}>
+							${product.price}
 						</Typography>
 					)}
 				</CardContent>

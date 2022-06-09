@@ -11,56 +11,26 @@ InforWeb.propTypes = {};
 function InforWeb(props) {
 	const toast = useRef(null);
 
-	const items = [
-		{
-			label: 'Add',
-			icon: 'pi pi-pencil',
-			command: () => {
-				toast.current.show({ severity: 'info', summary: 'Add', detail: 'Data Added' });
-			},
-		},
-		{
-			label: 'Update',
-			icon: 'pi pi-refresh',
-			command: () => {
-				toast.current.show({ severity: 'success', summary: 'Update', detail: 'Data Updated' });
-			},
-		},
-		{
-			label: 'Delete',
-			icon: 'pi pi-trash',
-			command: () => {
-				toast.current.show({ severity: 'error', summary: 'Delete', detail: 'Data Deleted' });
-			},
-		},
-		{
-			label: 'Upload',
-			icon: 'pi pi-upload',
-			command: () => {
-				window.location.hash = '/fileupload';
-			},
-		},
-		{
-			label: 'React Website',
-			icon: 'pi pi-external-link',
-			command: () => {
-				window.location.href = 'https://facebook.github.io/react/';
-			},
-		},
-	];
-
 	return (
 		<div className="infor-web">
 			<div className="card">
-				<div className="speeddial-delay-demo" style={{ position: 'relative', left: '-25px',bottom:'30px', }}>
-					<SpeedDial
+				<div className="speeddial-delay-demo" style={{ position: 'relative', left: '-25px', bottom: '30px' }}>
+					{/* <SpeedDial
 						model={Enumeration.arrInforIcon}
 						direction="right"
 						transitionDelay={80}
 						showIcon="pi pi-bars"
 						hideIcon="pi pi-times"
 						buttonClassName="p-button-outlined"
-					/>
+					/> */}
+					<Button
+						onClick={() =>
+							(window.location.href =
+								'https://api.whatsapp.com/send/?phone=84383302638&text&app_absent=0')
+						}
+					>
+						<i className="pi pi pi-whatsapp" style={{ fontSize: '2em' }}></i>
+					</Button>
 				</div>
 			</div>
 		</div>

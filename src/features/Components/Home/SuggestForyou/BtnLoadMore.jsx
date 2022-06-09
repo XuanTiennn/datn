@@ -9,7 +9,7 @@ function BtnLoadMore({change}) {
 	return (
 		<div style={{display:'flex',justifyContent:'center',marginTop:'30px'}}>
 			<Button variant="outlined" color="primary" onClick={(e) => change()}>
-				Xem thêm
+				More
 			</Button>
 		</div>
 	);

@@ -55,9 +55,9 @@ const Enumeration = {
 		{
 			id: 0,
 			icon: 'pi pi-phone',
-			href: 'tel:0123456789',
+			href: 'tel:0383302638',
 			command: () => {
-				window.location.href = 'tel:0123456789';
+				window.location.href = 'tel:0383302638';
 			},
 		},
 		{
@@ -70,10 +70,10 @@ const Enumeration = {
 		},
 		{
 			id: 2,
-			icon: 'pi pi-map-marker',
+			icon: 'pi-whatsapp',
 			href: '',
 			command: () => {
-				window.location.href = 'https://www.facebook.com';
+				window.location.href = 'https://api.whatsapp.com/send/?phone=84383302638&text&app_absent=0';
 			},
 		},
 		{

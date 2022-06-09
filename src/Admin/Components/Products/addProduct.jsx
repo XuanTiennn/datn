@@ -60,6 +60,7 @@ function AddProduct(props) {
 	const [products] = state.productsAPI.products;
 	const [token] = state.token;
 	const [images, setImages] = useState(false);
+	const [imagess, setImagess] = useState([]);
 	const [isEdit, setIsEdit] = useState(false);
 	const [loading, setLoading] = useState(false);
 	const initState = {
@@ -121,6 +122,35 @@ function AddProduct(props) {
 			alert(failr);
 		}
 	};
+	const handleImgsChange = async (e) => {
+		e.preventDefault();
+		try {
+			if (!isAdmin) return alert('Bạn không được phép thực hiện thao tác này.');
+			const file = e.target.files[0];
+
+			if (!file) return alert('File không tồn tại.');
+
+			if (file.size > 1024 * 1024) return alert('Dung lượng ảnh vượt mức cho phép.');
+
+			if (file.type !== 'image/jpeg' && file.type !== 'image/png') return alert('Ảnh sai định dạng.');
+
+			let formData = new FormData();
+			formData.append('file', file);
+			setLoading(true);
+			const res = await axios.post('/api/upload', formData, {
+				headers: { 'content-type': 'multipart/form-data', Authorization: token },
+			});
+			const _imgs = [...imagess];
+			_imgs.push(res.data);
+			setImagess(_imgs);
+			setLoading(false);
+			// getPayload(product, res.data);
+		} catch (err) {
+			const failr = err.response.data.msg;
+			alert(failr);
+		}
+	};
+	console.log(imagess);
 	const handleImgChange = async (e) => {
 		e.preventDefault();
 		try {
@@ -202,9 +232,36 @@ function AddProduct(props) {
 						<div className="p-field p-col-4 p-md-3">
 							<span className="p-float-label">
 								<InputText
-									placeholder="Phần trăm giảm giá"
-									value={product.salePercen}
-									onChange={(e) => handleChange('salePercen', e.target.value)}
+									placeholder="cân nặng"
+									value={product.weight}
+									onChange={(e) => handleChange('weight', e.target.value)}
+								/>
+							</span>
+						</div>
+						<div className="p-field p-col-4 p-md-3">
+							<span className="p-float-label">
+								<InputText
+									placeholder="chiều dài"
+									value={product.instock}
+									onChange={(e) => handleChange('instock', e.target.value)}
+								/>
+							</span>
+						</div>
+						<div className="p-field p-col-4 p-md-3">
+							<span className="p-float-label">
+								<InputText
+									placeholder="ship"
+									value={product.shipment}
+									onChange={(e) => handleChange('shipment', e.target.value)}
+								/>
+							</span>
+						</div>
+						<div className="p-field p-col-4 p-md-3">
+							<span className="p-float-label">
+								<InputText
+									placeholder="Nguồn gốc"
+									value={product.origin}
+									onChange={(e) => handleChange('origin', e.target.value)}
 								/>
 							</span>
 						</div>
@@ -258,6 +315,87 @@ function AddProduct(props) {
 									<ClearIcon
 										className={classes.iconClear}
 										onClick={() => handleRemoveImage(images.public_id)}
+									/>
+								</>
+							</Box>
+						)}
+						<br></br>
+						<TextField
+							type="file"
+							name="file"
+							required="true"
+							className={classes.fileinput}
+							onChange={handleImgsChange}
+						/>
+						{loading ? (
+							<Loading />
+						) : (
+							<Box className={classes.images}>
+								<>
+									<img className={classes.img} src={imagess ? imagess?.[0]?.url : ''} alt="img" />{' '}
+									<ClearIcon
+										className={classes.iconClear}
+										onClick={() => handleImgsChange(images.public_id)}
+									/>
+								</>
+							</Box>
+						)}
+						<TextField
+							type="file"
+							name="file"
+							required="true"
+							className={classes.fileinput}
+							onChange={handleImgsChange}
+						/>
+						{loading ? (
+							<Loading />
+						) : (
+							<Box className={classes.images}>
+								<>
+									<img className={classes.img} src={imagess ? imagess?.[1]?.url : ''} alt="img" />{' '}
+									<ClearIcon
+										className={classes.iconClear}
+										onClick={() => handleImgsChange(images.public_id)}
+									/>
+								</>
+							</Box>
+						)}
+						<TextField
+							type="file"
+							name="file"
+							required="true"
+							className={classes.fileinput}
+							onChange={handleImgsChange}
+						/>
+						{loading ? (
+							<Loading />
+						) : (
+							<Box className={classes.images}>
+								<>
+									<img className={classes.img} src={imagess ? imagess?.[2]?.url : ''} alt="img" />{' '}
+									<ClearIcon
+										className={classes.iconClear}
+										onClick={() => handleImgsChange(images.public_id)}
+									/>
+								</>
+							</Box>
+						)}
+						<TextField
+							type="file"
+							name="file"
+							required="true"
+							className={classes.fileinput}
+							onChange={handleImgsChange}
+						/>
+						{loading ? (
+							<Loading />
+						) : (
+							<Box className={classes.images}>
+								<>
+									<img className={classes.img} src={imagess ? imagess?.[3]?.url : ''} alt="img" />{' '}
+									<ClearIcon
+										className={classes.iconClear}
+										onClick={() => handleImgsChange(images.public_id)}
 									/>
 								</>
 							</Box>

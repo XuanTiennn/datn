@@ -99,7 +99,7 @@ function FilterByCategory(props) {
 				<FormControl component="fieldset">
 					<FormLabel component="legend">
 						<Typography style={{ fontSize: '16px' }} component="h2">
-							Danh mục sản phẩm
+							Categories
 						</Typography>
 					</FormLabel>
 
